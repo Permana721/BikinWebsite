@@ -1,58 +1,47 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 WEB-UKM (Website Builder UMKM)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+WEB-UKM adalah sebuah platform *website builder* berbasis Laravel yang dirancang khusus untuk membantu para pelaku UMKM (Usaha Mikro, Kecil, dan Menengah) dalam membuat *landing page* atau profil perusahaan dengan mudah, cepat, dan tanpa perlu keahlian pemrograman (*coding*). 
 
-## About Laravel
+Platform ini memungkinkan pengguna untuk memilih template HTML profesional dan mengeditnya menggunakan antarmuka *drag-and-drop* yang intuitif.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🧑‍💼 Administrator
+* **Dasbor Analitik:** Pantau total pendapatan, transaksi berhasil, jumlah template, dan total pengguna secara *real-time*.
+* **Manajemen Template:** * Upload *source code* template berformat `.zip`.
+    * Sistem multi-upload hingga 5 foto *preview* (thumbnail) untuk setiap template.
+    * Toggle Aktif/Nonaktif template dengan mudah.
+* **Manajemen Kategori:** Kelola pengelompokan template (Kuliner, Fashion, Jasa, dll).
+* **Manajemen User:** Tambah, edit, hapus, dan atur *role* pengguna (Admin/User).
 
-## Learning Laravel
+### 🏪 User (UMKM)
+* **Katalog Eksplorasi:** Telusuri puluhan template *website* berdasarkan kategori.
+* **Manajemen Project:** Lanjutkan proses *editing* dari draft website yang sebelumnya dibuat.
+* **Drag & Drop Editor:** Edit teks, gambar, dan tata letak website secara visual (mendukung integrasi *GrapesJS*).
+* **Preview & Export:** Pratinjau hasil *website* dan unduh *source code* (HTML/CSS) setelah menyelesaikan simulasi pembayaran.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠️ Teknologi yang Digunakan
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+* **Backend:** PHP 8.x & Laravel Framework
+* **Frontend:** HTML5, CSS3, Tailwind CSS (Utility-first CSS)
+* **Database:** MySQL / SQLite
+* **Ikon & Font:** Heroicons, SVG bawaan, dan Plus Jakarta Sans
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## ⚙️ Persyaratan Sistem (*Requirements*)
 
-```bash
-composer require laravel/boost --dev
+Pastikan komputer/server Anda telah terpasang perangkat lunak berikut:
+* [PHP](https://www.php.net/) >= 8.2
+* [Composer](https://getcomposer.org/)
+* [Node.js & NPM](https://nodejs.org/) (Opsional, untuk kompilasi *asset* lanjutan)
+* Database (MySQL)
 
-php artisan boost:install
-```
-
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Penting:** Karena aplikasi ini menerima *upload* file ZIP template, pastikan Anda telah mengubah konfigurasi pada file `php.ini` server Anda:
+```ini
+upload_max_filesize = 100M
+post_max_size = 100M
