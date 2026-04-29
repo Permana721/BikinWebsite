@@ -12,8 +12,8 @@
                 {{ Auth::check() ? 'Dashboard' : 'Home' }}
             </a>
 
-            <a href="{{ Auth::check() ? route('user.dashboard') . '#katalog' : route('user.home') . '#templates' }}" 
-            class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <a href="{{ route('user.templates') }}" 
+            class="text-sm font-medium transition-colors {{ request()->routeIs('user.templates') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
                 Templates
             </a>
 
