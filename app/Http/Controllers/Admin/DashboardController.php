@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Template; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,15 +14,16 @@ class DashboardController extends Controller
     public function index()
     {
         $totalUser = User::where('role', 'user')->count();
+        
+        $totalTemplate = Template::count(); 
 
-        return view('admin.home', compact('totalUser'));
+        return view('admin.home', compact('totalUser', 'totalTemplate'));
     }
 
     public function user(Request $request)
     {
         $query = User::query();
 
-        // Fitur Search
         if ($request->search) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
@@ -29,7 +31,6 @@ class DashboardController extends Controller
             });
         }
 
-        // Fitur Filter Role
         if ($request->filled('role')) {
             $query->where('role', $request->role);
         }
@@ -60,7 +61,6 @@ class DashboardController extends Controller
 
     public function updateUser(Request $request, $id)
     {
-        // Cegah update diri sendiri
         if (Auth::id() == $id) {
             return redirect()->back()->with('error', 'Anda tidak dapat mengedit akun sendiri.');
         }
@@ -77,7 +77,6 @@ class DashboardController extends Controller
 
     public function deleteUser($id)
     {
-        // Cegah hapus diri sendiri
         if (Auth::id() == $id) {
             return redirect()->back()->with('error', 'Anda tidak dapat menghapus akun sendiri.');
         }
