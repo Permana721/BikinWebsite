@@ -4,18 +4,21 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 w-full flex-grow animate-slide-up">
 
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
             <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Kelola Template</h1>
             <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage semua template yang tersedia di platform</p>
         </div>
-        <a href="{{ route('admin.templates.create') }}"
-            class="inline-flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-2xl text-sm font-semibold transition-colors shadow-sm shadow-blue-600/20">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
-            Tambah Template
-        </a>
+        
+        <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+            <a href="{{ route('admin.templates.create') }}"
+                class="inline-flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-2xl text-sm font-semibold transition-colors shadow-sm shadow-blue-600/20 w-full sm:w-auto whitespace-nowrap">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Tambah Template
+            </a>
+        </div>
     </div>
 
     @if(session('success'))
@@ -30,22 +33,36 @@
     @endif
 
     <div class="bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left min-w-[600px]">
+        <form action="{{ route('admin.templates.index') }}" method="GET" id="filterForm" class="p-6 border-b border-slate-100 dark:border-slate-700/50 flex flex-col sm:flex-row justify-between gap-4">
+            <div class="relative w-full sm:w-96">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama / deskripsi template..." 
+                    class="w-full pl-11 pr-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-blue-500 text-sm transition-all text-slate-800 dark:text-slate-200">
+                <svg class="absolute left-4 top-3.5 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+            
+            <select name="role" onchange="document.getElementById('filterForm').submit()" 
+                    class="px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:outline-none focus:border-blue-500 text-sm text-slate-600 dark:text-slate-300">
+                <option value="">Semua Peran</option>
+                <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>User</option>
+            </select>
+        </form>
+        <div class="overflow-x-auto p-2">
+            <table class="w-full text-left border-collapse min-w-[800px]">
                 <thead>
-                    <tr class="border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                        <th class="px-6 py-4 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Template</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Kategori</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Ditambahkan</th>
-                        <th class="px-6 py-4 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-right">Aksi</th>
+                    <tr class="text-sm font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-700">
+                        <th class="pb-4 pt-2 px-6">Template</th>
+                        <th class="pb-4 pt-2 px-4">Kategori</th>
+                        <th class="pb-4 pt-2 px-4">Status</th>
+                        <th class="pb-4 pt-2 px-4">Ditambahkan</th>
+                        <th class="pb-4 pt-2 px-4 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-50 dark:divide-slate-700/50">
+                <tbody>
                     @forelse($templates as $template)
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/20 transition-colors">
+                    <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/20 transition-colors group">
                         
-                        <td class="px-6 py-4">
+                        <td class="py-4 px-6">
                             <div class="flex items-center gap-4">
                                 @php
                                     $thumbnailUrl = is_array($template->photos) && count($template->photos) > 0 ? asset('storage/' . $template->photos[0]) : '';
@@ -69,13 +86,13 @@
                             </div>
                         </td>
 
-                        <td class="px-6 py-4">
+                        <td class="py-4 px-4">
                             <span class="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-slate-700/50 text-slate-700 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl">
                                 {{ $template->category->icon ?? '' }} {{ $template->category->name }}
                             </span>
                         </td>
 
-                        <td class="px-6 py-4">
+                        <td class="py-4 px-4">
                             <form action="{{ route('admin.templates.toggle', $template) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
@@ -89,22 +106,22 @@
                             </form>
                         </td>
 
-                        <td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400 font-medium whitespace-nowrap">
+                        <td class="py-4 px-4 text-sm text-slate-500 dark:text-slate-400 font-medium whitespace-nowrap">
                             {{ $template->created_at->format('d M Y') }}
                         </td>
 
-                        <td class="px-6 py-4">
-                            <div class="flex items-center justify-end gap-3">
+                        <td class="py-4 px-4 text-right">
+                            <div class="flex items-center justify-end gap-2">
                                 <a href="{{ route('admin.templates.edit', $template) }}"
-                                    class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-xs font-bold transition-colors bg-blue-50 dark:bg-blue-900/20 px-3 py-1.5 rounded-lg">
-                                    Edit
+                                    class="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-colors" title="Edit Template">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                 </a>
                                 <form action="{{ route('admin.templates.destroy', $template) }}" method="POST"
-                                        onsubmit="return confirm('Yakin hapus template ini? File ZIP dan thumbnail akan ikut terhapus.')">
+                                        onsubmit="return confirm('Yakin hapus template ini? File ZIP dan thumbnail akan ikut terhapus.')" class="m-0">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 text-xs font-bold transition-colors bg-red-50 dark:bg-red-900/20 px-3 py-1.5 rounded-lg">
-                                        Hapus
+                                    <button type="submit" class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl transition-colors" title="Hapus Template">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                     </button>
                                 </form>
                             </div>
@@ -119,10 +136,18 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
                                     </svg>
                                 </div>
-                                <p class="font-medium text-slate-500 dark:text-slate-400">Belum ada template yang ditambahkan.</p>
-                                <a href="{{ route('admin.templates.create') }}" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold">
-                                    Tambah template pertama →
-                                </a>
+                                
+                                @if(request('search'))
+                                    <p class="font-medium text-slate-500 dark:text-slate-400">Tidak ada template yang cocok dengan pencarian "<span class="font-bold text-slate-700 dark:text-slate-300">{{ request('search') }}</span>".</p>
+                                    <a href="{{ route('admin.templates.index') }}" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold mt-1">
+                                        Reset Pencarian →
+                                    </a>
+                                @else
+                                    <p class="font-medium text-slate-500 dark:text-slate-400">Belum ada template yang ditambahkan.</p>
+                                    <a href="{{ route('admin.templates.create') }}" class="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold mt-1">
+                                        Tambah template pertama →
+                                    </a>
+                                @endif
                             </div>
                         </td>
                     </tr>
