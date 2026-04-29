@@ -1,37 +1,7 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dasbor Saya | WEB-UKM</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'media',
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'], }
-                }
-            }
-        }
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style> 
-        body { font-family: 'Plus Jakarta Sans', sans-serif; } 
-        /* Menyembunyikan scrollbar untuk area horizontal */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
-</head>
-<body class="bg-[#FCFCFC] dark:bg-[#0B0F19] text-slate-800 dark:text-slate-200 min-h-screen flex flex-col transition-colors duration-300 selection:bg-blue-100 selection:text-blue-900">
-
-    @include('user.layouts.header')
-
+@extends('user.layouts.app')
+@section('title', 'Dasbor Saya')
+@section('content')
     <main class="grow flex flex-col">
-        
         <div class="pt-16 pb-12 px-6 border-b border-slate-200/60 dark:border-slate-800/60">
             <div class="max-w-7xl mx-auto">
                 <p class="text-sm font-medium text-slate-400 dark:text-slate-500 mb-2 tracking-wide uppercase">Workspace</p>
@@ -42,12 +12,12 @@
                 <div class="flex flex-wrap items-center gap-x-8 gap-y-4 text-sm font-medium text-slate-600 dark:text-slate-400">
                     <div class="flex items-center gap-3">
                         <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                        <span>1  Project Aktif</span>
+                        <span>1 Project Aktif</span>
                     </div>
                     <div class="hidden sm:block w-px h-4 bg-slate-300 dark:bg-slate-700"></div>
                     <div class="flex items-center gap-3">
                         <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
-                        <span>45+ Template</span>
+                        <span>{{ count($templates) }} Template</span>
                     </div>
                 </div>
             </div>
@@ -92,41 +62,95 @@
             </div>
         </div>
 
-        <div id="katalog" class="w-full bg-slate-50 dark:bg-[#0E131F] py-20 border-t border-slate-200/60 dark:border-slate-800/60">
+        <div id="katalog" class="w-full py-20">
             <div class="max-w-7xl mx-auto px-6">
                 <div class="flex justify-between items-end mb-10">
                     <div>
                         <h2 class="text-2xl font-semibold text-slate-900 dark:text-white tracking-tight mb-2">Eksplorasi</h2>
                         <p class="text-sm text-slate-500 dark:text-slate-400">Mulai karya barumu dari template pilihan.</p>
                     </div>
-                    <a href="#" class="text-sm font-medium text-slate-900 dark:text-white underline underline-offset-4 decoration-slate-300 dark:decoration-slate-700 hover:decoration-slate-900 dark:hover:decoration-white transition-all">Lihat Semua</a>
+                    <button id="loadMoreBtn" class="text-sm font-medium text-slate-900 dark:text-white underline underline-offset-4 decoration-slate-300 dark:decoration-slate-700 hover:decoration-slate-900 dark:hover:decoration-white transition-all focus:outline-none">
+                        Lihat Lebih Banyak
+                    </button>
                 </div>
 
-                <div class="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-8">
-                    
-                    <div class="shrink-0 w-[280px] snap-start group cursor-pointer">
-                        <div class="aspect-[4/5] rounded-[2rem] overflow-hidden relative mb-4 bg-slate-200 dark:bg-slate-800">
-                            <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=400&q=80" alt="Template" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700">
-                            <div class="absolute top-4 left-4">
-                                <span class="px-3 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">Fashion</span>
+                <div id="template-container" class="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-8">
+                    @forelse($templates as $index => $template)
+                        @php
+                            $thumbnailUrl = is_array($template->photos) && count($template->photos) > 0 ? asset('storage/' . $template->photos[0]) : '';
+                        @endphp
+                        
+                        <div class="template-item shrink-0 w-[280px] snap-start group cursor-pointer" style="{{ $index >= 4 ? 'display: none;' : '' }}">
+                            <div class="aspect-[4/5] rounded-[2rem] overflow-hidden relative mb-4 bg-slate-200 dark:bg-slate-800">
+                                @if($thumbnailUrl)
+                                    <img src="{{ $thumbnailUrl }}" alt="{{ $template->name }}" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-400">
+                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                    </div>
+                                @endif
+                                
+                                <div class="absolute top-4 left-4">
+                                    <span class="px-3 py-1 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
+                                        {{ $template->category->name ?? 'Kategori' }}
+                                    </span>
+                                </div>
+                                <div class="absolute inset-x-4 bottom-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                                    <button class="w-full py-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-900 dark:text-white font-medium rounded-xl text-sm hover:bg-white transition-colors">
+                                        Gunakan Desain
+                                    </button>
+                                </div>
                             </div>
-                            <div class="absolute inset-x-4 bottom-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                                <button class="w-full py-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-900 dark:text-white font-medium rounded-xl text-sm hover:bg-white transition-colors">
-                                    Gunakan Desain
-                                </button>
-                            </div>
+                            <h4 class="font-semibold text-slate-900 dark:text-white">{{ $template->name }}</h4>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{{ $template->description }}</p>
                         </div>
-                        <h4 class="font-semibold text-slate-900 dark:text-white">Aesthetic Wear</h4>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">Template elegan untuk butik dan rilis fashion terbaru.</p>
-                    </div>
-                    
-                    </div>
+                    @empty
+                        <div class="w-full text-center py-10">
+                            <p class="text-slate-500 dark:text-slate-400 font-medium">Belum ada template yang tersedia di platform.</p>
+                        </div>
+                    @endforelse
+                </div>
             </div>
         </div>
 
     </main>
 
-    @include('user.layouts.footer')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('template-container');
+            const items = document.querySelectorAll('.template-item');
+            const btn = document.getElementById('loadMoreBtn');
+            let visibleCount = 4;
 
-</body>
-</html>
+            if (items.length <= 4 && btn) {
+                btn.style.display = 'none';
+            }
+
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    if (btn.innerText.trim() === "Menampilkan Lebih Sedikit") {
+                        visibleCount = 4;
+                        items.forEach((item, index) => {
+                            item.style.display = index < visibleCount ? 'block' : 'none';
+                        });
+                        
+                        btn.innerText = "Lihat Lebih Banyak";
+                        
+                        container.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                        visibleCount += 8;
+                        items.forEach((item, index) => {
+                            if (index < visibleCount) {
+                                item.style.display = 'block';
+                            }
+                        });
+
+                        if (visibleCount >= items.length) {
+                            btn.innerText = "Menampilkan Lebih Sedikit";
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+@endsection
