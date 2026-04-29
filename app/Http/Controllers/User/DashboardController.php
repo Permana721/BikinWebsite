@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Template; 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,30 +18,16 @@ class DashboardController extends Controller
 
     public function dashboard()
     {
-        return view('user.dashboard');
+        $templates = Template::with('category')->where('is_active', true)->latest()->get();
+        
+        return view('user.dashboard', compact('templates'));
     }
 
     public function profile()
     {
         $user = Auth::user();
-        $orders = [
-            (object)[
-                'id' => 'INV-202604-001',
-                'template_name' => 'Savory Bistro',
-                'date' => '24 April 2026',
-                'total' => 'Rp 150.000',
-                'status' => 'Berhasil' 
-            ],
-            (object)[
-                'id' => 'INV-202603-089',
-                'template_name' => 'Aesthetic Wear',
-                'date' => '10 Maret 2026',
-                'total' => 'Rp 120.000',
-                'status' => 'Berhasil'
-            ]
-        ];
 
-        return view('user.profile', compact('user', 'orders'));
+        return view('user.profile', compact('user'));
     }
 
     public function updateProfile(Request $request)
@@ -60,5 +48,12 @@ class DashboardController extends Controller
         $user->save();
 
         return back()->with('success', 'Profil berhasil diperbarui!');
+    }
+
+    public function templates()
+    {
+        $categories = Category::all();
+        $templates = Template::with('category')->where('is_active', true)->latest()->get();
+        return view('user.templates', compact('templates', 'categories'));
     }
 }
