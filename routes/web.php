@@ -5,9 +5,10 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\User;
 use App\Http\Controllers\AuthController;
 
+Route::get('/', [User\DashboardController::class, 'index'])->name('user.home');
+Route::get('/templates', [User\DashboardController::class, 'templates'])->name('user.templates');
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('/', [User\DashboardController::class, 'index'])->name('user.home');
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'authenticate'])->name('login.post');
     Route::get('/register', [AuthController::class, 'register'])->name('register');
