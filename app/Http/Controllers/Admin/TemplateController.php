@@ -11,9 +11,20 @@ use Illuminate\Support\Str;
 
 class TemplateController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $templates = Template::with('category')->latest()->paginate(10);
+        $query = Template::with('category');
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%');
+            });
+        }
+
+        $templates = $query->latest()->paginate(10)->withQueryString();
+        
         return view('admin.templates.index', compact('templates'));
     }
 
