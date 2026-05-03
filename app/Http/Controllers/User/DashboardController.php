@@ -13,13 +13,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('user.home');
+        $categories = Category::all();
+        $templates = Template::with('category')->where('is_active', true)->latest()->take(3)->get();
+        return view('user.home', compact('categories', 'templates'));
     }
 
     public function dashboard()
     {
         $templates = Template::with('category')->where('is_active', true)->latest()->get();
-        
         return view('user.dashboard', compact('templates'));
     }
 
