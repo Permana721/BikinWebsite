@@ -3,8 +3,6 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 w-full flex-grow animate-slide-up">
-    
-    {{-- Header Section --}}
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
         <div>
             <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Kelola Kategori</h1>
