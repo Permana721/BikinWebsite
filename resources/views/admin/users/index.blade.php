@@ -6,7 +6,7 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
         <div>
             <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-2 tracking-tight">Manajemen User</h1>
-            <p class="text-slate-500 dark:text-slate-400 text-sm">Kelola data pengguna UMKM dan Admin di platform ini.</p>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">Kelola data pengguna dan Admin di platform ini.</p>
         </div>
         <button onclick="openModal('modal-form')" class="flex items-center gap-2 px-5 py-3 rounded-2xl font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/30 text-sm">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
