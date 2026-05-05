@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         
         <a href="/user/dashboard" class="text-2xl font-extrabold tracking-tighter text-blue-600 dark:text-blue-500 flex items-center gap-2">
-            <img src="{{ asset('assets/img/logo/BikinSitusLogo.png') }}" alt="Logo BikinSitus" class="h-9 w-9 object-contain">
+            <img src="{{ asset('assets/img/logo/BikinWebsiteLogo.png') }}" alt="Logo BikinWebsite" class="h-9 w-9 object-contain">
             <span>Bikin<span class="font-light">Situs</span></span>
         </a>
         
