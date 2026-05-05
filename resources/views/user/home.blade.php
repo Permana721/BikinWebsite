@@ -31,12 +31,35 @@
                         </a>
                     </div>
                     <div class="mt-8 flex items-center justify-center lg:justify-start gap-4 text-sm text-slate-500 dark:text-slate-400 font-medium">
-                        <div class="flex -space-x-2">
-                            <img src="https://images.unsplash.com/photo-1530404805506-c03b57ae586f?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="User 1" class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 object-cover">
-                            <img src="https://images.unsplash.com/photo-1516011362164-3095a82b0af9?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="User 2" class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 object-cover">
-                            <img src="https://images.unsplash.com/photo-1559732658-9ef4bc86cfcd?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="User 3" class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 object-cover">
+                        <div class="flex -space-x-2 overflow-hidden">
+                           <div class="flex -space-x-2 overflow-hidden">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1530404805506-c03b57ae586f?q=80&w=64&auto=format&fit=crop&format=webp" 
+                                    alt="Foto profil pengguna Bisite" 
+                                    width="32" 
+                                    height="32"
+                                    loading="lazy"
+                                    class="inline-block w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 object-cover ring-2 ring-transparent hover:z-10 transition-transform hover:scale-110"
+                                >
+                                <img 
+                                    src="https://images.unsplash.com/photo-1516011362164-3095a82b0af9?q=80&w=64&auto=format&fit=crop&format=webp" 
+                                    alt="Testimoni pengguna platform" 
+                                    width="32" 
+                                    height="32"
+                                    loading="lazy"
+                                    class="inline-block w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 object-cover ring-2 ring-transparent hover:z-10 transition-transform hover:scale-110"
+                                >
+                                <img 
+                                    src="https://images.unsplash.com/photo-1559732658-9ef4bc86cfcd?q=80&w=64&auto=format&fit=crop&format=webp" 
+                                    alt="Avatar member aktif" 
+                                    width="32" 
+                                    height="32"
+                                    loading="lazy"
+                                    class="inline-block w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 object-cover ring-2 ring-transparent hover:z-10 transition-transform hover:scale-110"
+                                >
+                            </div>
                         </div>
-                        <span>Dipercaya oleh 1000+ pengguna</span>
+                        <span>Dipercaya oleh 1,000+ pengguna</span>
                     </div>
                 </div>
                 
