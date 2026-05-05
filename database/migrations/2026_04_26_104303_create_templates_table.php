@@ -16,9 +16,8 @@ return new class extends Migration
             $table->foreignId('category_id')
                 ->constrained('categories')
                 ->cascadeOnDelete();
-
             $table->string('name');
-            $table->json('photos'); 
+            $table->string('photos'); 
             $table->string('zip_path');
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
