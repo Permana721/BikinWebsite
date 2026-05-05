@@ -17,7 +17,7 @@ class DashboardController extends Controller
         
         $totalTemplate = Template::count(); 
 
-        return view('admin.home', compact('totalUser', 'totalTemplate'));
+        return view('admin.dashboard', compact('totalUser', 'totalTemplate'));
     }
 
     public function user(Request $request)
