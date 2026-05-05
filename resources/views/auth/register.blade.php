@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar - BikinSitus</title>
+    <title>Daftar - BikinWebsite</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo/BikinWebsiteLogo.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -18,8 +19,8 @@
     <div class="relative z-10 w-full max-w-md px-6">
         <div class="flex justify-center mb-6">
             <a href="/" class="text-3xl font-extrabold tracking-tighter text-blue-600 flex items-center gap-2">
-                <img src="{{ asset('assets/img/logo/BikinSitusLogo.png') }}" alt="Logo BikinSitus" class="h-10 w-auto">
-                <span>Bikin<span class="font-light text-3xl">Situs</span></span>
+                <img src="{{ asset('assets/img/logo/BikinWebsiteLogo.png') }}" alt="Logo BikinWebsite" class="h-10 w-auto">
+                <span>Bikin<span class="font-light text-3xl">Website</span></span>
             </a>
         </div>
 
