@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk - BikinSitus</title>
+    <title>Masuk - BikinWebsite</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo/BikinWebsiteLogo.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -18,14 +19,14 @@
     <div class="relative z-10 w-full max-w-md px-6">
         <div class="flex justify-center mb-8">
             <a href="/" class="text-3xl font-extrabold tracking-tighter text-blue-600 flex items-center gap-2">
-                <img src="{{ asset('assets/img/logo/BikinSitusLogo.png') }}" alt="Logo BikinSitus" class="h-10 w-auto">
-                <span>Bikin<span class="font-light text-3xl">Situs</span></span>
+                <img src="{{ asset('assets/img/logo/BikinWebsiteLogo.png') }}" alt="Logo BikinWebsite" class="h-10 w-auto">
+                <span>Bikin<span class="font-light text-3xl">Website</span></span>
             </a>
         </div>
 
         <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-[2rem] p-8 shadow-2xl border border-white/20 dark:border-slate-700/50">
             <h2 class="text-2xl font-bold mb-2 text-slate-900 dark:text-white">Selamat Datang Kembali</h2>
-            <p class="text-slate-500 dark:text-slate-400 text-sm mb-8">Silakan masuk ke akun Bikin Situs Anda.</p>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mb-8">Silakan masuk ke akun Bikin Website Anda.</p>
 
             <form action="{{ route('login.post') }}" method="POST" class="space-y-5">
                 @csrf
