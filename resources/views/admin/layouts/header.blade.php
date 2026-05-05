@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
         
         <a href="/admin/home" class="text-xl sm:text-2xl font-extrabold tracking-tighter text-blue-600 dark:text-blue-500 flex items-center gap-2">
-            <img src="{{ asset('assets/img/logo/BikinSitusAdminLogo.png') }}" alt="Logo BikinSitus" class="h-8 w-auto">
+            <img src="{{ asset('assets/img/logo/BikinWebsiteAdminLogo.png') }}" alt="Logo BikinWebsite" class="h-8 w-auto">
             <span>Admin Panel</span>
         </a>
         
