@@ -1,5 +1,5 @@
 @extends('user.layouts.app')
-@section('title', 'Website Builder UMKM')
+@section('title', 'Bisite')
 @section('content')
 <main class="grow relative z-10">
     <section class="pt-24 pb-20 md:pt-32 md:pb-28">
