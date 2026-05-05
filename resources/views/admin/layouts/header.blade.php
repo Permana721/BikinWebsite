@@ -7,8 +7,8 @@
         </a>
         
         <nav class="hidden md:flex space-x-6 items-center">
-            <a href="{{ route('admin.home') }}" 
-            class="text-sm transition-colors {{ request()->routeIs('admin.home') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
+            <a href="{{ route('admin.dashboard') }}" 
+            class="text-sm transition-colors {{ request()->routeIs('admin.dashboard') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
                 Home
             </a>
 
