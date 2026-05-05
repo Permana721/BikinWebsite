@@ -11,7 +11,7 @@ class Template extends Model
     ];
 
     protected $casts = [
-        'photos' => 'array', 
+        // 'photos' is now a string
     ];
 
     public function category()
