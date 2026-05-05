@@ -65,7 +65,7 @@
                         <td class="py-4 px-6">
                             <div class="flex items-center gap-4">
                                 @php
-                                    $thumbnailUrl = is_array($template->photos) && count($template->photos) > 0 ? asset('storage/' . $template->photos[0]) : '';
+                                    $thumbnailUrl = $template->photos ? asset('storage/' . $template->photos) : '';
                                 @endphp
                                 
                                 @if($thumbnailUrl)
