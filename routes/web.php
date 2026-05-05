@@ -20,7 +20,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
-    Route::get('/home', [Admin\DashboardController::class, 'index'])->name('home');
+    Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/user', [Admin\DashboardController::class, 'user'])->name('user');
     Route::post('/user/store', [Admin\DashboardController::class, 'storeUser'])->name('user.store');
     Route::put('/user/update/{id}', [Admin\DashboardController::class, 'updateUser'])->name('user.update');
