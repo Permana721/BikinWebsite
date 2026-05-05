@@ -3,7 +3,7 @@
         
         <a href="/user/dashboard" class="text-2xl font-extrabold tracking-tighter text-blue-600 dark:text-blue-500 flex items-center gap-2">
             <img src="{{ asset('assets/img/logo/BikinWebsiteLogo.png') }}" alt="Logo BikinWebsite" class="h-9 w-9 object-contain">
-            <span>Bikin<span class="font-light">Situs</span></span>
+            <span>Bikin<span class="font-light">Website</span></span>
         </a>
         
         <nav class="hidden md:flex space-x-8 items-center">
@@ -30,9 +30,9 @@
                         Halo, <span class="font-bold text-blue-600 dark:text-blue-400">{{ Auth::user()->name }}</span>
                     </span>
                     
-                    <a href="{{ Auth::user()->role === 'admin' ? route('admin.home') : route('user.profile') }}" 
+                    <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('user.profile') }}" 
                         class="text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors shadow-sm">
-                        {{ Auth::user()->role === 'admin' ? 'Halaman Admin' : 'Profil Saya' }}
+                        {{ Auth::user()->role === 'admin' ? 'Dashboard Admin' : 'Profil Saya' }}
                     </a>
 
                     <form action="{{ route('logout') }}" method="POST" class="inline m-0 p-0">
