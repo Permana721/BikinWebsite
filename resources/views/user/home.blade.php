@@ -206,7 +206,7 @@
             <div id="template-slider" class="flex gap-6 md:gap-8 overflow-x-auto snap-x snap-mandatory hide-scroll scroll-smooth pb-12 -mx-6 px-6 md:mx-0 md:px-0">
                 @forelse($templates as $template)
                     @php
-                        $thumbnailUrl = is_array($template->photos) && count($template->photos) > 0 ? asset('storage/' . $template->photos[0]) : '';
+                        $thumbnailUrl = $template->photos ? asset('storage/' . $template->photos) : '';
                         $categoryName = $template->category->name ?? 'Kategori';
                     @endphp
                     <div data-category="{{ strtolower($categoryName) }}" class="template-card shrink-0 w-[85vw] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] snap-center sm:snap-start group relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 overflow-hidden hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 flex flex-col">
@@ -234,9 +234,9 @@
                             <h4 class="font-bold text-2xl text-slate-900 dark:text-white mb-2">{{ $template->name }}</h4>
                             <p class="text-slate-500 dark:text-slate-400 mb-8 line-clamp-2 grow">{{ $template->description }}</p>
                             <div class="flex gap-3 mt-auto">
-                                <button onclick="openImageModal('{{ $thumbnailUrl }}', '{{ addslashes($template->name) }}')" class="flex-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 py-3.5 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
+                                <a href="{{ route('template.preview', $template->id) }}" target="_blank" class="flex-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 py-3.5 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
                                     Lihat
-                                </button>
+                                </a>
                                 <button class="use-template-btn flex-1 bg-blue-600 text-white py-3.5 rounded-xl font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm shadow-blue-600/20">
                                     Edit
                                 </button>

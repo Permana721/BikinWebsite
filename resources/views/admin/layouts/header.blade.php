@@ -1,7 +1,6 @@
 <header class="sticky top-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-slate-900/70 border-b border-white/20 dark:border-slate-800 shadow-sm transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
-        
-        <a href="/admin/home" class="text-xl sm:text-2xl font-extrabold tracking-tighter text-blue-600 dark:text-blue-500 flex items-center gap-2">
+        <a href="/admin/dashboard" class="text-xl sm:text-2xl font-extrabold tracking-tighter text-blue-600 dark:text-blue-500 flex items-center gap-2">
             <img src="{{ asset('assets/img/logo/BikinWebsiteAdminLogo.png') }}" alt="Logo BikinWebsite" class="h-8 w-auto">
             <span>Admin Panel</span>
         </a>

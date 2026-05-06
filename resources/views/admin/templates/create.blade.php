@@ -86,25 +86,23 @@
                         <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         Foto Website <span class="text-red-500">*</span>
                     </h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Wajib minimal 3 foto, maksimal 5 foto.</p>
-                    <div class="grid grid-cols-2 gap-3">
-                        @for($i = 1; $i <= 5; $i++)
-                        <label for="photo_{{ $i }}" class="cursor-pointer block {{ $i == 1 ? 'col-span-2 aspect-[21/9]' : 'col-span-1 aspect-[4/3]' }}">
-                            <div id="preview-container-{{ $i }}" class="w-full h-full bg-slate-50 dark:bg-slate-900/50 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-2xl flex items-center justify-center hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all overflow-hidden relative group">
-                                <div id="placeholder-{{ $i }}" class="flex flex-col items-center gap-2 text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors p-2 text-center">
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Wajib upload 1 foto untuk preview.</p>
+                    <div class="grid grid-cols-1 gap-3">
+                        <label for="photo_1" class="cursor-pointer block w-full aspect-[21/9]">
+                            <div id="preview-container-1" class="w-full h-full bg-slate-50 dark:bg-slate-900/50 border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-2xl flex items-center justify-center hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all overflow-hidden relative group">
+                                <div id="placeholder-1" class="flex flex-col items-center gap-2 text-slate-500 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors p-2 text-center">
                                     <div class="p-2 bg-slate-200 dark:bg-slate-800 rounded-full group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40 transition-colors">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"></path></svg>
                                     </div>
-                                    <span class="text-xs font-semibold block">Foto {{ $i }} {!! $i <= 3 ? '<span class="text-red-500">*</span>' : '(Opsional)' !!}</span>
+                                    <span class="text-xs font-semibold block">Foto Preview <span class="text-red-500">*</span></span>
                                 </div>
-                                <img id="img-{{ $i }}" src="" alt="Preview" class="w-full h-full object-cover hidden absolute inset-0 z-10">
-                                <div id="overlay-{{ $i }}" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                                <img id="img-1" src="" alt="Preview" class="w-full h-full object-cover hidden absolute inset-0 z-10">
+                                <div id="overlay-1" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
                                     <span class="text-white font-semibold text-[10px] bg-slate-900/80 px-3 py-1.5 rounded-full">Ganti</span>
                                 </div>
                             </div>
-                            <input type="file" name="photos[]" id="photo_{{ $i }}" accept="image/*" class="hidden" {{ $i <= 3 ? 'required' : '' }}>
+                            <input type="file" name="photos" id="photo_1" accept="image/*" class="hidden" required>
                         </label>
-                        @endfor
                     </div>
                 </div>
                 <div class="bg-white dark:bg-slate-800/80 backdrop-blur-md border border-slate-100 dark:border-slate-700 rounded-3xl p-6 shadow-sm flex flex-col gap-3">
@@ -121,7 +119,7 @@
     </form>
 </div>
 <script>
-for (let i = 1; i <= 5; i++) {
+for (let i = 1; i <= 1; i++) {
     const input = document.getElementById('photo_' + i);
     const img = document.getElementById('img-' + i);
     const placeholder = document.getElementById('placeholder-' + i);

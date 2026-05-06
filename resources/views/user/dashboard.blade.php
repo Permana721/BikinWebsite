@@ -101,7 +101,7 @@
                 <div id="template-slider" class="flex gap-6 overflow-x-auto snap-x snap-mandatory hide-scroll scroll-smooth pb-8 -mx-6 px-6 md:mx-0 md:px-0">
                     @forelse($templates as $index => $template)
                         @php
-                            $thumbnailUrl = is_array($template->photos) && count($template->photos) > 0 ? asset('storage/' . $template->photos[0]) : '';
+                            $thumbnailUrl = $template->photos ? asset('storage/' . $template->photos) : '';
                             $categoryName = $template->category->name ?? 'Kategori';
                         @endphp
                         
@@ -131,10 +131,14 @@
                             <div class="p-6 flex flex-col grow">
                                 <h4 class="font-bold text-xl text-slate-900 dark:text-white mb-1">{{ $template->name }}</h4>
                                 <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-2 grow">{{ $template->description }}</p>
-                                <button class="w-full bg-slate-900 dark:bg-blue-600 text-white py-3 rounded-2xl font-semibold hover:bg-slate-800 dark:hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 mt-auto">
-                                    Gunakan Template
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                                </button>
+                                <div class="flex gap-3 mt-auto">
+                                    <a href="{{ route('template.preview', $template->id) }}" target="_blank" class="flex-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 py-3 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
+                                        Lihat
+                                    </a>
+                                    <button class="use-template-btn flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm shadow-blue-600/20">
+                                        Edit
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     @empty

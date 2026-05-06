@@ -7,12 +7,15 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', [User\DashboardController::class, 'index'])->name('user.home');
 Route::get('/templates', [User\DashboardController::class, 'templates'])->name('user.templates');
+Route::get('/template/{template}/preview', [User\DashboardController::class, 'previewTemplate'])->name('template.preview');
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'authenticate'])->name('login.post');
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'store'])->name('register.post');
+    Route::get('/auth/{provider}/redirect', [\App\Http\Controllers\Auth\SocialiteController::class, 'redirect'])->name('socialite.redirect');
+    Route::get('/auth/{provider}/callback', [\App\Http\Controllers\Auth\SocialiteController::class, 'callback'])->name('socialite.callback');
 });
 
 Route::middleware(['auth'])->group(function () {

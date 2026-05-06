@@ -8,6 +8,8 @@ use App\Models\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image; 
 
 class TemplateController extends Controller
 {
@@ -40,32 +42,37 @@ class TemplateController extends Controller
             'name'        => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
-            'photos'      => 'required|array|min:3|max:5',
-            'photos.*'    => 'image|mimes:jpg,jpeg,png,webp|max:2048', 
+            'photos'      => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'zip_file'    => 'required|file|mimes:zip|max:51200', 
             'is_active'   => 'nullable|boolean',
         ]);
 
         $templateSlug = Str::slug($request->name);
 
-        $photoPaths = [];
+        $photoPath = null;
         if ($request->hasFile('photos')) {
-            foreach ($request->file('photos') as $index => $photo) {
-                $extension = $photo->getClientOriginalExtension();
-                $fileName = $templateSlug . '-' . ($index + 1) . '.' . $extension;
-                $photoPaths[] = $photo->storeAs('thumbnails', $fileName, 'public');
+            $photo = $request->file('photos');
+            $fileName = $templateSlug . '.webp'; 
+            
+            $destinationPath = storage_path('app/public/thumbnails');
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
             }
+
+            Image::make($photo->getRealPath())
+                ->encode('webp', 80)
+                ->save($destinationPath . '/' . $fileName);
+
+            $photoPath = 'thumbnails/' . $fileName;
         }
 
-        $zipExtension = $request->file('zip_file')->getClientOriginalExtension();
-        $zipName = $templateSlug . '.' . $zipExtension;
-        $zipPath = $request->file('zip_file')->storeAs('templates', $zipName, 'private');
+        $zipPath = $this->processZipFile($request->file('zip_file'), $templateSlug);
 
         Template::create([
             'name'        => $request->name,
             'category_id' => $request->category_id,
             'description' => $request->description,
-            'photos'      => $photoPaths, 
+            'photos'      => $photoPath, 
             'zip_path'    => $zipPath,
             'is_active'   => $request->boolean('is_active'),
         ]);
@@ -86,13 +93,13 @@ class TemplateController extends Controller
             'name'        => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
-            'photos'      => 'nullable|array|max:5', 
-            'photos.*'    => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+            'photos'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'zip_file'    => 'nullable|file|mimes:zip|max:51200',
             'is_active'   => 'nullable|boolean',
         ]);
 
-        $templateSlug = Str::slug($request->name);
+        $newSlug = Str::slug($request->name);
+        $oldSlug = Str::slug($template->name);
 
         $data = [
             'name'        => $request->name,
@@ -102,25 +109,44 @@ class TemplateController extends Controller
         ];
 
         if ($request->hasFile('photos')) {
-            $existingPhotos = is_array($template->photos) ? $template->photos : [];
-            foreach ($request->file('photos') as $index => $photo) {
-                if (isset($existingPhotos[$index]) && Storage::disk('public')->exists($existingPhotos[$index])) {
-                    Storage::disk('public')->delete($existingPhotos[$index]);
-                }
-                $extension = $photo->getClientOriginalExtension();
-                $fileName = $templateSlug . '-' . ($index + 1) . '-' . time() . '.' . $extension;
-                $existingPhotos[$index] = $photo->storeAs('thumbnails', $fileName, 'public');
+            if ($template->photos && Storage::disk('public')->exists($template->photos)) {
+                Storage::disk('public')->delete($template->photos);
             }
-            ksort($existingPhotos);
-            $data['photos'] = array_values($existingPhotos);
+            $photo = $request->file('photos');
+            $fileName = $newSlug . '.webp';
+            
+            $destinationPath = storage_path('app/public/thumbnails');
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
+            }
+
+            Image::make($photo->getRealPath())
+                ->encode('webp', 80)
+                ->save($destinationPath . '/' . $fileName);
+
+            $data['photos'] = 'thumbnails/' . $fileName;
         }
 
         if ($request->hasFile('zip_file')) {
-            Storage::disk('private')->delete($template->zip_path);
-            
-            $zipExtension = $request->file('zip_file')->getClientOriginalExtension();
-            $zipName = $templateSlug . '.' . $zipExtension;
-            $data['zip_path'] = $request->file('zip_file')->storeAs('templates', $zipName, 'private');
+            if ($template->zip_path && Storage::disk('private')->exists($template->zip_path)) {
+                Storage::disk('private')->delete($template->zip_path);
+            }
+            $data['zip_path'] = $this->processZipFile($request->file('zip_file'), $newSlug);
+            if ($newSlug !== $oldSlug) {
+                $oldPreviewPath = storage_path('app/public/previews/' . $oldSlug);
+                if (File::exists($oldPreviewPath)) {
+                    File::deleteDirectory($oldPreviewPath);
+                }
+            }
+        } else {
+            if ($newSlug !== $oldSlug) {
+                $oldPreviewPath = storage_path('app/public/previews/' . $oldSlug);
+                $newPreviewPath = storage_path('app/public/previews/' . $newSlug);
+                
+                if (File::exists($oldPreviewPath)) {
+                    File::moveDirectory($oldPreviewPath, $newPreviewPath);
+                }
+            }
         }
 
         $template->update($data);
@@ -131,15 +157,18 @@ class TemplateController extends Controller
 
     public function destroy(Template $template)
     {
-        if (is_array($template->photos)) {
-            foreach ($template->photos as $photo) {
-                Storage::disk('public')->delete($photo);
-            }
+        $templateSlug = Str::slug($template->name);
+        if ($template->photos && Storage::disk('public')->exists($template->photos)) {
+            Storage::disk('public')->delete($template->photos);
         }
-        Storage::disk('private')->delete($template->zip_path);
-        
+        if ($template->zip_path && Storage::disk('private')->exists($template->zip_path)) {
+            Storage::disk('private')->delete($template->zip_path);
+        }
+        $previewPath = storage_path('app/public/previews/' . $templateSlug);
+        if (File::exists($previewPath)) {
+            File::deleteDirectory($previewPath);
+        }
         $template->delete();
-
         return redirect()->route('admin.templates.index')
             ->with('success', 'Template berhasil dihapus!');
     }
@@ -148,5 +177,64 @@ class TemplateController extends Controller
     {
         $template->update(['is_active' => !$template->is_active]);
         return back()->with('success', 'Status template diperbarui!');
+    }
+
+    private function processZipFile($uploadedFile, $templateSlug)
+    {
+        $zip = new \ZipArchive();
+        if ($zip->open($uploadedFile->path()) === TRUE) {
+            $tempExtractPath = storage_path('app/temp_extract_' . uniqid());
+            $zip->extractTo($tempExtractPath);
+            $zip->close();
+
+            $extractedItems = File::directories($tempExtractPath);
+            $extractedFiles = File::files($tempExtractPath);
+
+            $sourcePath = $tempExtractPath;
+            if (count($extractedItems) === 1 && count($extractedFiles) === 0) {
+                $sourcePath = $extractedItems[0];
+            }
+
+            $previewPath = storage_path('app/public/previews/' . $templateSlug);
+            
+            if (File::exists($previewPath)) {
+                File::deleteDirectory($previewPath);
+            }
+            File::makeDirectory($previewPath, 0755, true);
+            
+            File::copyDirectory($sourcePath, $previewPath);
+
+            $newZipRelativePath = 'templates/' . $templateSlug . '.zip';
+            $newZipAbsolutePath = Storage::disk('private')->path($newZipRelativePath);
+            
+            File::ensureDirectoryExists(dirname($newZipAbsolutePath));
+            
+            $newZip = new \ZipArchive();
+            if ($newZip->open($newZipAbsolutePath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+                $files = new \RecursiveIteratorIterator(
+                    new \RecursiveDirectoryIterator($sourcePath),
+                    \RecursiveIteratorIterator::LEAVES_ONLY
+                );
+
+                foreach ($files as $name => $file) {
+                    if (!$file->isDir()) {
+                        $filePath = $file->getRealPath();
+                        $relativePath = substr($filePath, strlen($sourcePath) + 1);
+                        $relativePath = str_replace('\\', '/', $relativePath);
+                        
+                        $newZip->addFile($filePath, $templateSlug . '/' . $relativePath);
+                    }
+                }
+                $newZip->close();
+            }
+            
+            if (File::exists($tempExtractPath)) {
+                File::deleteDirectory($tempExtractPath);
+            }
+
+            return $newZipRelativePath;
+        }
+
+        return $uploadedFile->storeAs('templates', $templateSlug . '.' . $uploadedFile->getClientOriginalExtension(), 'private');
     }
 }

@@ -25,3 +25,14 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 git.sh
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/testing/*
+storage/framework/views/*
+storage/logs/*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+/.phpunit.cache
+/tests/bin/.phpunit.result.cache
