@@ -57,4 +57,9 @@ class DashboardController extends Controller
         $templates = Template::with('category')->where('is_active', true)->latest()->get();
         return view('user.templates', compact('templates', 'categories'));
     }
+
+    public function previewTemplate(\App\Models\Template $template)
+    {
+        return view('user.layouts.template_preview', compact('template'));
+    }
 }
