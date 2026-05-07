@@ -21,7 +21,8 @@ class DashboardController extends Controller
     public function dashboard()
     {
         $templates = Template::with('category')->where('is_active', true)->latest()->get();
-        return view('user.dashboard', compact('templates'));
+        $projects = \App\Models\Project::with('template')->where('user_id', Auth::id())->latest()->get();
+        return view('user.dashboard', compact('templates', 'projects'));
     }
 
     public function profile()

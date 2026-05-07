@@ -8,7 +8,15 @@
                 <h1 class="text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white mb-8">
                     Halo, {{ Auth::user()->name ?? 'Pengusaha' }}.
                 </h1>
-                
+
+                {{-- Success notification --}}
+                @if(session('success'))
+                <div id="toast-success" class="flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 rounded-xl">
+                    <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    {{ session('success') }}
+                </div>
+                @endif
+
                 <div class="flex flex-wrap items-center gap-x-8 gap-y-4 text-sm font-medium text-slate-600 dark:text-slate-400">
                     <div class="flex items-center gap-3">
                         <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
@@ -37,27 +45,44 @@
                     <span class="font-medium text-slate-600 dark:text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Buat Desain Baru</span>
                 </a>
 
-                <div class="group relative rounded-[2rem] p-3 bg-white dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 hover:shadow-2xl hover:shadow-slate-200/40 dark:hover:shadow-none transition-all duration-300">
-                    <div class="aspect-video w-full rounded-2xl overflow-hidden relative mb-4">
-                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="Preview" class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700 ease-out">
-                        <div class="absolute inset-0 bg-slate-900/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 flex items-center justify-center gap-4 transition-opacity duration-300">
-                            <a href="#" class="px-5 py-2.5 bg-white text-slate-900 text-sm font-semibold rounded-full hover:scale-105 transition-transform">Edit</a>
-                            <a href="#" class="px-5 py-2.5 bg-slate-900/80 text-white text-sm font-semibold rounded-full hover:scale-105 transition-transform backdrop-blur-md">Preview</a>
+                @foreach($projects as $project)
+                    @php
+                        $thumbnailUrl = $project->template->photos ? asset('storage/' . $project->template->photos) : '';
+                    @endphp
+                    <div class="group relative rounded-[2rem] p-3 bg-white dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 hover:shadow-2xl hover:shadow-slate-200/40 dark:hover:shadow-none transition-all duration-300 flex flex-col">
+                        {{-- Delete button (top-right, appears on hover) --}}
+                        <button
+                            onclick="confirmDelete({{ $project->id }}, '{{ addslashes($project->name) }}')"
+                            class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-400 hover:text-red-500 hover:border-red-300 dark:hover:border-red-500 flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110"
+                            title="Hapus project"
+                        >
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        </button>
+
+                        <div class="aspect-video w-full rounded-2xl overflow-hidden relative mb-4 shrink-0 bg-slate-200 dark:bg-slate-800">
+                            @if($thumbnailUrl)
+                                <img src="{{ $thumbnailUrl }}" alt="Preview" class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                            @endif
+                            <div class="absolute inset-0 bg-slate-900/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 flex items-center justify-center gap-4 transition-opacity duration-300">
+                                <a href="{{ route('user.editor', $project->id) }}" class="px-5 py-2.5 bg-white text-slate-900 text-sm font-semibold rounded-full hover:scale-105 transition-transform shadow-lg">Lanjutkan Edit</a>
+                            </div>
+                        </div>
+                        <div class="px-2 pb-2 flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <h3 class="font-semibold text-slate-900 dark:text-white line-clamp-1" title="{{ $project->name }}">{{ $project->name }}</h3>
+                                    <span class="w-2 h-2 rounded-full {{ $project->status === 'draft' ? 'bg-amber-400' : 'bg-green-500' }}" title="{{ ucfirst($project->status) }}"></span>
+                                </div>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Diedit {{ $project->updated_at->diffForHumans() }}</p>
+                            </div>
+                            
+                            <a href="{{ asset('storage/users/' . Auth::id() . '/projects/' . $project->id . '/index.html') }}" target="_blank" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 transition-colors group/link mt-auto">
+                                Lihat Hasil
+                                <svg class="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </a>
                         </div>
                     </div>
-                    <div class="px-2 pb-2">
-                        <div class="flex justify-between items-center mb-1">
-                            <h3 class="font-semibold text-slate-900 dark:text-white">Web Warung Kopi</h3>
-                            <span class="w-2 h-2 rounded-full bg-amber-400" title="Draft"></span>
-                        </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Diedit 2 jam yang lalu</p>
-                        
-                        <a href="#" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 transition-colors group/link">
-                            Download Source
-                            <svg class="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </a>
-                    </div>
-                </div>
+                @endforeach
 
             </div>
         </div>
@@ -135,9 +160,12 @@
                                     <a href="{{ route('template.preview', $template->id) }}" target="_blank" class="flex-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 py-3 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
                                         Lihat
                                     </a>
-                                    <button class="use-template-btn flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm shadow-blue-600/20">
-                                        Edit
-                                    </button>
+                                    <form action="{{ route('user.project.create', $template->id) }}" method="POST" class="flex-1 flex">
+                                        @csrf
+                                        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm shadow-blue-600/20">
+                                            Edit
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -285,5 +313,63 @@
             
             updateGrid();
         });
+    </script>
+
+    {{-- Delete Confirmation Modal --}}
+    <div id="delete-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        {{-- Backdrop --}}
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeDeleteModal()"></div>
+        {{-- Dialog --}}
+        <div class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm p-6 animate-in zoom-in-95 duration-200">
+            <div class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4 mx-auto">
+                <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+            </div>
+            <h3 class="text-base font-semibold text-slate-900 dark:text-white text-center mb-1">Hapus Project?</h3>
+            <p id="delete-modal-text" class="text-sm text-slate-500 dark:text-slate-400 text-center mb-6">Semua file yang sudah kamu edit akan terhapus permanen dan tidak bisa dipulihkan.</p>
+            <div class="flex gap-3">
+                <button onclick="closeDeleteModal()" class="flex-1 px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-xl transition-colors">
+                    Batal
+                </button>
+                <form id="delete-form" method="POST" class="flex-1">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="w-full px-4 py-2.5 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors">
+                        Ya, Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function confirmDelete(projectId, projectName) {
+            const modal = document.getElementById('delete-modal');
+            const form = document.getElementById('delete-form');
+            const text = document.getElementById('delete-modal-text');
+
+            form.action = `/user/project/${projectId}`;
+            text.textContent = `"${projectName}" akan dihapus permanen beserta semua filenya.`;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('delete-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Auto-dismiss success toast after 4 seconds
+        const toast = document.getElementById('toast-success');
+        if (toast) {
+            setTimeout(() => {
+                toast.style.transition = 'opacity 0.5s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
     </script>
 @endsection
