@@ -26,7 +26,6 @@ class EditorController extends Controller
         $sourcePath = storage_path('app/public/previews/' . $templateSlug);
         $destPath = storage_path("app/public/users/{$userId}/projects/{$project->id}");
 
-        // Copy template folder to user's project folder if it doesn't exist
         if (!\Illuminate\Support\Facades\File::exists($destPath)) {
             \Illuminate\Support\Facades\File::makeDirectory($destPath, 0755, true, true);
             \Illuminate\Support\Facades\File::copyDirectory($sourcePath, $destPath);
@@ -43,21 +42,16 @@ class EditorController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        // Delete the project's files from storage
         $projectPath = storage_path("app/public/users/{$userId}/projects/{$project->id}");
         if (\Illuminate\Support\Facades\File::exists($projectPath)) {
             \Illuminate\Support\Facades\File::deleteDirectory($projectPath);
         }
 
-        // Delete the database record
         $project->delete();
 
         return redirect()->route('user.dashboard')->with('success', 'Project berhasil dihapus.');
     }
 
-    /**
-     * Reset project files back to the original template (useful if the project HTML was corrupted).
-     */
     public function resetProject(\App\Models\Project $project)
     {
         $userId = \Illuminate\Support\Facades\Auth::id();
@@ -79,7 +73,6 @@ class EditorController extends Controller
             return back()->with('error', 'Folder template sumber tidak ditemukan.');
         }
 
-        // Delete current project folder and re-copy from template
         \Illuminate\Support\Facades\File::deleteDirectory($destPath);
         \Illuminate\Support\Facades\File::makeDirectory($destPath, 0755, true, true);
         \Illuminate\Support\Facades\File::copyDirectory($sourcePath, $destPath);
@@ -122,7 +115,6 @@ class EditorController extends Controller
 
         $htmlContent = file_get_contents($indexPath);
         
-        // Extract <body> content
         $bodyContent = '';
         if (preg_match('/<body[^>]*>(.*?)<\/body>/is', $htmlContent, $matches)) {
             $bodyContent = $matches[1];
@@ -130,7 +122,6 @@ class EditorController extends Controller
             $bodyContent = $htmlContent;
         }
 
-        // Extract custom GrapesJS CSS if previously saved
         $gjsCss = '';
         if (preg_match('/<style id="gjs-custom-styles">(.*?)<\/style>/is', $htmlContent, $matches)) {
             $gjsCss = $matches[1];
@@ -142,11 +133,6 @@ class EditorController extends Controller
         ]);
     }
 
-    /**
-     * Save the full HTML content from the inline editor.
-     * Since we load the template as-is in an iframe, the HTML comes back
-     * complete — no need for complex parsing or script preservation.
-     */
     public function save(Request $request, \App\Models\Project $project)
     {
         if ($project->user_id !== \Illuminate\Support\Facades\Auth::id()) {
@@ -173,9 +159,6 @@ class EditorController extends Controller
         return response()->json(['message' => 'Project saved successfully']);
     }
 
-    /**
-     * Upload an image for the inline editor (image replacement feature).
-     */
     public function uploadImage(Request $request, \App\Models\Project $project)
     {
         if ($project->user_id !== \Illuminate\Support\Facades\Auth::id()) {
@@ -202,71 +185,5 @@ class EditorController extends Controller
     public function download(\App\Models\Project $project)
     {
         // Implement later if needed
-    }
-
-    /**
-     * Update the project name (title).
-     */
-    public function updateName(Request $request, \App\Models\Project $project)
-    {
-        if ($project->user_id !== \Illuminate\Support\Facades\Auth::id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        $project->update(['name' => $request->name]);
-
-        return response()->json(['message' => 'Nama project berhasil diperbarui', 'name' => $project->name]);
-    }
-
-    /**
-     * Upload or replace the project logo.
-     */
-    public function uploadLogo(Request $request, \App\Models\Project $project)
-    {
-        if ($project->user_id !== \Illuminate\Support\Facades\Auth::id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
-
-        $request->validate([
-            'logo' => 'required|image|max:2048',
-        ]);
-
-        $userId = $project->user_id;
-
-        // Delete old logo if exists
-        if ($project->logo && \Illuminate\Support\Facades\Storage::disk('public')->exists($project->logo)) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($project->logo);
-        }
-
-        $destDir = "users/{$userId}/projects/{$project->id}";
-        $path = $request->file('logo')->store($destDir, 'public');
-        $project->update(['logo' => $path]);
-
-        return response()->json([
-            'message' => 'Logo berhasil diupload',
-            'url' => asset('storage/' . $path),
-        ]);
-    }
-
-    /**
-     * Remove the project logo.
-     */
-    public function removeLogo(\App\Models\Project $project)
-    {
-        if ($project->user_id !== \Illuminate\Support\Facades\Auth::id()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
-        }
-
-        if ($project->logo && \Illuminate\Support\Facades\Storage::disk('public')->exists($project->logo)) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($project->logo);
-        }
-
-        $project->update(['logo' => null]);
-
-        return response()->json(['message' => 'Logo berhasil dihapus']);
     }
 }

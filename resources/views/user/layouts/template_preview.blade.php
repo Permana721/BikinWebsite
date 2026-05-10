@@ -25,7 +25,6 @@
     </script>
 </head>
 <body class="h-full flex flex-col bg-slate-50 dark:bg-slate-900 overflow-hidden m-0 font-sans">
-    <!-- Navbar -->
     <header class="shrink-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-slate-900/70 border-b border-white/20 dark:border-slate-800 shadow-sm transition-colors duration-300">
         <div class="px-6 py-4 flex justify-between items-center w-full">
             
@@ -72,7 +71,6 @@
         </div>
     </header>
     
-    <!-- Iframe Container -->
     <div class="grow flex items-center justify-center bg-slate-200/50 dark:bg-slate-900/50 w-full overflow-hidden">
         <div class="h-full w-full flex justify-center transition-all duration-300">
             <iframe id="preview-iframe" src="{{ asset('storage/previews/' . \Str::slug($template->name) . '/index.html') }}" class="h-full w-full bg-white shadow-xl border-x border-slate-300 dark:border-slate-700 transition-all duration-300"></iframe>

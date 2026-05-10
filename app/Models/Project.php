@@ -10,7 +10,6 @@ class Project extends Model
         'user_id',
         'template_id',
         'name',
-        'logo',
         'editor_data',
         'status',
     ];

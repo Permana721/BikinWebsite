@@ -9,7 +9,6 @@
                     Halo, {{ Auth::user()->name ?? 'Pengusaha' }}.
                 </h1>
 
-                {{-- Success notification --}}
                 @if(session('success'))
                 <div id="toast-success" class="flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 rounded-xl">
                     <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
@@ -50,7 +49,6 @@
                         $thumbnailUrl = $project->template->photos ? asset('storage/' . $project->template->photos) : '';
                     @endphp
                     <div class="group relative rounded-[2rem] p-3 bg-white dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 hover:shadow-2xl hover:shadow-slate-200/40 dark:hover:shadow-none transition-all duration-300 flex flex-col">
-                        {{-- Delete button (top-right, appears on hover) --}}
                         <button
                             onclick="confirmDelete({{ $project->id }}, '{{ addslashes($project->name) }}')"
                             class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-400 hover:text-red-500 hover:border-red-300 dark:hover:border-red-500 flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110"
@@ -315,11 +313,8 @@
         });
     </script>
 
-    {{-- Delete Confirmation Modal --}}
     <div id="delete-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        {{-- Backdrop --}}
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeDeleteModal()"></div>
-        {{-- Dialog --}}
         <div class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl w-full max-w-sm p-6 animate-in zoom-in-95 duration-200">
             <div class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4 mx-auto">
                 <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -362,7 +357,6 @@
             modal.classList.remove('flex');
         }
 
-        // Auto-dismiss success toast after 4 seconds
         const toast = document.getElementById('toast-success');
         if (toast) {
             setTimeout(() => {

@@ -10,11 +10,9 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         body,html{height:100%;overflow:hidden;font-family:'Inter',system-ui,sans-serif;background:#0f172a}
-        /* Topbar */
         .topbar{height:56px;background:#1e293b;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;padding:0 16px;color:#fff;gap:12px;flex-shrink:0}
         .topbar-left,.topbar-right{display:flex;align-items:center;gap:10px}
         .topbar h1{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
-        /* Logo */
         .project-logo-wrap{position:relative;width:34px;height:34px;border-radius:8px;cursor:pointer;flex-shrink:0;background:#334155;display:flex;align-items:center;justify-content:center;border:1px solid #475569;transition:border-color .15s}
         .project-logo-wrap:hover{border-color:#3b82f6}
         .project-logo-wrap img{width:100%;height:100%;object-fit:cover;border-radius:7px}
@@ -26,7 +24,6 @@
         .logo-menu button{display:flex;align-items:center;gap:8px;width:100%;padding:8px 12px;background:none;border:none;color:#cbd5e1;font-size:12px;font-weight:500;border-radius:6px;cursor:pointer;white-space:nowrap}
         .logo-menu button:hover{background:#334155;color:#fff}
         .logo-menu button.danger:hover{background:rgba(220,38,38,.2);color:#fca5a5}
-        /* Title edit */
         .title-group{display:flex;align-items:center;gap:6px;min-width:0}
         .title-group h1{cursor:pointer}
         .title-group .edit-icon{color:#64748b;cursor:pointer;transition:color .15s;flex-shrink:0}
@@ -42,10 +39,8 @@
         .badge{font-size:10px;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:99px;font-weight:700}
         .badge-edit{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.3)}
         .badge-preview{background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.3)}
-        /* Iframe */
         .iframe-wrap{flex:1;overflow:hidden;position:relative}
         .iframe-wrap iframe{width:100%;height:100%;border:none;background:#fff}
-        /* Floating Toolbar */
         .editor-toolbar{position:fixed;top:-200px;left:0;z-index:9999;display:flex;align-items:center;gap:2px;background:#1e293b;border:1px solid #475569;border-radius:12px;padding:4px;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:opacity .15s;pointer-events:auto}
         .editor-toolbar.hidden{opacity:0;pointer-events:none}
         .editor-toolbar .sep{width:1px;height:24px;background:#475569;margin:0 4px}
@@ -54,24 +49,19 @@
         .tb.active{background:#3b82f6;color:#fff}
         .tb input[type="color"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
         .tb-label{font-size:11px;color:#94a3b8;padding:0 6px;font-weight:600;white-space:nowrap}
-        /* Color preview dot */
         .color-dot{width:14px;height:14px;border-radius:50%;border:2px solid #475569;display:inline-block}
-        /* Image toolbar */
         .img-btn{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;background:#334155;color:#e2e8f0;border:none;cursor:pointer;font-size:12px;font-weight:600;transition:all .1s;white-space:nowrap}
         .img-btn:hover{background:#3b82f6;color:#fff}
-        /* Link popover */
         .link-popover{position:fixed;z-index:10000;background:#1e293b;border:1px solid #475569;border-radius:12px;padding:12px;box-shadow:0 8px 32px rgba(0,0,0,.5);display:none;width:320px}
         .link-popover input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #475569;background:#0f172a;color:#fff;font-size:13px;outline:none}
         .link-popover input:focus{border-color:#3b82f6}
         .link-popover .link-actions{display:flex;gap:6px;margin-top:8px}
         .link-popover .link-actions button{flex:1}
-        /* Save status toast */
         .save-toast{position:fixed;bottom:24px;right:24px;z-index:10000;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;transition:all .3s;opacity:0;transform:translateY(10px);pointer-events:none}
         .save-toast.show{opacity:1;transform:translateY(0)}
         .save-toast.saving{background:#1e293b;color:#93c5fd;border:1px solid rgba(59,130,246,.3)}
         .save-toast.success{background:#064e3b;color:#6ee7b7;border:1px solid rgba(16,185,129,.3)}
         .save-toast.error{background:#7f1d1d;color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
-        /* Context Menu */
         .ctx-menu{position:fixed;z-index:10001;background:#1e293b;border:1px solid #475569;border-radius:12px;padding:4px;min-width:200px;box-shadow:0 12px 40px rgba(0,0,0,.5);display:none;font-family:'Inter',system-ui,sans-serif}
         .ctx-menu.show{display:block}
         .ctx-menu button{display:flex;align-items:center;gap:10px;width:100%;padding:8px 14px;background:none;border:none;color:#cbd5e1;font-size:12px;font-weight:500;border-radius:8px;cursor:pointer;white-space:nowrap;text-align:left}
@@ -85,7 +75,6 @@
 </head>
 <body style="display:flex;flex-direction:column;height:100vh">
 
-    <!-- Topbar -->
     <div class="topbar">
         <div class="topbar-left">
             <a href="{{ route('user.dashboard') }}" class="btn-icon" title="Kembali">
@@ -133,12 +122,10 @@
         </div>
     </div>
 
-    <!-- Iframe -->
     <div class="iframe-wrap">
         <iframe id="editorFrame" src="{{ $iframeUrl }}"></iframe>
     </div>
 
-    <!-- Floating Toolbar (text) -->
     <div id="toolbar" class="editor-toolbar hidden">
         <span class="tb-label" id="toolbarLabel">Teks</span>
         <div class="sep"></div>
@@ -240,7 +227,6 @@
     const TEXT_TAGS = ['P','H1','H2','H3','H4','H5','H6','SPAN','A','LI','TD','TH','LABEL','BLOCKQUOTE','FIGCAPTION','BUTTON','SMALL','STRONG','EM','B','I','U','MARK','CITE','DT','DD'];
     const CONTAINER_TAGS = ['DIV','SECTION','HEADER','FOOTER','MAIN','ARTICLE','ASIDE','NAV','FIGURE'];
 
-    // ─── IFRAME LOADED ───
     iframe.addEventListener('load', () => {
         iDoc = iframe.contentDocument;
         if(!iDoc) return;
@@ -250,7 +236,6 @@
         syncFaviconFromIframe();
     });
 
-    // ─── INJECT EDIT CSS (kill animations + hover highlights) ───
     function injectEditStyles(){
         if(!iDoc || iDoc.getElementById(EDIT_STYLE_ID)) return;
         const s = iDoc.createElement('style');
@@ -287,7 +272,6 @@
         if(s) s.remove();
     }
 
-    // ─── SETUP LISTENERS ───
     function setupListeners(){
         iDoc.addEventListener('click', onElementClick, true);
         iDoc.addEventListener('contextmenu', onContextMenu, true);
@@ -318,7 +302,6 @@
         return null;
     }
 
-    // ─── CLICK HANDLER ───
     function hasBgImage(el){
         const cs = iframe.contentWindow.getComputedStyle(el);
         const bg = cs.backgroundImage;
@@ -357,7 +340,6 @@
         selectedEl = null;
     }
 
-    // ─── TOOLBAR ───
     function showToolbarFor(type, el){
         textTools.style.display = type==='text' ? 'flex' : 'none';
         imageTools.style.display = type==='image' ? 'flex' : 'none';
@@ -400,7 +382,6 @@
         linkPopover.style.display = 'none';
     }
 
-    // ─── TEXT COMMANDS ───
     const textColorDot = document.getElementById('textColorDot');
     const textColorInput = document.getElementById('textColorInput');
     const bgColorDot = document.getElementById('bgColorDot');
@@ -436,7 +417,6 @@
         bgColorDot.style.background = e.target.value;
     });
 
-    // ─── LINK ───
     document.getElementById('btnLink').addEventListener('click', () => {
         if(!selectedEl) return;
         const sel = iframe.contentWindow.getSelection();
@@ -466,7 +446,6 @@
         linkPopover.style.display = 'none';
     });
 
-    // ─── IMAGE REPLACE ───
     document.getElementById('btnReplaceImg').addEventListener('click', () => {
         imageInput.dataset.mode = 'img';
         imageInput.click();
@@ -530,7 +509,6 @@
         imageInput.value = '';
     });
 
-    // ─── PREVIEW TOGGLE ───
     btnPreview.addEventListener('click', () => {
         isPreview = !isPreview;
         deselectEl();
@@ -553,7 +531,6 @@
         }
     });
 
-    // ─── SAVE ───
     document.getElementById('btnSave').addEventListener('click', async () => {
         if(isPreview){ btnPreview.click(); await new Promise(r=>setTimeout(r,500)); }
 
@@ -601,7 +578,6 @@
         injectEditStyles();
     });
 
-    // ─── TOAST ───
     let toastTimer;
     function showToast(msg, type){
         clearTimeout(toastTimer);
@@ -610,7 +586,6 @@
         toastTimer = setTimeout(() => saveToast.classList.remove('show'), 3000);
     }
 
-    // ─── SYNC TITLE FROM IFRAME ───
     const titleDisplay = document.getElementById('titleDisplay');
     const titleInput = document.getElementById('titleInput');
     const titleEditBtn = document.getElementById('titleEditBtn');
@@ -661,7 +636,6 @@
         if(e.key === 'Escape'){ titleEditing = false; titleInput.style.display='none'; titleDisplay.style.display=''; titleEditBtn.style.display=''; }
     });
 
-    // ─── SYNC FAVICON FROM IFRAME ───
     const logoWrap = document.getElementById('logoWrap');
     const logoMenu = document.getElementById('logoMenu');
     const logoInputFile = document.getElementById('logoInput');
@@ -757,7 +731,6 @@
         showToast('Favicon dihapus — klik Simpan untuk menyimpan', 'success');
     });
 
-    // ─── CONTEXT MENU ───
     const ctxMenu = document.getElementById('ctxMenu');
     let clipboard = null; // {html, mode:'copy'|'cut', sourceEl}
 
