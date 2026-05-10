@@ -47,9 +47,13 @@ Route::prefix('user')->name('user.')->middleware(['auth'])->group(function () {
     Route::get('/editor/{project}', [User\EditorController::class, 'show'])->name('editor');
     Route::get('/editor/{project}/load', [User\EditorController::class, 'load'])->name('editor.load');
     Route::post('/editor/{project}/save', [User\EditorController::class, 'save'])->name('editor.save');
+    Route::post('/editor/{project}/upload-image', [User\EditorController::class, 'uploadImage'])->name('editor.upload-image');
     Route::get('/preview/{project}', [User\EditorController::class, 'preview'])->name('preview');
     Route::get('/download/{project}', [User\EditorController::class, 'download'])->name('download');
     Route::post('/template/{template}/project', [User\EditorController::class, 'createProject'])->name('project.create');
     Route::delete('/project/{project}', [User\EditorController::class, 'destroyProject'])->name('project.destroy');
     Route::post('/project/{project}/reset', [User\EditorController::class, 'resetProject'])->name('project.reset');
+    Route::post('/project/{project}/update-name', [User\EditorController::class, 'updateName'])->name('project.update-name');
+    Route::post('/project/{project}/upload-logo', [User\EditorController::class, 'uploadLogo'])->name('project.upload-logo');
+    Route::delete('/project/{project}/remove-logo', [User\EditorController::class, 'removeLogo'])->name('project.remove-logo');
 });
