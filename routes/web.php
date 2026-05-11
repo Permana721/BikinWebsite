@@ -53,5 +53,9 @@ Route::prefix('user')->name('user.')->middleware(['auth'])->group(function () {
     Route::post('/template/{template}/project', [User\EditorController::class, 'createProject'])->name('project.create');
     Route::delete('/project/{project}', [User\EditorController::class, 'destroyProject'])->name('project.destroy');
     Route::post('/project/{project}/reset', [User\EditorController::class, 'resetProject'])->name('project.reset');
-    Route::post('/project/{project}/reset', [User\EditorController::class, 'resetProject'])->name('project.reset');
+});
+
+
+Route::fallback(function () {
+    return response()->view('user.404', [], 404);
 });

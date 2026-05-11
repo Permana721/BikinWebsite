@@ -57,6 +57,7 @@
                     <tr class="text-sm font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-700">
                         <th class="pb-4 pt-2 px-6">User Info</th>
                         <th class="pb-4 pt-2 px-4">Role</th>
+                        <th class="pb-4 pt-2 px-4">Tier</th>
                         <th class="pb-4 pt-2 px-4 text-right">Aksi</th>
                     </tr>
                 </thead>
@@ -77,6 +78,13 @@
                         <td class="py-4 px-4">
                             <span class="px-3 py-1 {{ $user->role == 'admin' ? 'bg-blue-100 text-blue-400' : 'bg-purple-100 text-purple-400' }} dark:bg-opacity-20 text-xs font-bold rounded-lg uppercase">
                                 {{ $user->role }}
+                            </span>
+                        </td>
+                        <td class="py-4 px-4">
+                            <span class="px-3 py-1 
+                                {{ $user->tier == 'lite' ? 'bg-slate-100 text-slate-500' : ($user->tier == 'pro' ? 'bg-blue-100 text-blue-500' : 'bg-amber-100 text-amber-600') }} 
+                                dark:bg-opacity-20 text-xs font-bold rounded-lg uppercase">
+                                {{ $user->tier }}
                             </span>
                         </td>
                         <td class="py-4 px-4 text-right">
@@ -111,9 +119,17 @@
                                 </div>
                                 <div>
                                     <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Role</label>
-                                    <select name="role" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+                                    <select name="role" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 outline-none">
                                         <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
                                         <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Tier</label>
+                                    <select name="tier" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 outline-none">
+                                        <option value="lite" {{ $user->tier == 'lite' ? 'selected' : '' }}>Lite</option>
+                                        <option value="pro" {{ $user->tier == 'pro' ? 'selected' : '' }}>Pro</option>
+                                        <option value="elite" {{ $user->tier == 'elite' ? 'selected' : '' }}>Elite</option>
                                     </select>
                                 </div>
                                 <div class="flex gap-3 pt-4">
@@ -171,14 +187,25 @@
                     class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm text-slate-800 dark:text-slate-200 outline-none transition-all">
             </div>
 
-            <div>
-                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Peran (Role)</label>
-                <select name="role" 
-                    class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm text-slate-800 dark:text-slate-200 outline-none transition-all">
-                    <option value="" disabled selected>Pilih Role</option>
-                    <option value="user">User</option>   
-                    <option value="admin">Admin</option>
-                </select>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Peran (Role)</label>
+                    <select name="role" 
+                        class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm text-slate-800 dark:text-slate-200 outline-none transition-all">
+                        <option value="" disabled selected>Pilih Role</option>
+                        <option value="user">User</option>   
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Tier</label>
+                    <select name="tier" 
+                        class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm text-slate-800 dark:text-slate-200 outline-none transition-all">
+                        <option value="lite" selected>Lite</option>   
+                        <option value="pro">Pro</option>
+                        <option value="elite">Elite</option>
+                    </select>
+                </div>
             </div>
 
             <div>

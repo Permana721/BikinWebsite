@@ -11,14 +11,34 @@ use Illuminate\Support\Facades\Hash;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $totalUser = User::where('role', 'user')->count();
-        
         $totalTemplate = Template::count(); 
+        
+        // Menghitung pendapatan berdasarkan tier user
+        $proUsersCount = User::where('role', 'user')->where('tier', 'pro')->count();
+        $eliteUsersCount = User::where('role', 'user')->where('tier', 'elite')->count();
+        
+        $totalRevenue = ($proUsersCount * 50000) + ($eliteUsersCount * 75000);
 
-        return view('admin.dashboard', compact('totalUser', 'totalTemplate'));
+        // Server-side search & pagination untuk "transaksi"
+        $query = User::where('role', 'user')->whereIn('tier', ['pro', 'elite']);
+
+        if ($request->filled('search')) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('id', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $latestTransactions = $query->orderBy('updated_at', 'desc')->paginate(5)->withQueryString();
+
+        return view('admin.dashboard', compact('totalUser', 'totalTemplate', 'totalRevenue', 'latestTransactions'));
     }
+
+
+
 
     public function user(Request $request)
     {
@@ -46,6 +66,7 @@ class DashboardController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'role' => 'required',
+            'tier' => 'required|in:lite,pro,elite',
             'password' => 'required|min:6',
         ]);
 
@@ -53,6 +74,7 @@ class DashboardController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
+            'tier' => $request->tier,
             'password' => Hash::make($request->password),
         ]);
 
@@ -66,7 +88,7 @@ class DashboardController extends Controller
         }
 
         $user = User::findOrFail($id);
-        $user->update($request->only(['name', 'email', 'role']));
+        $user->update($request->only(['name', 'email', 'role', 'tier']));
 
         if ($request->filled('password')) {
             $user->update(['password' => Hash::make($request->password)]);

@@ -35,8 +35,8 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
             </div>
-            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">892</h3>
-            <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Transaksi Berhasil</p>
+            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">12</h3>
+            <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Website Online</p>
         </div>
 
         <div class="bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-3xl p-6 border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow">
@@ -45,7 +45,8 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
             </div>
-            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">Rp 42.5M</h3>
+            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</h3>
+
             <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Total Pendapatan</p>
         </div>
     </div>
@@ -79,10 +80,16 @@
         </div>
 
         <div class="lg:col-span-2 bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-3xl p-6 md:p-8 border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                 <h2 class="text-xl font-bold text-slate-900 dark:text-white">Transaksi Terbaru</h2>
-                <a href="#" class="text-sm font-bold text-blue-600 dark:text-blue-400 hover:underline">Lihat Semua</a>
+                <form action="{{ route('admin.dashboard') }}" method="GET" class="relative w-full md:w-64">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari user atau ID..." class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-slate-700 dark:text-slate-200">
+                    <div class="absolute left-3 top-2.5 text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                </form>
             </div>
+
             
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
@@ -95,27 +102,29 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @forelse($latestTransactions as $transaction)
                         <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/20 transition-colors">
-                            <td class="py-4 px-2 font-semibold text-slate-800 dark:text-slate-200 text-sm">#TRX-0012</td>
-                            <td class="py-4 px-2 text-sm text-slate-600 dark:text-slate-400">Kedai Kopi Senja</td>
-                            <td class="py-4 px-2 text-sm text-slate-600 dark:text-slate-400">Bite & Delight</td>
+                            <td class="py-4 px-2 font-semibold text-slate-800 dark:text-slate-200 text-sm">#TRX-{{ str_pad($transaction->id, 5, '0', STR_PAD_LEFT) }}</td>
+
+                            <td class="py-4 px-2 text-sm text-slate-600 dark:text-slate-400">{{ $transaction->name }}</td>
+                            <td class="py-4 px-2 text-sm text-slate-600 dark:text-slate-400">Paket {{ ucfirst($transaction->tier) }}</td>
                             <td class="py-4 px-2">
                                 <span class="px-2.5 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-md">Berhasil</span>
                             </td>
                         </tr>
-                        <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/20 transition-colors">
-                            <td class="py-4 px-2 font-semibold text-slate-800 dark:text-slate-200 text-sm">#TRX-0013</td>
-                            <td class="py-4 px-2 text-sm text-slate-600 dark:text-slate-400">Butik Bunga</td>
-                            <td class="py-4 px-2 text-sm text-slate-600 dark:text-slate-400">Aesthetic Wear</td>
-                            <td class="py-4 px-2">
-                                <span class="px-2.5 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 text-xs font-bold rounded-md">Menunggu Pembayaran</span>
-                            </td>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="py-8 text-center text-slate-500 dark:text-slate-400">Belum ada transaksi terbaru.</td>
                         </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
-        </div>
 
+            <div class="mt-6">
+                {{ $latestTransactions->links() }}
+            </div>
+        </div>
     </div>
 </div>
 @endsection

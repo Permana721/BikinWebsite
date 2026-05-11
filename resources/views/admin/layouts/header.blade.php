@@ -26,11 +26,6 @@
                 User
             </a>
 
-            <a href="#" 
-            class="text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                Transaksi
-            </a>
-
             <a href="{{ route('user.dashboard') }}" 
             class="text-sm transition-colors {{ request()->routeIs('user.dashboard.*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
                 Dashboard User
