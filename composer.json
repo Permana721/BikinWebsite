@@ -11,6 +11,7 @@
         "laravel/framework": "^13.0",
         "laravel/socialite": "^5.27",
         "laravel/tinker": "^3.0",
+        "midtrans/midtrans-php": "^2.6",
         "socialiteproviders/instagram": "^5.2"
     },
     "require-dev": {

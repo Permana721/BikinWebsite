@@ -7,7 +7,7 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', [User\DashboardController::class, 'index'])->name('user.home');
 Route::get('/templates', [User\DashboardController::class, 'templates'])->name('user.templates');
-Route::get('/template/{template}/preview', [User\DashboardController::class, 'previewTemplate'])->name('template.preview');
+Route::get('/template/{template}/preview', [User\DashboardController::class, 'previewTemplate'])->name('template.preview')->middleware('signed');
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -53,9 +53,11 @@ Route::prefix('user')->name('user.')->middleware(['auth'])->group(function () {
     Route::post('/template/{template}/project', [User\EditorController::class, 'createProject'])->name('project.create');
     Route::delete('/project/{project}', [User\EditorController::class, 'destroyProject'])->name('project.destroy');
     Route::post('/project/{project}/reset', [User\EditorController::class, 'resetProject'])->name('project.reset');
+    Route::post('/project/{project}/publish', [User\EditorController::class, 'publishProject'])->name('project.publish');
+    Route::post('/project/{project}/unpublish', [User\EditorController::class, 'unpublishProject'])->name('project.unpublish');
 });
 
 
 Route::fallback(function () {
-    return response()->view('user.404', [], 404);
+    return response()->view('errors.404', [], 404);
 });

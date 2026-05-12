@@ -16,10 +16,17 @@
                 </div>
                 @endif
 
+                @if(session('error'))
+                <div id="toast-error" class="flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-xl">
+                    <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                    {{ session('error') }}
+                </div>
+                @endif
+
                 <div class="flex flex-wrap items-center gap-x-8 gap-y-4 text-sm font-medium text-slate-600 dark:text-slate-400">
                     <div class="flex items-center gap-3">
                         <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                        <span>1 Project Aktif</span>
+                        <span>{{ count($projects) }} Project Aktif</span>
                     </div>
                     <div class="hidden sm:block w-px h-4 bg-slate-300 dark:bg-slate-700"></div>
                     <div class="flex items-center gap-3">
@@ -49,6 +56,7 @@
                         $thumbnailUrl = $project->template->photos ? asset('storage/' . $project->template->photos) : '';
                     @endphp
                     <div class="group relative rounded-[2rem] p-3 bg-white dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 hover:shadow-2xl hover:shadow-slate-200/40 dark:hover:shadow-none transition-all duration-300 flex flex-col">
+                        @if(!$project->is_published)
                         <button
                             onclick="confirmDelete({{ $project->id }}, '{{ addslashes($project->name) }}')"
                             class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-400 hover:text-red-500 hover:border-red-300 dark:hover:border-red-500 flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110"
@@ -56,6 +64,7 @@
                         >
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         </button>
+                        @endif
 
                         <div class="aspect-video w-full rounded-2xl overflow-hidden relative mb-4 shrink-0 bg-slate-200 dark:bg-slate-800">
                             @if($thumbnailUrl)
@@ -69,10 +78,43 @@
                             <div>
                                 <div class="flex justify-between items-center mb-1">
                                     <h3 class="font-semibold text-slate-900 dark:text-white line-clamp-1" title="{{ $project->name }}">{{ $project->name }}</h3>
-                                    <span class="w-2 h-2 rounded-full {{ $project->status === 'draft' ? 'bg-amber-400' : 'bg-green-500' }}" title="{{ ucfirst($project->status) }}"></span>
+                                    <span class="w-2 h-2 rounded-full {{ $project->is_published ? 'bg-green-500' : ($project->status === 'draft' ? 'bg-amber-400' : 'bg-green-500') }}" title="{{ $project->is_published ? 'Published' : ucfirst($project->status) }}"></span>
                                 </div>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">Diedit {{ $project->updated_at->diffForHumans() }}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Diedit {{ $project->updated_at->diffForHumans() }}</p>
                             </div>
+
+                            @if($project->is_published && $project->subdomain)
+                                <div class="mb-3 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800">
+                                    <div class="flex items-center gap-2 mb-1.5">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                                        <span class="text-xs font-bold text-emerald-700 dark:text-emerald-300">Online</span>
+                                    </div>
+                                    <a href="https://{{ $project->subdomain }}.{{ config('app.main_domain') }}" target="_blank" class="text-xs text-emerald-600 dark:text-emerald-400 font-medium hover:underline break-all">
+                                        {{ $project->subdomain }}.{{ config('app.main_domain') }}
+                                    </a>
+                                    <form action="{{ route('user.project.unpublish', $project->id) }}" method="POST" class="mt-2">
+                                        @csrf
+                                        <button type="submit" class="w-full text-xs text-red-500 hover:text-red-600 font-semibold py-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">Unpublish</button>
+                                    </form>
+                                </div>
+                            @else
+                                <div class="mb-3">
+                                    <form action="{{ route('user.project.publish', $project->id) }}" method="POST" class="flex flex-col gap-2">
+                                        @csrf
+                                        <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-700/50 rounded-lg p-1.5">
+                                            <input type="text" name="subdomain" value="{{ $project->subdomain_suggestion }}" placeholder="nama-website" class="flex-1 text-xs bg-transparent outline-none text-slate-800 dark:text-white placeholder-slate-400 px-1.5 py-1 min-w-0 font-medium" pattern="[a-z0-9][a-z0-9\-]*[a-z0-9]" required minlength="3" maxlength="30">
+                                            <span class="text-xs text-slate-400 font-medium shrink-0">.{{ config('app.main_domain') }}</span>
+                                        </div>
+                                        @error('subdomain')
+                                            <p class="text-xs text-red-500 font-medium">{{ $message }}</p>
+                                        @enderror
+                                        <button type="submit" class="w-full text-xs font-bold py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors flex items-center justify-center gap-1.5">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                            Publish
+                                        </button>
+                                    </form>
+                                </div>
+                            @endif
                             
                             <a href="{{ asset('storage/users/' . Auth::id() . '/projects/' . $project->id . '/index.html') }}" target="_blank" class="inline-flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 transition-colors group/link mt-auto">
                                 Lihat Hasil
@@ -94,25 +136,10 @@
                         <p class="text-sm text-slate-500 dark:text-slate-400">Mulai karya barumu dari template pilihan.</p>
                     </div>
                     
-                    <div class="flex gap-2 flex-wrap bg-slate-50 dark:bg-slate-900 p-1.5 rounded-full border border-slate-100 dark:border-slate-700 transition-colors" id="category-filter-container">
-                        <button data-filter="semua" class="filter-btn px-5 py-2 bg-white dark:bg-slate-700 text-slate-800 dark:text-white text-sm font-semibold rounded-full shadow-sm transition-all">Semua</button>
-                        
-                        @php
-                            $uniqueCategories = $templates->pluck('category')->unique('id');
-                        @endphp
-
-                        @foreach($uniqueCategories as $index => $category)
-                            <button data-filter="{{ strtolower($category->name ?? '') }}" class="filter-btn category-item px-5 py-2 text-slate-500 dark:text-slate-400 text-sm font-medium rounded-full hover:text-slate-800 dark:hover:text-white transition-all" style="{{ $index >= 3 ? 'display: none;' : '' }}">
-                                {{ $category->name ?? 'Kategori' }}
-                            </button>
-                        @endforeach
-
-                        @if(count($uniqueCategories) > 3)
-                            <button id="toggleCategoriesBtn" class="px-3 py-2 text-slate-500 dark:text-slate-400 text-sm font-bold rounded-full hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Lihat semua kategori">
-                                &raquo;
-                            </button>
-                        @endif
-                    </div>
+                    <a href="{{ route('user.templates') }}" class="px-5 py-2.5 bg-white dark:bg-slate-800 text-slate-800 dark:text-white text-sm font-semibold rounded-full border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all shadow-sm flex items-center gap-2 group">
+                        Lihat Semua
+                        <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
                 </div>
 
                 <div class="flex justify-end mb-6">
@@ -155,7 +182,7 @@
                                 <h4 class="font-bold text-xl text-slate-900 dark:text-white mb-1">{{ $template->name }}</h4>
                                 <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-2 grow">{{ $template->description }}</p>
                                 <div class="flex gap-3 mt-auto">
-                                    <a href="{{ route('template.preview', $template->id) }}" target="_blank" class="flex-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 py-3 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
+                                    <a href="{{ URL::signedRoute('template.preview', $template->id) }}" target="_blank" class="flex-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 py-3 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
                                         Lihat
                                     </a>
                                     <form action="{{ route('user.project.create', $template->id) }}" method="POST" class="flex-1 flex">

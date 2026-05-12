@@ -29,7 +29,7 @@
         <div class="px-6 py-4 flex justify-between items-center w-full">
             
             <div class="flex items-center gap-4">
-                <a href="{{ url()->previous() !== url()->current() ? url()->previous() : route('user.home') }}" class="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Kembali">
+                <a href="{{ url()->previous() !== url()->current() ? url()->previous() : route('user.dashboard') }}" class="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Kembali">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                 </a>
                 <div class="h-6 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block"></div>
@@ -70,6 +70,16 @@
             </div>
         </div>
     </header>
+
+    @if(session('error'))
+    <div class="absolute top-24 left-1/2 transform -translate-x-1/2 z-[60] bg-red-50 border border-red-200 text-red-700 px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 w-max max-w-[90vw]">
+        <svg class="w-5 h-5 shrink-0 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        <p class="font-medium text-sm">{{ session('error') }}</p>
+        <button onclick="this.parentElement.style.display='none'" class="ml-2 text-red-400 hover:text-red-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    </div>
+    @endif
     
     <div class="grow flex items-center justify-center bg-slate-200/50 dark:bg-slate-900/50 w-full overflow-hidden">
         <div class="h-full w-full flex justify-center transition-all duration-300">

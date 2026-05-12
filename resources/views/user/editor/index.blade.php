@@ -6,7 +6,9 @@
     <title>Editor - {{ $project->name }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&family=Lato:wght@400;700&family=Montserrat:wght@400;700&family=Poppins:wght@400;700&family=Raleway:wght@400;700&family=Nunito:wght@400;700&family=Outfit:wght@400;700&family=Work+Sans:wght@400;700&family=Playfair+Display:wght@400;700&family=Merriweather:wght@400;700&family=Oswald:wght@400;700&family=Source+Sans+3:wght@400;700&family=Rubik:wght@400;700&family=Noto+Sans:wght@400;700&family=Ubuntu:wght@400;700&family=Mukta:wght@400;700&family=Quicksand:wght@400;700&family=Mulish:wght@400;700&family=Barlow:wght@400;700&family=DM+Sans:wght@400;700&family=Manrope:wght@400;700&family=Space+Grotesk:wght@400;700&family=Lexend:wght@400;700&family=Sora:wght@400;700&family=Plus+Jakarta+Sans:wght@400;700&family=Figtree:wght@400;700&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         body,html{height:100%;overflow:hidden;font-family:'Inter',system-ui,sans-serif;background:#0f172a}
@@ -52,6 +54,31 @@
         .color-dot{width:14px;height:14px;border-radius:50%;border:2px solid #475569;display:inline-block}
         .img-btn{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;background:#334155;color:#e2e8f0;border:none;cursor:pointer;font-size:12px;font-weight:600;transition:all .1s;white-space:nowrap}
         .img-btn:hover{background:#3b82f6;color:#fff}
+        .font-select{background:#0f172a;border:1px solid #475569;color:#e2e8f0;font-size:12px;padding:4px 6px;border-radius:6px;outline:none;max-width:130px;cursor:pointer;font-family:inherit;height:32px;position:relative}
+        .font-select:focus{border-color:#3b82f6}
+        .font-picker{position:relative;z-index:10}
+        .font-picker-btn{display:flex;align-items:center;gap:4px;padding:4px 8px;height:32px;background:#0f172a;border:1px solid #475569;border-radius:8px;color:#e2e8f0;font-size:12px;cursor:pointer;min-width:120px;max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:border-color .15s}
+        .font-picker-btn:hover,.font-picker-btn.open{border-color:#3b82f6}
+        .font-picker-btn svg{flex-shrink:0;margin-left:auto}
+        .font-picker-dropdown{position:absolute;top:38px;left:0;width:240px;max-height:320px;background:#1e293b;border:1px solid #475569;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.5);display:none;flex-direction:column;overflow:hidden;z-index:10002}
+        .font-picker-dropdown.open{display:flex}
+        .font-picker-search{padding:8px;border-bottom:1px solid #334155}
+        .font-picker-search input{width:100%;padding:6px 10px;border-radius:6px;border:1px solid #475569;background:#0f172a;color:#fff;font-size:12px;outline:none}
+        .font-picker-search input:focus{border-color:#3b82f6}
+        .font-picker-list{overflow-y:auto;flex:1;padding:4px}
+        .font-picker-list::-webkit-scrollbar{width:6px}
+        .font-picker-list::-webkit-scrollbar-track{background:transparent}
+        .font-picker-list::-webkit-scrollbar-thumb{background:#475569;border-radius:3px}
+        .font-picker-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;color:#cbd5e1;transition:background .1s;border:none;background:none;width:100%;text-align:left}
+        .font-picker-item:hover{background:#334155;color:#fff}
+        .font-picker-item.active{background:rgba(59,130,246,.15);color:#93c5fd}
+        .font-picker-item .fp-preview{font-size:15px;line-height:1.3;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .font-picker-item .fp-name{font-size:10px;color:#64748b;font-family:'Inter',sans-serif;flex-shrink:0}
+        .slider-wrap{display:flex;align-items:center;gap:6px;padding:0 4px}
+        .slider-wrap input[type="range"]{width:80px;height:4px;-webkit-appearance:none;appearance:none;background:#475569;border-radius:2px;outline:none;cursor:pointer}
+        .slider-wrap input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#3b82f6;cursor:pointer;border:2px solid #1e293b}
+        .slider-wrap label{font-size:10px;color:#94a3b8;white-space:nowrap;font-weight:600}
+        .slider-wrap .slider-val{font-size:10px;color:#e2e8f0;min-width:28px;text-align:center;font-weight:700}
         .link-popover{position:fixed;z-index:10000;background:#1e293b;border:1px solid #475569;border-radius:12px;padding:12px;box-shadow:0 8px 32px rgba(0,0,0,.5);display:none;width:320px}
         .link-popover input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #475569;background:#0f172a;color:#fff;font-size:13px;outline:none}
         .link-popover input:focus{border-color:#3b82f6}
@@ -71,6 +98,37 @@
         .ctx-menu .ctx-sep{height:1px;background:#334155;margin:4px 8px}
         .ctx-menu .ctx-label{font-size:10px;color:#64748b;padding:6px 14px 2px;text-transform:uppercase;letter-spacing:.05em;font-weight:700}
         .ctx-menu kbd{margin-left:auto;font-size:10px;color:#64748b;font-family:inherit;background:#0f172a;padding:2px 6px;border-radius:4px}
+        .btn-deploy{background:linear-gradient(135deg,#10b981,#059669);color:#fff;display:none;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(16,185,129,.3)}
+        .btn-deploy:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(16,185,129,.4)}
+        .btn-deploy.show{display:inline-flex}
+        .btn-deploy.live{background:linear-gradient(135deg,#0ea5e9,#3b82f6);box-shadow:0 2px 8px rgba(59,130,246,.3)}
+        .btn-deploy.live:hover{box-shadow:0 4px 16px rgba(59,130,246,.4)}
+        .deploy-modal{position:fixed;inset:0;z-index:10001;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+        .deploy-modal.show{display:flex}
+        .deploy-card{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:28px;width:420px;max-width:90vw;box-shadow:0 24px 64px rgba(0,0,0,.5);color:#fff;font-family:'Inter',sans-serif}
+        .deploy-card h2{font-size:18px;font-weight:700;margin-bottom:4px}
+        .deploy-card p{font-size:13px;color:#94a3b8;margin-bottom:20px}
+        .deploy-input-group{display:flex;align-items:center;background:#0f172a;border:1px solid #475569;border-radius:10px;padding:4px;gap:0;margin-bottom:6px;transition:border-color .15s}
+        .deploy-input-group:focus-within{border-color:#10b981}
+        .deploy-input-group input{flex:1;background:none;border:none;color:#fff;font-size:14px;font-weight:600;padding:8px 12px;outline:none;font-family:'Inter',sans-serif;min-width:0}
+        .deploy-input-group input::placeholder{color:#475569;font-weight:400}
+        .deploy-input-group .deploy-suffix{font-size:13px;color:#64748b;padding:0 12px;white-space:nowrap;font-weight:500}
+        .deploy-preview-url{font-size:12px;color:#64748b;margin-bottom:16px;word-break:break-all}
+        .deploy-preview-url span{color:#10b981;font-weight:600}
+        .deploy-actions{display:flex;gap:8px}
+        .deploy-actions button{flex:1;padding:10px;border-radius:10px;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:all .15s}
+        .deploy-btn-go{background:#10b981;color:#fff}.deploy-btn-go:hover{background:#059669}
+        .deploy-btn-go:disabled{background:#334155;color:#64748b;cursor:not-allowed}
+        .deploy-btn-cancel{background:#334155;color:#cbd5e1}.deploy-btn-cancel:hover{background:#475569}
+        .deploy-live-info{text-align:center;margin-bottom:16px}
+        .deploy-live-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:#6ee7b7;font-size:12px;font-weight:700;padding:6px 14px;border-radius:99px;margin-bottom:10px}
+        .deploy-live-badge .pulse{width:8px;height:8px;border-radius:50%;background:#10b981;animation:livePulse 2s infinite}
+        @keyframes livePulse{0%,100%{opacity:1}50%{opacity:.3}}
+        .deploy-live-url{font-size:15px;font-weight:600;color:#fff;word-break:break-all}
+        .deploy-live-url a{color:#6ee7b7;text-decoration:none}
+        .deploy-live-url a:hover{text-decoration:underline}
+        .deploy-btn-unpublish{background:none;border:1px solid #475569;color:#f87171;font-size:12px;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;transition:all .15s}
+        .deploy-btn-unpublish:hover{background:rgba(220,38,38,.15);border-color:#f87171}
     </style>
 </head>
 <body style="display:flex;flex-direction:column;height:100vh">
@@ -80,7 +138,6 @@
             <a href="{{ route('user.dashboard') }}" class="btn-icon" title="Kembali">
                 <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             </a>
-            {{-- Favicon / Logo --}}
             <div class="project-logo-wrap" id="logoWrap" title="Ganti Favicon">
                 <img id="logoImg" src="" alt="Favicon" style="display:none">
                 <div class="logo-placeholder" id="logoPlaceholder">
@@ -95,7 +152,6 @@
                 </div>
             </div>
             <input type="file" id="logoInput" accept="image/*" style="display:none">
-            {{-- Title (from template HTML <title>) --}}
             <div class="title-group">
                 <h1 id="titleDisplay">Memuat...</h1>
                 <input type="text" id="titleInput" class="title-input" value="" maxlength="255">
@@ -106,6 +162,13 @@
             <span id="modeBadge" class="badge badge-edit">Edit</span>
         </div>
         <div class="topbar-right">
+            <button id="btnUndo" class="btn-icon" title="Undo (Ctrl+Z)">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a5 5 0 015 5v2M3 10l4-4M3 10l4 4"/></svg>
+            </button>
+            <button id="btnRedo" class="btn-icon" title="Redo (Ctrl+Y)">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10H11a5 5 0 00-5 5v2m15-7l-4-4m4 4l-4 4"/></svg>
+            </button>
+            <div style="width:1px;height:24px;background:#475569;margin:0 2px"></div>
             <button id="btnPreview" class="btn btn-ghost" title="Preview dengan animasi">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                 <span id="previewLabel">Preview</span>
@@ -119,6 +182,10 @@
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                 Simpan
             </button>
+            <button id="btnDeploy" class="btn-deploy {{ $project->is_published ? 'show live' : '' }}" title="Deploy ke subdomain">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span id="deployLabel">{{ $project->is_published ? 'Online ✓' : 'Deploy' }}</span>
+            </button>
         </div>
     </div>
 
@@ -130,10 +197,24 @@
         <span class="tb-label" id="toolbarLabel">Teks</span>
         <div class="sep"></div>
         <!-- Text tools (shown for text elements) -->
-        <div id="textTools" style="display:flex;align-items:center;gap:2px">
+        <div id="textTools" style="display:flex;align-items:center;gap:2px;flex-wrap:wrap">
+            <div class="font-picker" id="fontPicker">
+                <button type="button" class="font-picker-btn" id="fontPickerBtn" title="Font Family">
+                    <span id="fontPickerLabel">— Font —</span>
+                    <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div class="font-picker-dropdown" id="fontPickerDropdown">
+                    <div class="font-picker-search">
+                        <input type="text" id="fontSearchInput" placeholder="Cari font..." autocomplete="off">
+                    </div>
+                    <div class="font-picker-list" id="fontPickerList"></div>
+                </div>
+            </div>
+            <div class="sep"></div>
             <button class="tb" data-cmd="bold" title="Bold"><b>B</b></button>
             <button class="tb" data-cmd="italic" title="Italic"><i>I</i></button>
             <button class="tb" data-cmd="underline" title="Underline"><u>U</u></button>
+            <button class="tb" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
             <div class="sep"></div>
             <button class="tb" id="btnTextColor" title="Warna Teks">
                 <span class="color-dot" id="textColorDot" style="background:#fff"></span>
@@ -142,6 +223,22 @@
             <div class="sep"></div>
             <button class="tb" data-cmd="fontSize-" title="Kecilkan Font">A-</button>
             <button class="tb" data-cmd="fontSize+" title="Besarkan Font">A+</button>
+            <div class="sep"></div>
+            <button class="tb" data-cmd="alignLeft" title="Rata Kiri">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M3 12h10M3 18h14"/></svg>
+            </button>
+            <button class="tb" data-cmd="alignCenter" title="Rata Tengah">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M7 12h10M5 18h14"/></svg>
+            </button>
+            <button class="tb" data-cmd="alignRight" title="Rata Kanan">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M11 12h10M7 18h14"/></svg>
+            </button>
+            <button class="tb" data-cmd="alignJustify" title="Rata Kiri Kanan">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M3 12h18M3 18h18"/></svg>
+            </button>
+            <div class="sep"></div>
+            <button class="tb" data-cmd="letterSpacing-" title="Kurangi Spacing">T-</button>
+            <button class="tb" data-cmd="letterSpacing+" title="Tambah Spacing">T+</button>
             <div class="sep"></div>
             <button class="tb" id="btnLink" title="Tambah Link">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
@@ -153,6 +250,18 @@
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 Ganti Gambar
             </button>
+            <div class="sep"></div>
+            <div class="slider-wrap">
+                <label>Radius</label>
+                <input type="range" id="imgBorderRadius" min="0" max="50" value="0">
+                <span class="slider-val" id="imgRadiusVal">0%</span>
+            </div>
+            <div class="sep"></div>
+            <div class="slider-wrap">
+                <label>Opacity</label>
+                <input type="range" id="imgOpacity" min="0" max="100" value="100">
+                <span class="slider-val" id="imgOpacityVal">100%</span>
+            </div>
         </div>
         <!-- Background tools -->
         <div id="bgTools" style="display:none;align-items:center;gap:4px">
@@ -166,6 +275,18 @@
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 Ganti Gambar
             </button>
+            <div class="sep"></div>
+            <div class="slider-wrap">
+                <label>Opacity</label>
+                <input type="range" id="bgOpacity" min="0" max="100" value="100">
+                <span class="slider-val" id="bgOpacityVal">100%</span>
+            </div>
+            <div class="sep"></div>
+            <div class="slider-wrap">
+                <label>Radius</label>
+                <input type="range" id="bgBorderRadius" min="0" max="50" value="0">
+                <span class="slider-val" id="bgRadiusVal">0%</span>
+            </div>
         </div>
     </div>
 
@@ -184,6 +305,51 @@
     <!-- Save toast -->
     <div id="saveToast" class="save-toast"></div>
 
+    <!-- Deploy Modal -->
+    <div id="deployModal" class="deploy-modal">
+        <div class="deploy-card">
+            @if($project->is_published && $project->subdomain)
+                <div id="deployLiveView">
+                    <h2>🎉 Website Anda Online!</h2>
+                    <p>Website ini sudah aktif dan bisa diakses publik.</p>
+                    <div class="deploy-live-info">
+                        <div class="deploy-live-badge"><span class="pulse"></span> LIVE</div>
+                        <div class="deploy-live-url">
+                            <a href="https://{{ $project->subdomain }}.{{ config('app.main_domain') }}" target="_blank" id="liveUrlLink">
+                                {{ $project->subdomain }}.{{ config('app.main_domain') }}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="deploy-actions">
+                        <button class="deploy-btn-cancel" id="deployCloseBtn2">Tutup</button>
+                        <form method="POST" action="{{ route('user.project.unpublish', $project->id) }}" style="flex:1;display:flex">
+                            @csrf
+                            <button type="submit" class="deploy-btn-unpublish" style="width:100%">Unpublish</button>
+                        </form>
+                    </div>
+                </div>
+            @else
+                <div id="deployFormView">
+                    <h2>🚀 Deploy Website</h2>
+                    <p>Pilih subdomain untuk website Anda. Setelah deploy, website langsung bisa diakses publik.</p>
+                    <form id="deployForm" method="POST" action="{{ route('user.project.publish', $project->id) }}">
+                        @csrf
+                        <div class="deploy-input-group">
+                            <input type="text" name="subdomain" id="deploySubdomainInput" placeholder="nama-website" autocomplete="off" pattern="[a-z0-9][a-z0-9\-]*[a-z0-9]" required minlength="3" maxlength="30" value="{{ $project->subdomain ?? '' }}">
+                            <span class="deploy-suffix">.{{ config('app.main_domain') }}</span>
+                        </div>
+                        <div class="deploy-preview-url">URL: <span id="deployPreviewUrl">https://???.{{ config('app.main_domain') }}</span></div>
+                        <div id="deployError" style="color:#f87171;font-size:12px;margin-bottom:12px;display:none"></div>
+                        <div class="deploy-actions">
+                            <button type="button" class="deploy-btn-cancel" id="deployCloseBtn">Batal</button>
+                            <button type="submit" class="deploy-btn-go" id="deploySubmitBtn">Deploy Sekarang</button>
+                        </div>
+                    </form>
+                </div>
+            @endif
+        </div>
+    </div>
+
     <!-- Context Menu -->
     <div id="ctxMenu" class="ctx-menu">
         <div class="ctx-label">Elemen</div>
@@ -195,6 +361,9 @@
         <div class="ctx-label">Pindahkan</div>
         <button id="ctxMoveUp"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>Pindah Ke Atas</button>
         <button id="ctxMoveDown"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>Pindah Ke Bawah</button>
+        <div class="ctx-sep"></div>
+        <div class="ctx-label">Tampilan</div>
+        <button id="ctxToggleVisibility"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"/></svg>Sembunyikan/Tampilkan</button>
         <div class="ctx-sep"></div>
         <button id="ctxDelete" class="danger"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Hapus Elemen<kbd>Del</kbd></button>
     </div>
@@ -227,6 +396,74 @@
     const TEXT_TAGS = ['P','H1','H2','H3','H4','H5','H6','SPAN','A','LI','TD','TH','LABEL','BLOCKQUOTE','FIGCAPTION','BUTTON','SMALL','STRONG','EM','B','I','U','MARK','CITE','DT','DD'];
     const CONTAINER_TAGS = ['DIV','SECTION','HEADER','FOOTER','MAIN','ARTICLE','ASIDE','NAV','FIGURE'];
 
+    const GOOGLE_FONTS = [
+        'Inter','Roboto','Open Sans','Lato','Montserrat','Poppins','Raleway',
+        'Nunito','Outfit','Work Sans','Playfair Display','Merriweather',
+        'Oswald','Source Sans 3','Rubik','Noto Sans','Ubuntu','Mukta',
+        'Quicksand','Mulish','Barlow','DM Sans','Manrope','Space Grotesk',
+        'Lexend','Sora','Plus Jakarta Sans','Figtree','Geist'
+    ];
+
+    // Undo/Redo History
+    const undoStack = [];
+    const redoStack = [];
+    let snapshotTimer = null;
+
+    function takeSnapshot(){
+        if(!iDoc) return;
+        const html = iDoc.body.innerHTML;
+        if(undoStack.length > 0 && undoStack[undoStack.length-1] === html) return;
+        undoStack.push(html);
+        if(undoStack.length > 50) undoStack.shift();
+        redoStack.length = 0;
+    }
+
+    function debouncedSnapshot(){
+        clearTimeout(snapshotTimer);
+        snapshotTimer = setTimeout(takeSnapshot, 600);
+    }
+
+    function doUndo(){
+        if(!iDoc || undoStack.length < 2) return;
+        redoStack.push(undoStack.pop());
+        iDoc.body.innerHTML = undoStack[undoStack.length - 1];
+        deselectEl(); hideToolbar();
+        showToast('Undo \u2713', 'success');
+    }
+
+    function doRedo(){
+        if(!iDoc || redoStack.length === 0) return;
+        const state = redoStack.pop();
+        undoStack.push(state);
+        iDoc.body.innerHTML = state;
+        deselectEl(); hideToolbar();
+        showToast('Redo \u2713', 'success');
+    }
+
+    function populateFontSelect(){
+        const list = document.getElementById('fontPickerList');
+        if(list.children.length > 0) return;
+        GOOGLE_FONTS.forEach(f => {
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'font-picker-item';
+            item.dataset.font = f;
+            item.innerHTML = `<span class="fp-preview" style="font-family:'${f}',sans-serif">${f}</span><span class="fp-name">${f}</span>`;
+            list.appendChild(item);
+        });
+    }
+
+    function loadGoogleFont(fontName){
+        if(!iDoc) return;
+        const id = '__bisite_font_' + fontName.replace(/\s+/g,'_');
+        if(iDoc.getElementById(id)) return;
+        const link = iDoc.createElement('link');
+        link.id = id;
+        link.rel = 'stylesheet';
+        link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontName)}:wght@300;400;500;600;700&display=swap`;
+        iDoc.head.appendChild(link);
+    }
+
     iframe.addEventListener('load', () => {
         iDoc = iframe.contentDocument;
         if(!iDoc) return;
@@ -234,6 +471,9 @@
         setupListeners();
         syncTitleFromIframe();
         syncFaviconFromIframe();
+        populateFontSelect();
+        // Take initial snapshot for undo
+        setTimeout(() => takeSnapshot(), 500);
     });
 
     function injectEditStyles(){
@@ -272,6 +512,14 @@
         if(s) s.remove();
     }
 
+    let autoSaveTimer;
+    function debouncedAutoSave() {
+        clearTimeout(autoSaveTimer);
+        autoSaveTimer = setTimeout(() => {
+            performSave(true);
+        }, 1500);
+    }
+
     function setupListeners(){
         iDoc.addEventListener('click', onElementClick, true);
         iDoc.addEventListener('contextmenu', onContextMenu, true);
@@ -287,6 +535,34 @@
         iDoc.addEventListener('scroll', hideToolbar);
         iDoc.addEventListener('keydown', onKeyDown);
         setupDragReorder();
+
+        // Auto-save Observer
+        const observer = new MutationObserver(mutations => {
+            if(isPreview) return;
+            let shouldSave = false;
+            for(let m of mutations){
+                if(m.target && m.target.id === '__bisite_drop_indicator__') continue;
+                if(m.type === 'characterData' || m.type === 'childList') {
+                    shouldSave = true; break;
+                }
+                if(m.type === 'attributes'){
+                    if(m.attributeName === 'class'){
+                        const oldClass = m.oldValue || '';
+                        const newClass = (typeof m.target.className === 'string') ? m.target.className : '';
+                        const oldClean = oldClass.replace(/__bisite_hover|__bisite_selected/g, '').trim();
+                        const newClean = newClass.replace(/__bisite_hover|__bisite_selected/g, '').trim();
+                        if(oldClean !== newClean) { shouldSave = true; break; }
+                    } else if(m.attributeName !== 'contenteditable' && m.attributeName !== 'style') {
+                        shouldSave = true; break;
+                    } else if(m.attributeName === 'style') {
+                        // Handle style changes (e.g. from our editor tools)
+                        shouldSave = true; break;
+                    }
+                }
+            }
+            if(shouldSave) debouncedAutoSave();
+        });
+        observer.observe(iDoc.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeOldValue: true });
     }
 
     function findEditableTarget(el){
@@ -349,17 +625,52 @@
         if(type==='text'){
             const cs = iframe.contentWindow.getComputedStyle(el);
             textColorDot.style.background = cs.color;
+            // Sync font family
+            const currentFont = cs.fontFamily.split(',')[0].replace(/["']/g,'').trim();
+            fontPickerLabel.textContent = GOOGLE_FONTS.includes(currentFont) ? currentFont : '— Font —';
+            if(GOOGLE_FONTS.includes(currentFont)){
+                fontPickerLabel.style.fontFamily = "'" + currentFont + "', sans-serif";
+            } else {
+                fontPickerLabel.style.fontFamily = "'Inter', sans-serif";
+            }
+            // Highlight active font in list
+            fontPickerList.querySelectorAll('.font-picker-item').forEach(i => {
+                i.classList.toggle('active', i.dataset.font === currentFont);
+            });
+        }
+        if(type==='image'){
+            const cs = iframe.contentWindow.getComputedStyle(el);
+            const imgRadius = document.getElementById('imgBorderRadius');
+            const imgRadiusVal = document.getElementById('imgRadiusVal');
+            const imgOpacity = document.getElementById('imgOpacity');
+            const imgOpacityVal = document.getElementById('imgOpacityVal');
+            const br = parseInt(cs.borderRadius) || 0;
+            const brPct = Math.min(50, Math.round(br / Math.max(el.offsetWidth, 1) * 100));
+            imgRadius.value = brPct;
+            imgRadiusVal.textContent = brPct + '%';
+            const op = Math.round((parseFloat(cs.opacity) || 1) * 100);
+            imgOpacity.value = op;
+            imgOpacityVal.textContent = op + '%';
         }
         if(type==='bg'){
             const cs = iframe.contentWindow.getComputedStyle(el);
             bgColorDot.style.background = cs.backgroundColor || '#ffffff';
-            // Show/hide background-image replace button
             const elHasBgImg = hasBgImage(el);
             document.getElementById('btnReplaceBgImg').style.display = elHasBgImg ? '' : 'none';
             document.getElementById('bgImgSep').style.display = elHasBgImg ? '' : 'none';
             if(elHasBgImg){
                 toolbarLabel.textContent = 'Background Image';
             }
+            const bgOpacity = document.getElementById('bgOpacity');
+            const bgOpacityVal = document.getElementById('bgOpacityVal');
+            const bgRadius = document.getElementById('bgBorderRadius');
+            const bgRadiusVal = document.getElementById('bgRadiusVal');
+            const op = Math.round((parseFloat(cs.opacity) || 1) * 100);
+            bgOpacity.value = op;
+            bgOpacityVal.textContent = op + '%';
+            const br = parseInt(cs.borderRadius) || 0;
+            bgRadius.value = Math.min(50, br);
+            bgRadiusVal.textContent = Math.min(50, br) + '%';
         }
 
         toolbar.classList.remove('hidden');
@@ -398,9 +709,24 @@
                 size += cmd === 'fontSize+' ? 2 : -2;
                 size = Math.max(8, Math.min(120, size));
                 selectedEl.style.fontSize = size + 'px';
+            } else if(cmd === 'alignLeft'){
+                selectedEl.style.textAlign = 'left';
+            } else if(cmd === 'alignCenter'){
+                selectedEl.style.textAlign = 'center';
+            } else if(cmd === 'alignRight'){
+                selectedEl.style.textAlign = 'right';
+            } else if(cmd === 'alignJustify'){
+                selectedEl.style.textAlign = 'justify';
+            } else if(cmd === 'letterSpacing+' || cmd === 'letterSpacing-'){
+                const cs = iframe.contentWindow.getComputedStyle(selectedEl);
+                let spacing = parseFloat(cs.letterSpacing) || 0;
+                spacing += cmd === 'letterSpacing+' ? 0.5 : -0.5;
+                spacing = Math.max(-5, Math.min(20, spacing));
+                selectedEl.style.letterSpacing = spacing + 'px';
             } else {
                 iDoc.execCommand(cmd, false, null);
             }
+            takeSnapshot();
         });
     });
 
@@ -409,13 +735,111 @@
         iframe.contentWindow.focus();
         iDoc.execCommand('foreColor', false, e.target.value);
         textColorDot.style.background = e.target.value;
+        takeSnapshot();
     });
 
     bgColorInput.addEventListener('input', e => {
         if(!selectedEl) return;
         selectedEl.style.backgroundColor = e.target.value;
         bgColorDot.style.background = e.target.value;
+        takeSnapshot();
     });
+
+    // Font Family select
+    // Font Picker custom dropdown
+    const fontPickerBtn = document.getElementById('fontPickerBtn');
+    const fontPickerDropdown = document.getElementById('fontPickerDropdown');
+    const fontPickerLabel = document.getElementById('fontPickerLabel');
+    const fontSearchInput = document.getElementById('fontSearchInput');
+    const fontPickerList = document.getElementById('fontPickerList');
+
+    fontPickerBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const isOpen = fontPickerDropdown.classList.contains('open');
+        fontPickerDropdown.classList.toggle('open');
+        fontPickerBtn.classList.toggle('open');
+        if(!isOpen){
+            fontSearchInput.value = '';
+            filterFontList('');
+            setTimeout(() => fontSearchInput.focus(), 50);
+        }
+    });
+
+    fontSearchInput.addEventListener('input', e => {
+        filterFontList(e.target.value.toLowerCase());
+    });
+    fontSearchInput.addEventListener('click', e => e.stopPropagation());
+
+    function filterFontList(query){
+        const items = fontPickerList.querySelectorAll('.font-picker-item');
+        items.forEach(item => {
+            const match = item.dataset.font.toLowerCase().includes(query);
+            item.style.display = match ? '' : 'none';
+        });
+    }
+
+    fontPickerList.addEventListener('click', e => {
+        const item = e.target.closest('.font-picker-item');
+        if(!item) return;
+        const font = item.dataset.font;
+        if(!font || !selectedEl || !iDoc) return;
+
+        // Update active state
+        fontPickerList.querySelectorAll('.font-picker-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        // Update button label with preview
+        fontPickerLabel.textContent = font;
+        fontPickerLabel.style.fontFamily = "'" + font + "', sans-serif";
+
+        // Apply to element
+        loadGoogleFont(font);
+        selectedEl.style.fontFamily = "'" + font + "', sans-serif";
+        takeSnapshot();
+        showToast('Font diubah ke ' + font + ' \u2713', 'success');
+
+        // Close dropdown
+        fontPickerDropdown.classList.remove('open');
+        fontPickerBtn.classList.remove('open');
+    });
+
+    // Close font picker when clicking outside
+    document.addEventListener('click', e => {
+        if(!document.getElementById('fontPicker').contains(e.target)){
+            fontPickerDropdown.classList.remove('open');
+            fontPickerBtn.classList.remove('open');
+        }
+    });
+
+    // Image sliders
+    document.getElementById('imgBorderRadius').addEventListener('input', e => {
+        if(!selectedEl || selectedEl.tagName !== 'IMG') return;
+        selectedEl.style.borderRadius = e.target.value + '%';
+        document.getElementById('imgRadiusVal').textContent = e.target.value + '%';
+    });
+    document.getElementById('imgBorderRadius').addEventListener('change', takeSnapshot);
+
+    document.getElementById('imgOpacity').addEventListener('input', e => {
+        if(!selectedEl) return;
+        selectedEl.style.opacity = e.target.value / 100;
+        document.getElementById('imgOpacityVal').textContent = e.target.value + '%';
+    });
+    document.getElementById('imgOpacity').addEventListener('change', takeSnapshot);
+
+    // Background sliders
+    document.getElementById('bgOpacity').addEventListener('input', e => {
+        if(!selectedEl) return;
+        selectedEl.style.opacity = e.target.value / 100;
+        document.getElementById('bgOpacityVal').textContent = e.target.value + '%';
+    });
+    document.getElementById('bgOpacity').addEventListener('change', takeSnapshot);
+
+    document.getElementById('bgBorderRadius').addEventListener('input', e => {
+        if(!selectedEl) return;
+        selectedEl.style.borderRadius = e.target.value + 'px';
+        document.getElementById('bgRadiusVal').textContent = e.target.value + '%';
+    });
+    document.getElementById('bgBorderRadius').addEventListener('change', takeSnapshot);
 
     document.getElementById('btnLink').addEventListener('click', () => {
         if(!selectedEl) return;
@@ -531,33 +955,38 @@
         }
     });
 
-    document.getElementById('btnSave').addEventListener('click', async () => {
-        if(isPreview){ btnPreview.click(); await new Promise(r=>setTimeout(r,500)); }
-
-        // Clean up editing artifacts before extracting HTML
-        deselectEl(); hideToolbar(); hideCtxMenu();
+    async function performSave(isAutoSave = false) {
         if(!iDoc) return;
+        if(isPreview && !isAutoSave){ btnPreview.click(); await new Promise(r=>setTimeout(r,500)); }
 
-        // Remove our injected style
-        const editStyle = iDoc.getElementById(EDIT_STYLE_ID);
+        // Clone document element to serialize without affecting live editor
+        const clone = iDoc.documentElement.cloneNode(true);
+        
+        // Clean up editing artifacts from clone
+        const editStyle = clone.querySelector('#' + EDIT_STYLE_ID);
         if(editStyle) editStyle.remove();
 
-        // Remove drop indicator
-        const dropInd = iDoc.getElementById('__bisite_drop_indicator__');
+        const dropInd = clone.querySelector('#__bisite_drop_indicator__');
         if(dropInd) dropInd.remove();
 
-        // Remove all contenteditable + our classes
-        iDoc.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
-        iDoc.querySelectorAll('.__bisite_selected,.__bisite_hover').forEach(el => {
+        clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+        clone.querySelectorAll('.__bisite_selected, .__bisite_hover').forEach(el => {
             el.classList.remove('__bisite_selected','__bisite_hover');
+            if(el.className === '') el.removeAttribute('class');
         });
 
-        // Serialize doctype
+        // Serialize
         const dt = iDoc.doctype;
         const dtStr = dt ? `<!DOCTYPE ${dt.name}${dt.publicId?` PUBLIC "${dt.publicId}"`:''}${dt.systemId?` "${dt.systemId}"`:''}>`  : '<!DOCTYPE html>';
-        const fullHtml = dtStr + '\n' + iDoc.documentElement.outerHTML;
+        const fullHtml = dtStr + '\n' + clone.outerHTML;
 
-        showToast('Menyimpan...', 'saving');
+        if(!isAutoSave) {
+            showToast('Menyimpan...', 'saving');
+        } else {
+            const toast = document.getElementById('saveToast');
+            if(!toast.classList.contains('show')) showToast('Menyimpan...', 'saving');
+        }
+
         try {
             const res = await fetch(SAVE_URL, {
                 method: 'POST',
@@ -566,6 +995,11 @@
             });
             if(res.ok){
                 showToast('Tersimpan ✓', 'success');
+                // Show deploy button after successful save
+                const deployBtn = document.getElementById('btnDeploy');
+                if(deployBtn && !deployBtn.classList.contains('show')){
+                    deployBtn.classList.add('show');
+                }
             } else {
                 showToast('Gagal menyimpan!', 'error');
             }
@@ -573,10 +1007,9 @@
             showToast('Gagal menyimpan!', 'error');
             console.error(err);
         }
+    }
 
-        // Re-inject edit styles
-        injectEditStyles();
-    });
+    document.getElementById('btnSave').addEventListener('click', () => performSave(false));
 
     let toastTimer;
     function showToast(msg, type){
@@ -584,6 +1017,106 @@
         saveToast.textContent = msg;
         saveToast.className = 'save-toast ' + type + ' show';
         toastTimer = setTimeout(() => saveToast.classList.remove('show'), 3000);
+    }
+
+    // ─── DEPLOY MODAL ───
+    const deployModal = document.getElementById('deployModal');
+    const btnDeploy = document.getElementById('btnDeploy');
+    const deploySubdomainInput = document.getElementById('deploySubdomainInput');
+    const deployPreviewUrl = document.getElementById('deployPreviewUrl');
+    const MAIN_DOMAIN = '{{ config("app.main_domain") }}';
+
+    btnDeploy.addEventListener('click', () => {
+        // Auto-fill subdomain from HTML title if input is empty
+        if(deploySubdomainInput && !deploySubdomainInput.value.trim() && iDoc){
+            const titleEl = iDoc.querySelector('title');
+            if(titleEl && titleEl.textContent.trim()){
+                const slug = titleEl.textContent.trim()
+                    .toLowerCase()
+                    .replace(/[^a-z0-9\s\-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-')
+                    .replace(/^-|-$/g, '')
+                    .substring(0, 30);
+                if(slug.length >= 3){
+                    deploySubdomainInput.value = slug;
+                    if(deployPreviewUrl) deployPreviewUrl.textContent = 'https://' + slug + '.' + MAIN_DOMAIN;
+                }
+            }
+        }
+        deployModal.classList.add('show');
+    });
+
+    // Close buttons
+    document.getElementById('deployCloseBtn')?.addEventListener('click', () => {
+        deployModal.classList.remove('show');
+    });
+    document.getElementById('deployCloseBtn2')?.addEventListener('click', () => {
+        deployModal.classList.remove('show');
+    });
+
+    // Close on backdrop click
+    deployModal.addEventListener('click', e => {
+        if(e.target === deployModal) deployModal.classList.remove('show');
+    });
+
+    // Live URL preview
+    if(deploySubdomainInput){
+        deploySubdomainInput.addEventListener('input', e => {
+            let val = e.target.value.toLowerCase().replace(/[^a-z0-9\-]/g, '');
+            e.target.value = val;
+            deployPreviewUrl.textContent = val ? 'https://' + val + '.' + MAIN_DOMAIN : 'https://???.' + MAIN_DOMAIN;
+        });
+    }
+
+    // Deploy form submission
+    const deployForm = document.getElementById('deployForm');
+    const deployError = document.getElementById('deployError');
+    if(deployForm){
+        deployForm.addEventListener('submit', async e => {
+            e.preventDefault();
+            const subdomain = deploySubdomainInput.value.trim();
+            if(!subdomain || subdomain.length < 3){
+                deployError.textContent = 'Subdomain minimal 3 karakter.';
+                deployError.style.display = 'block';
+                return;
+            }
+            const submitBtn = document.getElementById('deploySubmitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Deploying...';
+            deployError.style.display = 'none';
+
+            try {
+                const res = await fetch(deployForm.action, {
+                    method: 'POST',
+                    headers: { 'X-CSRF-TOKEN': CSRF, 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ subdomain: subdomain })
+                });
+
+                if(res.ok || res.status === 302){
+                    // Success - reload to show updated state
+                    showToast('Website berhasil di-deploy! 🚀', 'success');
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    const data = await res.json().catch(() => null);
+                    if(data && data.errors && data.errors.subdomain){
+                        deployError.textContent = data.errors.subdomain[0];
+                    } else if(data && data.message){
+                        deployError.textContent = data.message;
+                    } else {
+                        deployError.textContent = 'Gagal deploy. Coba subdomain lain.';
+                    }
+                    deployError.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Deploy Sekarang';
+                }
+            } catch(err){
+                deployError.textContent = 'Terjadi kesalahan koneksi.';
+                deployError.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Deploy Sekarang';
+            }
+        });
     }
 
     const titleDisplay = document.getElementById('titleDisplay');
@@ -618,14 +1151,14 @@
         titleDisplay.style.display = '';
         titleEditBtn.style.display = '';
         if(!newName || newName === titleDisplay.textContent) return;
-        // Update iframe <title> DOM
         if(iDoc){
             let t = iDoc.querySelector('title');
             if(!t){ t = iDoc.createElement('title'); iDoc.head.appendChild(t); }
             t.textContent = newName;
+            debouncedAutoSave();
         }
         titleDisplay.textContent = newName;
-        showToast('Title diubah — klik Simpan untuk menyimpan', 'success');
+        showToast('Title diubah ✓', 'success');
     }
 
     titleEditBtn.addEventListener('click', startTitleEdit);
@@ -713,7 +1246,8 @@
                 logoImg.style.display = '';
                 logoPlaceholder.style.display = 'none';
                 btnRemoveLogo.style.display = '';
-                showToast('Favicon diubah — klik Simpan untuk menyimpan', 'success');
+                showToast('Favicon diubah ✓', 'success');
+                debouncedAutoSave();
             }
         } catch(err){
             showToast('Gagal mengunggah favicon!', 'error');
@@ -728,7 +1262,8 @@
         logoImg.style.display = 'none';
         logoPlaceholder.style.display = '';
         btnRemoveLogo.style.display = 'none';
-        showToast('Favicon dihapus — klik Simpan untuk menyimpan', 'success');
+        showToast('Favicon dihapus ✓', 'success');
+        debouncedAutoSave();
     });
 
     const ctxMenu = document.getElementById('ctxMenu');
@@ -864,15 +1399,41 @@
     document.getElementById('ctxDelete').addEventListener('click', doDelete);
     document.getElementById('ctxMoveUp').addEventListener('click', doMoveUp);
     document.getElementById('ctxMoveDown').addEventListener('click', doMoveDown);
+    document.getElementById('ctxToggleVisibility').addEventListener('click', () => {
+        if(!selectedEl) return;
+        const cs = iframe.contentWindow.getComputedStyle(selectedEl);
+        if(cs.display === 'none' || selectedEl.style.visibility === 'hidden'){
+            selectedEl.style.display = '';
+            selectedEl.style.visibility = '';
+            selectedEl.style.opacity = '1';
+            showToast('Elemen ditampilkan \u2713', 'success');
+        } else {
+            selectedEl.style.visibility = 'hidden';
+            selectedEl.style.opacity = '0.2';
+            showToast('Elemen disembunyikan (akan hilang di preview)', 'success');
+        }
+        takeSnapshot();
+        hideCtxMenu();
+    });
+
+    // Undo / Redo buttons
+    document.getElementById('btnUndo').addEventListener('click', doUndo);
+    document.getElementById('btnRedo').addEventListener('click', doRedo);
 
     // ─── KEYBOARD SHORTCUTS ───
     function onKeyDown(e){
         if(isPreview || !selectedEl) return;
-        // Don't intercept if user is typing in contenteditable
-        if(selectedEl.getAttribute('contenteditable') === 'true' && !e.ctrlKey && !e.metaKey) return;
+        // Don't intercept if user is typing in contenteditable (except for undo/redo)
+        const isEditing = selectedEl.getAttribute('contenteditable') === 'true';
 
         const key = e.key;
         const ctrl = e.ctrlKey || e.metaKey;
+
+        // Undo/Redo always works
+        if(ctrl && key === 'z'){ e.preventDefault(); doUndo(); return; }
+        if(ctrl && (key === 'y' || (e.shiftKey && key === 'Z'))){ e.preventDefault(); doRedo(); return; }
+
+        if(isEditing && !ctrl) return;
 
         if(key === 'Delete' || (key === 'Backspace' && !selectedEl.getAttribute('contenteditable'))){
             e.preventDefault(); doDelete();

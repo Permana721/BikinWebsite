@@ -160,11 +160,27 @@
         </div>
         
         <div class="p-6 border-t border-slate-100 dark:border-slate-700/50 flex justify-between items-center text-sm text-slate-500 dark:text-slate-400">
-            <span>Menampilkan 1 - 10 dari 45 data</span>
+            @if($users->total() > 0)
+                <span>Menampilkan {{ $users->firstItem() }} - {{ $users->lastItem() }} dari {{ $users->total() }} data</span>
+            @else
+                <span>Tidak ada data</span>
+            @endif
+            
+            @if($users->total() >= 5)
             <div class="flex gap-2">
-                <button class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">Kembali</button>
-                <button class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">Lanjut</button>
+                @if ($users->onFirstPage())
+                    <button disabled class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 opacity-50 cursor-not-allowed">Kembali</button>
+                @else
+                    <a href="{{ $users->previousPageUrl() }}" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">Kembali</a>
+                @endif
+
+                @if ($users->hasMorePages())
+                    <a href="{{ $users->nextPageUrl() }}" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">Lanjut</a>
+                @else
+                    <button disabled class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 opacity-50 cursor-not-allowed">Lanjut</button>
+                @endif
             </div>
+            @endif
         </div>
 
     </div>

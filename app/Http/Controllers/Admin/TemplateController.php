@@ -25,7 +25,7 @@ class TemplateController extends Controller
             });
         }
 
-        $templates = $query->latest()->paginate(10)->withQueryString();
+        $templates = $query->latest()->paginate(5)->withQueryString();
         
         return view('admin.templates.index', compact('templates'));
     }
@@ -42,7 +42,7 @@ class TemplateController extends Controller
             'name'        => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
-            'photos'      => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'photos'      => 'required|image|mimes:jpg,jpeg,png,webp',
             'zip_file'    => 'required|file|mimes:zip|max:51200', 
             'is_active'   => 'nullable|boolean',
         ]);
@@ -93,7 +93,7 @@ class TemplateController extends Controller
             'name'        => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
-            'photos'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'photos'      => 'nullable|image|mimes:jpg,jpeg,png,webp',
             'zip_file'    => 'nullable|file|mimes:zip|max:51200',
             'is_active'   => 'nullable|boolean',
         ]);

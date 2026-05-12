@@ -21,7 +21,12 @@ class DashboardController extends Controller
     public function dashboard()
     {
         $templates = Template::with('category')->where('is_active', true)->latest()->get();
-        $projects = \App\Models\Project::with('template')->where('user_id', Auth::id())->latest()->get();
+        $projects = \App\Models\Project::with('template')
+                      ->where('user_id', Auth::id())
+                      ->whereColumn('updated_at', '>', 'created_at')
+                      ->latest()
+                      ->get();
+                      
         return view('user.dashboard', compact('templates', 'projects'));
     }
 
@@ -29,7 +34,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        return view('user.profile', compact('user'));
+        return view('user.profile.index', compact('user'));
     }
 
     public function updateProfile(Request $request)
@@ -56,11 +61,11 @@ class DashboardController extends Controller
     {
         $categories = Category::all();
         $templates = Template::with('category')->where('is_active', true)->latest()->get();
-        return view('user.templates', compact('templates', 'categories'));
+        return view('user.templates.index', compact('templates', 'categories'));
     }
 
     public function previewTemplate(\App\Models\Template $template)
     {
-        return view('user.layouts.template_preview', compact('template'));
+        return view('user.templates.preview', compact('template'));
     }
 }

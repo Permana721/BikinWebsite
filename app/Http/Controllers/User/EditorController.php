@@ -4,13 +4,43 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class EditorController extends Controller
 {
     public function createProject(\App\Models\Template $template)
     {
-        $userId = \Illuminate\Support\Facades\Auth::id();
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $userId = $user->id;
         
+        $existingProject = \App\Models\Project::where('user_id', $userId)
+                                              ->where('template_id', $template->id)
+                                              ->first();
+                                              
+        if (!$existingProject) {
+            $projectCount = \App\Models\Project::where('user_id', $userId)->count();
+            $tier = $user->tier ?? 'lite';
+            $limit = $tier == 'lite' ? 1 : ($tier == 'pro' ? 3 : PHP_INT_MAX);
+            
+            if ($projectCount >= $limit) {
+                $abandonedProject = \App\Models\Project::where('user_id', $userId)
+                                      ->whereColumn('updated_at', 'created_at')
+                                      ->first();
+                                      
+                if ($abandonedProject) {
+                    $abandonedPath = storage_path("app/public/users/{$userId}/projects/{$abandonedProject->id}");
+                    if (\Illuminate\Support\Facades\File::exists($abandonedPath)) {
+                        \Illuminate\Support\Facades\File::deleteDirectory($abandonedPath);
+                    }
+                    $abandonedProject->delete();
+                } else {
+                    $limitMsg = $tier == 'lite' ? '1 website' : '3 website';
+                    $upgradeMsg = $tier == 'lite' ? 'Pro atau Elite' : 'Elite';
+                    return redirect()->back()->with('error', "Batas maksimal ($limitMsg) telah tercapai untuk tier " . ucfirst($tier) . ". Upgrade ke $upgradeMsg untuk membuat lebih banyak website.");
+                }
+            }
+        }
+
         $project = \App\Models\Project::firstOrCreate(
             [
                 'user_id' => $userId,
@@ -40,6 +70,10 @@ class EditorController extends Controller
 
         if ($project->user_id !== $userId) {
             abort(403, 'Unauthorized action.');
+        }
+
+        if ($project->is_published) {
+            return redirect()->back()->with('error', 'Project yang sudah di-deploy tidak bisa dihapus. Silakan unpublish terlebih dahulu.');
         }
 
         $projectPath = storage_path("app/public/users/{$userId}/projects/{$project->id}");
@@ -185,5 +219,75 @@ class EditorController extends Controller
     public function download(\App\Models\Project $project)
     {
         // Implement later if needed
+    }
+
+    public function publishProject(Request $request, \App\Models\Project $project)
+    {
+        $userId = \Illuminate\Support\Facades\Auth::id();
+
+        if ($project->user_id !== $userId) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Merge JSON body if sent via fetch
+        if ($request->isJson()) {
+            $request->merge(json_decode($request->getContent(), true) ?? []);
+        }
+
+        $reservedNames = [
+            'www', 'admin', 'api', 'mail', 'ftp', 'cpanel', 'webmail',
+            'smtp', 'pop', 'imap', 'ns1', 'ns2', 'dns', 'cdn',
+            'static', 'assets', 'img', 'media', 'download', 'app',
+        ];
+
+        $request->validate([
+            'subdomain' => [
+                'required',
+                'string',
+                'min:3',
+                'max:30',
+                'regex:/^[a-z0-9]([a-z0-9\-]*[a-z0-9])?$/',
+                'not_in:' . implode(',', $reservedNames),
+                Rule::unique('projects', 'subdomain')->ignore($project->id),
+            ],
+        ], [
+            'subdomain.required' => 'Nama subdomain wajib diisi.',
+            'subdomain.min' => 'Subdomain minimal 3 karakter.',
+            'subdomain.max' => 'Subdomain maksimal 30 karakter.',
+            'subdomain.regex' => 'Subdomain hanya boleh berisi huruf kecil, angka, dan tanda hubung (-).',
+            'subdomain.not_in' => 'Nama subdomain ini tidak diperbolehkan.',
+            'subdomain.unique' => 'Subdomain ini sudah digunakan oleh website lain.',
+        ]);
+
+        $project->update([
+            'subdomain' => strtolower($request->subdomain),
+            'is_published' => true,
+            'status' => 'published',
+        ]);
+
+        $domain = config('app.main_domain', 'bisite.web.id');
+        $url = "https://{$request->subdomain}.{$domain}";
+
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Published', 'url' => $url]);
+        }
+
+        return redirect()->back()->with('success', "Website berhasil dipublish di {$url}");
+    }
+
+    public function unpublishProject(\App\Models\Project $project)
+    {
+        $userId = \Illuminate\Support\Facades\Auth::id();
+
+        if ($project->user_id !== $userId) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $project->update([
+            'is_published' => false,
+            'status' => 'draft',
+        ]);
+
+        return redirect()->back()->with('success', 'Website berhasil di-unpublish.');
     }
 }

@@ -54,6 +54,8 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'main_domain' => env('MAIN_DOMAIN', 'bisite.web.id'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
