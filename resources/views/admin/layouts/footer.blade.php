@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
         <div class="font-bold text-slate-800 dark:text-white flex items-center justify-center md:justify-start gap-2">
             <img src="{{ asset('assets/img/logo/BikinWebsiteAdminLogo.png') }}" alt="Logo BikinWebsite" class="h-8 w-auto">
-            <span>BikinWebsite | Admin System</span>
+            <span>BikinWebsite | Admin Panel</span>
         </div>
         <div class="text-slate-400 dark:text-slate-500 text-xs sm:text-sm font-medium">
             © {{ date('Y') }} BikinWebsite. All rights reserved.

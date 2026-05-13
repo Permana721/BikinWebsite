@@ -35,7 +35,7 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
             </div>
-            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">12</h3>
+            <h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">{{ number_format($totalOnlineWebsites, 0, ',', '.') }}</h3>
             <p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Website Online</p>
         </div>
 

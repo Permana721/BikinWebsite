@@ -12,8 +12,9 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         body,html{height:100%;overflow:hidden;font-family:'Inter',system-ui,sans-serif;background:#0f172a}
-        .topbar{height:56px;background:#1e293b;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;padding:0 16px;color:#fff;gap:12px;flex-shrink:0}
-        .topbar-left,.topbar-right{display:flex;align-items:center;gap:10px}
+        .topbar{height:56px;background:#1e293b;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;padding:0 16px;color:#fff;gap:12px;flex-shrink:0;position:relative}
+        .topbar-left,.topbar-right{display:flex;align-items:center;gap:10px;z-index:1}
+        .topbar-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;z-index:2}
         .topbar h1{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
         .project-logo-wrap{position:relative;width:34px;height:34px;border-radius:8px;cursor:pointer;flex-shrink:0;background:#334155;display:flex;align-items:center;justify-content:center;border:1px solid #475569;transition:border-color .15s}
         .project-logo-wrap:hover{border-color:#3b82f6}
@@ -41,8 +42,8 @@
         .badge{font-size:10px;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:99px;font-weight:700}
         .badge-edit{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.3)}
         .badge-preview{background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.3)}
-        .iframe-wrap{flex:1;overflow:hidden;position:relative}
-        .iframe-wrap iframe{width:100%;height:100%;border:none;background:#fff}
+        .iframe-wrap{flex:1;overflow:hidden;position:relative;display:flex;flex-direction:column;align-items:center;background:#fff;transition:background .3s}
+        .iframe-wrap iframe{width:100%;height:100%;border:none;background:#fff;transition:width .3s, height .3s, border-radius .3s, margin .3s, box-shadow .3s}
         .editor-toolbar{position:fixed;top:-200px;left:0;z-index:9999;display:flex;align-items:center;gap:2px;background:#1e293b;border:1px solid #475569;border-radius:12px;padding:4px;box-shadow:0 8px 32px rgba(0,0,0,.4);transition:opacity .15s;pointer-events:auto}
         .editor-toolbar.hidden{opacity:0;pointer-events:none}
         .editor-toolbar .sep{width:1px;height:24px;background:#475569;margin:0 4px}
@@ -104,6 +105,13 @@
         .btn-deploy.live{background:linear-gradient(135deg,#0ea5e9,#3b82f6);box-shadow:0 2px 8px rgba(59,130,246,.3)}
         .btn-deploy.live:hover{box-shadow:0 4px 16px rgba(59,130,246,.4)}
         .deploy-modal{position:fixed;inset:0;z-index:10001;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+        
+        /* Device Toggle Styles */
+        .device-toggle-group{display:flex;align-items:center;gap:1px;background:#334155;padding:2px;border-radius:10px;margin:0 4px}
+        .device-btn{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;border:none;background:transparent;color:#94a3b8;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+        .device-btn:hover{color:#fff}
+        .device-btn.active{background:#1e293b;color:#3b82f6;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+        
         .deploy-modal.show{display:flex}
         .deploy-card{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:28px;width:420px;max-width:90vw;box-shadow:0 24px 64px rgba(0,0,0,.5);color:#fff;font-family:'Inter',sans-serif}
         .deploy-card h2{font-size:18px;font-weight:700;margin-bottom:4px}
@@ -129,6 +137,19 @@
         .deploy-live-url a:hover{text-decoration:underline}
         .deploy-btn-unpublish{background:none;border:1px solid #475569;color:#f87171;font-size:12px;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;transition:all .15s}
         .deploy-btn-unpublish:hover{background:rgba(220,38,38,.15);border-color:#f87171}
+        /* Mobile Responsive Topbar */
+        @media (max-width: 768px) {
+            .topbar { padding: 0 8px; gap: 8px; overflow-x: auto; justify-content: flex-start; -webkit-overflow-scrolling: touch; }
+            .topbar::-webkit-scrollbar { display: none; }
+            .topbar-center { position: static; transform: none; display: flex; flex: 1; min-width: max-content; justify-content: center; }
+            .title-group h1 { max-width: 100px; font-size: 13px; }
+            .title-input { max-width: 120px; font-size: 13px; }
+            #modeBadge { display: none !important; }
+            .device-btn span, #previewLabel, #deployLabel { display: none !important; }
+            .btn, .btn-deploy, .btn-icon, .device-btn { padding: 8px !important; font-size: 0 !important; gap: 0 !important; min-width: 32px; justify-content: center; flex-shrink: 0; }
+            .topbar-left, .topbar-right { gap: 6px; flex-shrink: 0; }
+            .project-logo-wrap { width: 30px; height: 30px; flex-shrink: 0; }
+        }
     </style>
 </head>
 <body style="display:flex;flex-direction:column;height:100vh">
@@ -161,6 +182,19 @@
             </div>
             <span id="modeBadge" class="badge badge-edit">Edit</span>
         </div>
+        <div class="topbar-center">
+            <div id="deviceToggle" class="device-toggle-group">
+                <button id="btnDesktop" class="device-btn active" title="Desktop View">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <span>Desktop</span>
+                </button>
+                <button id="btnMobile" class="device-btn" title="Mobile View">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    <span>Mobile</span>
+                </button>
+            </div>
+        </div>
+
         <div class="topbar-right">
             <button id="btnUndo" class="btn-icon" title="Undo (Ctrl+Z)">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a5 5 0 015 5v2M3 10l4-4M3 10l4 4"/></svg>
@@ -169,6 +203,7 @@
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10H11a5 5 0 00-5 5v2m15-7l-4-4m4 4l-4 4"/></svg>
             </button>
             <div style="width:1px;height:24px;background:#475569;margin:0 2px"></div>
+            
             <button id="btnPreview" class="btn btn-ghost" title="Preview dengan animasi">
                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                 <span id="previewLabel">Preview</span>
@@ -392,6 +427,7 @@
     let iDoc = null;
     let selectedEl = null;
     let isPreview = false;
+    let currentDevice = 'desktop';
 
     const TEXT_TAGS = ['P','H1','H2','H3','H4','H5','H6','SPAN','A','LI','TD','TH','LABEL','BLOCKQUOTE','FIGCAPTION','BUTTON','SMALL','STRONG','EM','B','I','U','MARK','CITE','DT','DD'];
     const CONTAINER_TAGS = ['DIV','SECTION','HEADER','FOOTER','MAIN','ARTICLE','ASIDE','NAV','FIGURE'];
@@ -512,13 +548,7 @@
         if(s) s.remove();
     }
 
-    let autoSaveTimer;
-    function debouncedAutoSave() {
-        clearTimeout(autoSaveTimer);
-        autoSaveTimer = setTimeout(() => {
-            performSave(true);
-        }, 1500);
-    }
+    // Auto-save logic removed per user request
 
     function setupListeners(){
         iDoc.addEventListener('click', onElementClick, true);
@@ -560,7 +590,7 @@
                     }
                 }
             }
-            if(shouldSave) debouncedAutoSave();
+            // Auto save removed
         });
         observer.observe(iDoc.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeOldValue: true });
     }
@@ -680,10 +710,18 @@
     function positionToolbar(el){
         const iRect = iframe.getBoundingClientRect();
         const eRect = el.getBoundingClientRect();
+        
+        // In mobile view, the iframe might be scaled or translated
+        // We need to account for its position in the parent
         let top = iRect.top + eRect.top - toolbar.offsetHeight - 8;
         let left = iRect.left + eRect.left + eRect.width/2 - toolbar.offsetWidth/2;
-        if(top < 4) top = iRect.top + eRect.bottom + 8;
-        left = Math.max(4, Math.min(left, window.innerWidth - toolbar.offsetWidth - 4));
+        
+        // Ensure toolbar doesn't go above topbar
+        if(top < 60) top = iRect.top + eRect.bottom + 8;
+        
+        // Clamp to screen bounds
+        left = Math.max(10, Math.min(left, window.innerWidth - toolbar.offsetWidth - 10));
+        
         toolbar.style.top = top + 'px';
         toolbar.style.left = left + 'px';
     }
@@ -937,6 +975,7 @@
         isPreview = !isPreview;
         deselectEl();
         hideToolbar();
+        
         if(isPreview){
             removeEditStyles();
             // Reload iframe to restart animations & scripts
@@ -945,6 +984,8 @@
             btnPreview.className = 'btn btn-success';
             modeBadge.textContent = 'Preview';
             modeBadge.className = 'badge badge-preview';
+            // Maintain current device view
+            setDeviceView(currentDevice);
         } else {
             // Reload will trigger 'load' event which re-injects styles
             iframe.src = iframe.src;
@@ -952,8 +993,47 @@
             btnPreview.className = 'btn btn-ghost';
             modeBadge.textContent = 'Edit';
             modeBadge.className = 'badge badge-edit';
+            // Maintain current device view
+            setDeviceView(currentDevice);
         }
     });
+
+    function setDeviceView(device) {
+        currentDevice = device;
+        const btnDesktop = document.getElementById('btnDesktop');
+        const btnMobile = document.getElementById('btnMobile');
+        const iframeWrap = iframe.parentElement;
+
+        if (device === 'mobile') {
+            iframe.style.width = '375px';
+            iframe.style.height = 'calc(100% - 40px)';
+            iframe.style.marginTop = '20px';
+            iframe.style.marginBottom = '20px';
+            iframe.style.borderRadius = '24px';
+            iframe.style.boxShadow = '0 0 0 12px #1e293b, 0 0 0 14px #334155, 0 20px 50px rgba(0,0,0,0.5)';
+            
+            btnMobile.classList.add('active');
+            btnDesktop.classList.remove('active');
+            iframeWrap.style.background = '#0f172a';
+        } else {
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.marginTop = '0';
+            iframe.style.marginBottom = '0';
+            iframe.style.borderRadius = '0';
+            iframe.style.boxShadow = 'none';
+            
+            btnDesktop.classList.add('active');
+            btnMobile.classList.remove('active');
+            iframeWrap.style.background = isPreview ? '#0f172a' : '#fff';
+        }
+        
+        // Reposition toolbar if an element is selected
+        if(selectedEl) setTimeout(() => positionToolbar(selectedEl), 350);
+    }
+
+    document.getElementById('btnDesktop').addEventListener('click', () => setDeviceView('desktop'));
+    document.getElementById('btnMobile').addEventListener('click', () => setDeviceView('mobile'));
 
     async function performSave(isAutoSave = false) {
         if(!iDoc) return;
@@ -1155,7 +1235,7 @@
             let t = iDoc.querySelector('title');
             if(!t){ t = iDoc.createElement('title'); iDoc.head.appendChild(t); }
             t.textContent = newName;
-            debouncedAutoSave();
+            // debouncedAutoSave();
         }
         titleDisplay.textContent = newName;
         showToast('Title diubah ✓', 'success');
@@ -1246,8 +1326,7 @@
                 logoImg.style.display = '';
                 logoPlaceholder.style.display = 'none';
                 btnRemoveLogo.style.display = '';
-                showToast('Favicon diubah ✓', 'success');
-                debouncedAutoSave();
+                showToast('Favicon diubah ✓ (Silakan tekan Simpan)', 'success');
             }
         } catch(err){
             showToast('Gagal mengunggah favicon!', 'error');
@@ -1262,8 +1341,7 @@
         logoImg.style.display = 'none';
         logoPlaceholder.style.display = '';
         btnRemoveLogo.style.display = 'none';
-        showToast('Favicon dihapus ✓', 'success');
-        debouncedAutoSave();
+        showToast('Favicon dihapus ✓ (Silakan tekan Simpan)', 'success');
     });
 
     const ctxMenu = document.getElementById('ctxMenu');

@@ -65,8 +65,8 @@
                                 
                                 <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px] z-10 gap-3">
                                     <button onclick="openImageModal('{{ $thumbnailUrl }}', '{{ addslashes($template->name) }}')" class="bg-white text-slate-900 px-5 py-2.5 rounded-full text-sm font-bold shadow-xl flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all hover:bg-slate-100">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                        Lihat
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+                                        Perbesar gambar
                                     </button>
                                 </div>
                             @else
@@ -88,9 +88,12 @@
                                 <a href="{{ URL::signedRoute('template.preview', $template->id) }}" target="_blank" class="flex-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 py-3 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
                                     Lihat
                                 </a>
-                                <button class="use-template-btn flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm shadow-blue-600/20">
-                                    Edit
-                                </button>
+                                <form action="{{ route('user.project.create', $template->id) }}" method="POST" class="flex-1">
+                                    @csrf
+                                    <button type="submit" class="use-template-btn w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm shadow-blue-600/20">
+                                        Edit
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -134,12 +137,12 @@
     </div>
     <div id="image-modal" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="absolute inset-0 bg-slate-900/95 backdrop-blur-md transition-opacity" onclick="closeImageModal()"></div>
-        <div class="relative z-10 max-w-6xl w-full mx-4 flex flex-col items-center transform scale-95 transition-transform duration-300" id="image-modal-content">
-            <button onclick="closeImageModal()" class="absolute -top-14 right-0 text-white/50 hover:text-white transition-colors p-2 focus:outline-none bg-white/10 rounded-full hover:bg-white/20">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        <div class="relative z-10 max-w-6xl w-[calc(100%-2rem)] flex flex-col items-center transform scale-95 transition-transform duration-300" id="image-modal-content">
+            <button onclick="closeImageModal()" class="absolute -top-12 md:-top-14 right-0 text-white/50 hover:text-white transition-colors p-2 focus:outline-none bg-white/10 rounded-full hover:bg-white/20">
+                <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <img id="modal-image-src" src="" alt="Full screen preview" class="w-full max-h-[85vh] object-contain rounded-xl shadow-2xl">
-            <p id="modal-image-title" class="text-white mt-6 font-bold text-xl tracking-wide"></p>
+            <p id="modal-image-title" class="text-white mt-4 md:mt-6 font-bold text-lg md:text-xl tracking-wide text-center"></p>
         </div>
     </div>
 </main>

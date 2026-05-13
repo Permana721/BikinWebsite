@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,15 +40,17 @@
         .animate-fade-in { animation: fadeIn 0.3s ease-in-out forwards; }
     </style>
 </head>
-<body class="bg-[#FAFAFA] dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col relative overflow-x-hidden transition-colors duration-300">
+<body class="bg-[#FAFAFA] dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col relative w-full transition-colors duration-300">
 
     <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 dark:opacity-10 pointer-events-none z-0"></div>
     <div class="absolute top-[20%] right-[-5%] w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 dark:opacity-10 pointer-events-none z-0"></div>
 
     @include('user.layouts.header')
 
-    @yield('content')
+    <div class="overflow-x-hidden w-full flex flex-col grow">
+        @yield('content')
 
-    @include('user.layouts.footer')
+        @include('user.layouts.footer')
+    </div>
 </body>
 </html>

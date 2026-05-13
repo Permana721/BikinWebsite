@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Template; 
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -22,6 +23,9 @@ class DashboardController extends Controller
         
         $totalRevenue = ($proUsersCount * 50000) + ($eliteUsersCount * 75000);
 
+        // Menghitung jumlah website yang online
+        $totalOnlineWebsites = Project::where('is_published', true)->whereNotNull('subdomain')->count();
+
         // Server-side search & pagination untuk "transaksi"
         $query = User::where('role', 'user')->whereIn('tier', ['pro', 'elite']);
 
@@ -34,7 +38,7 @@ class DashboardController extends Controller
 
         $latestTransactions = $query->orderBy('updated_at', 'desc')->paginate(5)->withQueryString();
 
-        return view('admin.dashboard', compact('totalUser', 'totalTemplate', 'totalRevenue', 'latestTransactions'));
+        return view('admin.dashboard', compact('totalUser', 'totalTemplate', 'totalRevenue', 'totalOnlineWebsites', 'latestTransactions'));
     }
 
 

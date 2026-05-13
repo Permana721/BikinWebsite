@@ -8,6 +8,9 @@ use App\Http\Controllers\AuthController;
 Route::get('/', [User\DashboardController::class, 'index'])->name('user.home');
 Route::get('/templates', [User\DashboardController::class, 'templates'])->name('user.templates');
 Route::get('/template/{template}/preview', [User\DashboardController::class, 'previewTemplate'])->name('template.preview')->middleware('signed');
+Route::get('/help', function () { return view('user.pages.help-center'); })->name('user.help');
+Route::get('/terms', function () { return view('user.pages.terms'); })->name('user.terms');
+Route::get('/privacy', function () { return view('user.pages.privacy'); })->name('user.privacy');
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');

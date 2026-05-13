@@ -2,8 +2,8 @@
 @section('title', 'Dasbor Saya')
 @section('content')
     <main class="grow flex flex-col">
-        <div class="pt-16 pb-12 px-6 border-b border-slate-200/60 dark:border-slate-800/60">
-            <div class="max-w-7xl mx-auto">
+        <div class="pt-16 pb-12 border-b border-slate-200/60 dark:border-slate-800/60">
+            <div class="max-w-7xl mx-auto px-6 w-full">
                 <p class="text-sm font-medium text-slate-400 dark:text-slate-500 mb-2 tracking-wide uppercase">Workspace</p>
                 <h1 class="text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white mb-8">
                     Halo, {{ Auth::user()->name ?? 'Pengusaha' }}.
@@ -31,7 +31,7 @@
                     <div class="hidden sm:block w-px h-4 bg-slate-300 dark:bg-slate-700"></div>
                     <div class="flex items-center gap-3">
                         <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
-                        <span>{{ count($templates) }} Template</span>
+                        <span>{{ count($templates) }} Template Tersedia</span>
                     </div>
                 </div>
             </div>
@@ -130,7 +130,7 @@
         <div id="katalog" class="w-full py-20 overflow-hidden">
             <div class="max-w-7xl mx-auto px-6">
                 
-                <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
                     <div>
                         <h2 class="text-2xl font-semibold text-slate-900 dark:text-white tracking-tight mb-2">Eksplorasi</h2>
                         <p class="text-sm text-slate-500 dark:text-slate-400">Mulai karya barumu dari template pilihan.</p>
@@ -164,7 +164,7 @@
                                     <div class="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                                         <span class="bg-white/90 text-slate-900 px-4 py-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                                            Perbesar Gambar
+                                            Perbesar gambar
                                         </span>
                                     </div>
                                 @else
@@ -205,12 +205,12 @@
 
         <div id="image-modal" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
             <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm transition-opacity" onclick="closeImageModal()"></div>
-            <div class="relative z-10 max-w-5xl w-full mx-4 flex flex-col items-center transform scale-95 transition-transform duration-300" id="image-modal-content">
+            <div class="relative z-10 max-w-5xl w-[calc(100%-2rem)] flex flex-col items-center transform scale-95 transition-transform duration-300" id="image-modal-content">
                 <button onclick="closeImageModal()" class="absolute -top-12 right-0 text-slate-400 hover:text-white transition-colors p-2 focus:outline-none">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
                 <img id="modal-image-src" src="" alt="Full screen preview" class="w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl">
-                <p id="modal-image-title" class="text-white mt-4 font-semibold text-lg tracking-wide"></p>
+                <p id="modal-image-title" class="text-white mt-4 font-semibold text-lg tracking-wide text-center"></p>
             </div>
         </div>
 

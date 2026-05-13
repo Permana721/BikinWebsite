@@ -144,12 +144,12 @@
                 <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">Cara Mulai dalam 3 Langkah Mudah</h2>
             </div>
             
-            <div class="flex flex-col md:flex-row items-start justify-between relative gap-8 md:gap-4">
+            <div class="flex flex-col md:flex-row items-center md:items-start justify-between relative gap-12 md:gap-4 w-full">
                 <!-- Line connector for desktop -->
                 <div class="hidden md:block absolute top-12 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-blue-200 via-blue-400 to-blue-200 dark:from-slate-700 dark:via-blue-600 dark:to-slate-700 -z-10"></div>
                 
                 <!-- Step 1 -->
-                <div class="flex-1 text-center relative">
+                <div class="w-full flex-1 text-center relative">
                     <div class="w-24 h-24 mx-auto bg-white dark:bg-slate-800 rounded-full flex items-center justify-center text-3xl font-black text-blue-600 dark:text-blue-400 shadow-xl border-4 border-slate-50 dark:border-slate-900 mb-6">
                         1
                     </div>
@@ -158,7 +158,7 @@
                 </div>
                 
                 <!-- Step 2 -->
-                <div class="flex-1 text-center relative">
+                <div class="w-full flex-1 text-center relative">
                     <div class="w-24 h-24 mx-auto bg-white dark:bg-slate-800 rounded-full flex items-center justify-center text-3xl font-black text-blue-600 dark:text-blue-400 shadow-xl border-4 border-slate-50 dark:border-slate-900 mb-6">
                         2
                     </div>
@@ -167,7 +167,7 @@
                 </div>
                 
                 <!-- Step 3 -->
-                <div class="flex-1 text-center relative">
+                <div class="w-full flex-1 text-center relative">
                     <div class="w-24 h-24 mx-auto bg-blue-600 text-white rounded-full flex items-center justify-center text-3xl font-black shadow-xl shadow-blue-600/30 border-4 border-slate-50 dark:border-slate-900 mb-6">
                         <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </div>
@@ -186,21 +186,6 @@
                     <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2">Katalog Template</h2>
                     <p class="text-slate-500 dark:text-slate-400 text-lg">Desain profesional yang siap digunakan.</p>
                 </div>
-                
-                <div class="flex gap-2 flex-wrap bg-slate-50 dark:bg-slate-800/80 p-1.5 rounded-full border border-slate-100 dark:border-slate-700 transition-colors" id="category-filter-container">
-                    <button data-filter="semua" class="filter-btn px-6 py-2.5 bg-white dark:bg-slate-700 text-slate-800 dark:text-white text-sm font-semibold rounded-full shadow-sm transition-all">Semua</button>
-                    
-                    @foreach($categories as $index => $category)
-                        <button data-filter="{{ strtolower($category->name) }}" class="filter-btn category-item px-6 py-2.5 text-slate-500 dark:text-slate-400 text-sm font-medium rounded-full hover:text-slate-800 dark:hover:text-white transition-all" style="{{ $index >= 3 ? 'display: none;' : '' }}">
-                            {{ $category->name }}
-                        </button>
-                    @endforeach
-                    @if(count($categories) > 3)
-                        <button id="toggleCategoriesBtn" class="px-4 py-2 text-slate-500 dark:text-slate-400 text-sm font-bold rounded-full hover:text-blue-600 dark:hover:text-blue-400 transition-colors" title="Lihat semua kategori">
-                            &raquo;
-                        </button>
-                    @endif
-                </div>
             </div>
             
             <div id="template-slider" class="flex gap-6 md:gap-8 overflow-x-auto snap-x snap-mandatory hide-scroll scroll-smooth pb-12 -mx-6 px-6 md:mx-0 md:px-0">
@@ -217,7 +202,7 @@
                                 <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                                     <span class="bg-white text-slate-900 px-5 py-2.5 rounded-full text-sm font-bold shadow-xl flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
-                                        Pratinjau
+                                        Perbesar gambar
                                     </span>
                                 </div>
                             @else
@@ -237,9 +222,12 @@
                                 <a href="{{ URL::signedRoute('template.preview', $template->id) }}" target="_blank" class="flex-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 py-3.5 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
                                     Lihat
                                 </a>
-                                <button class="use-template-btn flex-1 bg-blue-600 text-white py-3.5 rounded-xl font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm shadow-blue-600/20">
-                                    Edit
-                                </button>
+                                <form action="{{ route('user.project.create', $template->id) }}" method="POST" class="flex-1">
+                                    @csrf
+                                    <button type="submit" class="use-template-btn w-full bg-blue-600 text-white py-3.5 rounded-xl font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-sm shadow-blue-600/20">
+                                        Edit
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -260,7 +248,127 @@
         </div>
     </section>
 
+    <!-- PRICING SECTION -->
+    <section id="pricing" class="py-24 relative z-10 bg-slate-50 dark:bg-slate-900/30 border-y border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">Investasi Terjangkau untuk Bisnismu</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-lg">Pilih paket yang sesuai dengan kebutuhanmu. Bayar sekali, berlaku selamanya selama masa promo.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Lite Tier -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all flex flex-col">
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Lite</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Cocok untuk pemula yang ingin mencoba.</p>
+                    <div class="mb-8">
+                        <span class="text-4xl font-extrabold text-slate-900 dark:text-white">Gratis</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                            <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>1 Project Website</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                            <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Sub-domain (.bisite.web.id)</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                            <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Akses Template Dasar</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-400 dark:text-slate-500">
+                            <svg class="w-5 h-5 text-slate-300 dark:text-slate-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            <span>Tanpa Watermark BikinWebsite</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-400 dark:text-slate-500">
+                            <svg class="w-5 h-5 text-slate-300 dark:text-slate-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            <span>Custom Domain (.com, .id)</span>
+                        </li>
+                    </ul>
+                    <a href="{{ route('register') }}" class="block w-full py-4 px-6 text-center rounded-xl font-bold border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-blue-600 hover:text-blue-600 dark:hover:border-blue-500 dark:hover:text-blue-500 transition-colors">
+                        Mulai Gratis
+                    </a>
+                </div>
+
+                <!-- Pro Tier -->
+                <div class="bg-blue-600 rounded-3xl p-8 border border-blue-600 shadow-2xl shadow-blue-600/30 transform md:-translate-y-4 flex flex-col relative">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-orange-400 to-pink-500 text-white text-xs font-bold uppercase tracking-wider py-1.5 px-4 rounded-full shadow-lg">
+                        Paling Populer
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Pro</h3>
+                    <p class="text-blue-200 text-sm mb-6">Cocok untuk UMKM dan pekerja profesional.</p>
+                    <div class="mb-8 flex items-baseline gap-2">
+                        <span class="text-4xl font-extrabold text-white">Rp 50rb</span>
+                        <span class="text-blue-200 text-sm">/sekali bayar</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-start gap-3 text-white">
+                            <svg class="w-5 h-5 text-green-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Project Website Tak Terbatas</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white">
+                            <svg class="w-5 h-5 text-green-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Akses Semua Template Premium</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white">
+                            <svg class="w-5 h-5 text-green-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="font-bold text-green-100">Tanpa Watermark BikinWebsite</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-white">
+                            <svg class="w-5 h-5 text-green-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Prioritas Support & Update</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-blue-300">
+                            <svg class="w-5 h-5 text-blue-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            <span>Custom Domain (.com, .id)</span>
+                        </li>
+                    </ul>
+                    <a href="{{ route('register') }}" class="block w-full py-4 px-6 text-center rounded-xl font-bold bg-white text-blue-600 hover:bg-slate-50 transition-colors shadow-lg shadow-black/10">
+                        Pilih Pro
+                    </a>
+                </div>
+
+                <!-- Elite Tier -->
+                <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all flex flex-col">
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Elite</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Solusi lengkap untuk skala korporat.</p>
+                    <div class="mb-8 flex items-baseline gap-2">
+                        <span class="text-4xl font-extrabold text-slate-900 dark:text-white">Rp 75rb</span>
+                        <span class="text-slate-500 dark:text-slate-400 text-sm">/sekali bayar</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                            <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Semua Fitur di Paket Pro</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                            <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="font-bold text-purple-600 dark:text-purple-400">Integrasi Custom Domain</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                            <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Bantuan Setup Domain Penuh</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                            <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Support VIP 24/7 (WhatsApp)</span>
+                        </li>
+                        <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
+                            <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Akses Eksklusif Fitur Baru</span>
+                        </li>
+                    </ul>
+                    <a href="{{ route('register') }}" class="block w-full py-4 px-6 text-center rounded-xl font-bold border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-purple-600 hover:text-purple-600 dark:hover:border-purple-500 dark:hover:text-purple-500 transition-colors">
+                        Pilih Elite
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- FINAL CTA SECTION -->
+    @guest
     <section class="py-24 relative z-10 px-6">
         <div class="max-w-6xl mx-auto">
             <div class="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[3rem] p-10 md:p-16 text-center md:text-left flex flex-col md:flex-row items-center justify-between relative overflow-hidden shadow-2xl shadow-blue-600/30">
@@ -282,6 +390,7 @@
             </div>
         </div>
     </section>
+    @endguest
 
     <!-- AUTH ALERT MODAL (Existing) -->
     <div id="auth-alert-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
@@ -313,12 +422,12 @@
     <!-- IMAGE MODAL (Existing) -->
     <div id="image-modal" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="absolute inset-0 bg-slate-900/95 backdrop-blur-md transition-opacity" onclick="closeImageModal()"></div>
-        <div class="relative z-10 max-w-6xl w-full mx-4 flex flex-col items-center transform scale-95 transition-transform duration-300" id="image-modal-content">
-            <button onclick="closeImageModal()" class="absolute -top-14 right-0 text-white/50 hover:text-white transition-colors p-2 focus:outline-none bg-white/10 rounded-full hover:bg-white/20">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        <div class="relative z-10 max-w-6xl w-[calc(100%-2rem)] flex flex-col items-center transform scale-95 transition-transform duration-300" id="image-modal-content">
+            <button onclick="closeImageModal()" class="absolute -top-12 md:-top-14 right-0 text-white/50 hover:text-white transition-colors p-2 focus:outline-none bg-white/10 rounded-full hover:bg-white/20">
+                <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <img id="modal-image-src" src="" alt="Full screen preview" class="w-full max-h-[85vh] object-contain rounded-xl shadow-2xl">
-            <p id="modal-image-title" class="text-white mt-6 font-bold text-xl tracking-wide"></p>
+            <p id="modal-image-title" class="text-white mt-4 md:mt-6 font-bold text-lg md:text-xl tracking-wide text-center"></p>
         </div>
     </div>
 </main>
