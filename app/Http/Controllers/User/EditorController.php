@@ -68,7 +68,7 @@ class EditorController extends Controller
     {
         $userId = \Illuminate\Support\Facades\Auth::id();
 
-        if ($project->user_id !== $userId) {
+        if ($project->user_id != $userId) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -90,7 +90,7 @@ class EditorController extends Controller
     {
         $userId = \Illuminate\Support\Facades\Auth::id();
 
-        if ($project->user_id !== $userId) {
+        if ($project->user_id != $userId) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -116,7 +116,7 @@ class EditorController extends Controller
 
     public function show(\App\Models\Project $project)
     {
-        if ($project->user_id !== \Illuminate\Support\Facades\Auth::id()) {
+        if ($project->user_id != \Illuminate\Support\Facades\Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -135,7 +135,7 @@ class EditorController extends Controller
 
     public function load(\App\Models\Project $project)
     {
-        if ($project->user_id !== \Illuminate\Support\Facades\Auth::id()) {
+        if ($project->user_id != \Illuminate\Support\Facades\Auth::id()) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -169,7 +169,7 @@ class EditorController extends Controller
 
     public function save(Request $request, \App\Models\Project $project)
     {
-        if ($project->user_id !== \Illuminate\Support\Facades\Auth::id()) {
+        if ($project->user_id != \Illuminate\Support\Facades\Auth::id()) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -195,7 +195,7 @@ class EditorController extends Controller
 
     public function uploadImage(Request $request, \App\Models\Project $project)
     {
-        if ($project->user_id !== \Illuminate\Support\Facades\Auth::id()) {
+        if ($project->user_id != \Illuminate\Support\Facades\Auth::id()) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -225,7 +225,7 @@ class EditorController extends Controller
     {
         $userId = \Illuminate\Support\Facades\Auth::id();
 
-        if ($project->user_id !== $userId) {
+        if ($project->user_id != $userId) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -279,7 +279,7 @@ class EditorController extends Controller
     {
         $userId = \Illuminate\Support\Facades\Auth::id();
 
-        if ($project->user_id !== $userId) {
+        if ($project->user_id != $userId) {
             abort(403, 'Unauthorized action.');
         }
 
