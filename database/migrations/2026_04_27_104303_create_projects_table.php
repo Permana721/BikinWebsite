@@ -18,8 +18,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
 
-            $table->foreignId('template_id')
-                ->constrained('templates');
+            $table->foreignId('template_id')->constrained()->onDelete('cascade');
 
             $table->string('name');
             $table->longText('editor_data')->nullable();

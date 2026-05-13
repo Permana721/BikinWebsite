@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800 shadow-sm transition-colors duration-300">
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800 shadow-sm transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         
         <a href="/user/dashboard" class="text-xl md:text-2xl font-extrabold tracking-tighter text-blue-600 dark:text-blue-500 flex items-center gap-1.5 md:gap-2 shrink-0">

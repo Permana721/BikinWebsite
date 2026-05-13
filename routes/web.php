@@ -5,6 +5,46 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\User;
 use App\Http\Controllers\AuthController;
 
+Route::domain('{account}.' . env('MAIN_DOMAIN', 'bisite.web.id'))->group(function () {
+    Route::get('{any?}', function ($account, $any = 'index.html') {
+        if (in_array($account, ['www', 'admin', 'api', 'mail', 'cpanel'])) {
+            return redirect()->to(env('APP_URL') . '/' . $any);
+        }
+
+        $project = \App\Models\Project::where('subdomain', $account)
+            ->where('is_published', true)
+            ->first();
+
+        if (!$project) {
+            abort(404, 'Website tidak ditemukan atau belum dipublish.');
+        }
+
+        $userId = $project->user_id;
+        if (empty($any) || $any == '/') {
+            $any = 'index.html';
+        }
+
+        $path = storage_path("app/public/users/{$userId}/projects/{$project->id}/{$any}");
+
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        $extension = pathinfo($path, PATHINFO_EXTENSION);
+        $mimeType = match($extension) {
+            'css' => 'text/css',
+            'js' => 'application/javascript',
+            'svg' => 'image/svg+xml',
+            'html', 'htm' => 'text/html',
+            default => \Illuminate\Support\Facades\File::mimeType($path)
+        };
+
+        return response()->file($path, [
+            'Content-Type' => $mimeType
+        ]);
+    })->where('any', '.*');
+});
+
 Route::get('/', [User\DashboardController::class, 'index'])->name('user.home');
 Route::get('/templates', [User\DashboardController::class, 'templates'])->name('user.templates');
 Route::get('/template/{template}/preview', [User\DashboardController::class, 'previewTemplate'])->name('template.preview')->middleware('signed');
