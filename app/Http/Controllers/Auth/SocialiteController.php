@@ -85,6 +85,14 @@ class SocialiteController extends Controller
             ]);
         }
 
+        if ($user->status === 'banned') {
+            $status = $user->status;
+            $reason = $user->status_reason;
+            return redirect()->route('login')->withErrors([
+                'email' => "Akun Anda telah di-{$status}." . ($reason ? " Alasan: $reason" : "")
+            ]);
+        }
+
         Auth::login($user, true);
 
         return redirect()->route('user.dashboard');

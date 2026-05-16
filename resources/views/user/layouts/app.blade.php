@@ -5,27 +5,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') | Bikin Website</title>
+    <title>@yield('title', 'Bikin Website Murah Bandung & UMKM') | Bikin Website</title>
+    <meta name="description" content="@yield('meta_description', 'Platform pembuatan website murah, cepat, dan profesional. Spesialis bikin website murah Bandung dan UMKM dengan desain premium tanpa koding.')">
+    <meta name="keywords" content="Bikin Website, Bikin Website murah bandung, Bikin website murah umkm, Jasa Pembuatan Website, Buat Web Profesional, Website Builder Indonesia">
+    <meta name="author" content="Bikin Website">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title', 'Bikin Website Murah Bandung & UMKM') | Bikin Website">
+    <meta property="og:description" content="@yield('meta_description', 'Platform pembuatan website murah, cepat, dan profesional. Spesialis bikin website murah Bandung dan UMKM dengan desain premium.')">
+    <meta property="og:image" content="{{ asset('assets/img/logo/BikinWebsiteLogo.png') }}">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="@yield('title', 'Bikin Website Murah Bandung & UMKM') | Bikin Website">
+    <meta property="twitter:description" content="@yield('meta_description', 'Platform pembuatan website murah, cepat, dan profesional. Spesialis bikin website murah Bandung dan UMKM dengan desain premium.')">
+    <meta property="twitter:image" content="{{ asset('assets/img/logo/BikinWebsiteLogo.png') }}">
+
     <link rel="icon" type="image/png" href="{{asset('assets/img/logo/BikinWebsiteLogo.png')}}">
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-        tailwind.config = {
-            darkMode: 'media',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    </noscript>
     
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }

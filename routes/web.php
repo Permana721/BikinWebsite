@@ -11,12 +11,17 @@ Route::domain('{account}.' . env('MAIN_DOMAIN', 'bisite.web.id'))->group(functio
             return redirect()->to(env('APP_URL') . '/' . $any);
         }
 
-        $project = \App\Models\Project::where('subdomain', $account)
+        $project = \App\Models\Project::with('user')
+            ->where('subdomain', $account)
             ->where('is_published', true)
             ->first();
 
         if (!$project) {
             abort(404, 'Website tidak ditemukan atau belum dipublish.');
+        }
+
+        if ($project->user->status === 'banned') {
+            abort(403, 'Website ini telah dinonaktifkan karena melanggar kebijakan kami.');
         }
 
         $userId = $project->user_id;
@@ -68,9 +73,13 @@ Route::middleware(['auth'])->group(function () {
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/user', [Admin\DashboardController::class, 'user'])->name('user');
+    Route::get('/user/create', [Admin\DashboardController::class, 'createUser'])->name('user.create');
     Route::post('/user/store', [Admin\DashboardController::class, 'storeUser'])->name('user.store');
+    Route::get('/user/edit/{id}', [Admin\DashboardController::class, 'editUser'])->name('user.edit');
     Route::put('/user/update/{id}', [Admin\DashboardController::class, 'updateUser'])->name('user.update');
     Route::delete('/user/delete/{id}', [Admin\DashboardController::class, 'deleteUser'])->name('user.delete');
+
+    Route::get('/hosted-websites', [Admin\DashboardController::class, 'hostedWebsites'])->name('hosted-websites');
 
     Route::resource('templates', Admin\TemplateController::class)->except(['show']);
     Route::patch('templates/{template}/toggle', [Admin\TemplateController::class, 'toggle'])->name('templates.toggle');

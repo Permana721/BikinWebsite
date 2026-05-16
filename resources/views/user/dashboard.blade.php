@@ -4,10 +4,20 @@
     <main class="grow flex flex-col">
         <div class="pt-16 pb-12 border-b border-slate-200/60 dark:border-slate-800/60">
             <div class="max-w-7xl mx-auto px-6 w-full">
-                <p class="text-sm font-medium text-slate-400 dark:text-slate-500 mb-2 tracking-wide uppercase">Workspace</p>
+                <p class="text-sm font-medium text-slate-600 dark:text-slate-400 mb-2 tracking-wide uppercase">Workspace</p>
                 <h1 class="text-4xl md:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white mb-8">
                     Halo, {{ Auth::user()->name ?? 'Pengusaha' }}.
                 </h1>
+
+                @if(Auth::user()->status === 'warned')
+                <div class="flex items-start gap-3 px-4 py-3 mb-6 text-sm font-medium text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-xl">
+                    <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    <div>
+                        <strong class="block text-amber-800 dark:text-amber-200 mb-0.5">Peringatan Akun</strong>
+                        {{ Auth::user()->status_reason ?? 'Terdapat aktivitas pada akun Anda yang melanggar kebijakan kami. Mohon untuk mematuhi ketentuan layanan.' }}
+                    </div>
+                </div>
+                @endif
 
                 @if(session('success'))
                 <div id="toast-success" class="flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 rounded-xl">
@@ -30,7 +40,7 @@
                     </div>
                     <div class="hidden sm:block w-px h-4 bg-slate-300 dark:bg-slate-700"></div>
                     <div class="flex items-center gap-3">
-                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
+                        <svg class="w-4 h-4 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
                         <span>{{ count($templates) }} Template Tersedia</span>
                     </div>
                 </div>
@@ -59,7 +69,7 @@
                         @if(!$project->is_published)
                         <button
                             onclick="confirmDelete({{ $project->id }}, '{{ addslashes($project->name) }}')"
-                            class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-400 hover:text-red-500 hover:border-red-300 dark:hover:border-red-500 flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110"
+                            class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:text-red-500 hover:border-red-300 dark:hover:border-red-500 flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110"
                             title="Hapus project"
                         >
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
@@ -80,7 +90,7 @@
                                     <h3 class="font-semibold text-slate-900 dark:text-white line-clamp-1" title="{{ $project->name }}">{{ $project->name }}</h3>
                                     <span class="w-2 h-2 rounded-full {{ $project->is_published ? 'bg-green-500' : ($project->status === 'draft' ? 'bg-amber-400' : 'bg-green-500') }}" title="{{ $project->is_published ? 'Published' : ucfirst($project->status) }}"></span>
                                 </div>
-                                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">Diedit {{ $project->updated_at->diffForHumans() }}</p>
+                                <p class="text-xs text-slate-600 dark:text-slate-400 mb-3">Diedit {{ $project->updated_at->diffForHumans() }}</p>
                             </div>
 
                             @if($project->is_published && $project->subdomain)
@@ -102,8 +112,8 @@
                                     <form action="{{ route('user.project.publish', $project->id) }}" method="POST" class="flex flex-col gap-2">
                                         @csrf
                                         <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-700/50 rounded-lg p-1.5">
-                                            <input type="text" name="subdomain" value="{{ $project->subdomain_suggestion }}" placeholder="nama-website" class="flex-1 text-xs bg-transparent outline-none text-slate-800 dark:text-white placeholder-slate-400 px-1.5 py-1 min-w-0 font-medium" pattern="[a-z0-9][a-z0-9\-]*[a-z0-9]" required minlength="3" maxlength="30">
-                                            <span class="text-xs text-slate-400 font-medium shrink-0">.{{ config('app.main_domain') }}</span>
+                                            <input type="text" name="subdomain" value="{{ $project->subdomain_suggestion }}" placeholder="nama-website" class="flex-1 text-xs bg-transparent outline-none text-slate-800 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 px-1.5 py-1 min-w-0 font-medium" pattern="[a-z0-9][a-z0-9\-]*[a-z0-9]" required minlength="3" maxlength="30">
+                                            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium shrink-0">.{{ config('app.main_domain') }}</span>
                                         </div>
                                         @error('subdomain')
                                             <p class="text-xs text-red-500 font-medium">{{ $message }}</p>
@@ -133,7 +143,7 @@
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
                     <div>
                         <h2 class="text-2xl font-semibold text-slate-900 dark:text-white tracking-tight mb-2">Eksplorasi</h2>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">Mulai karya barumu dari template pilihan.</p>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Mulai karya barumu dari template pilihan.</p>
                     </div>
                     
                     <a href="{{ route('user.templates') }}" class="px-5 py-2.5 bg-white dark:bg-slate-800 text-slate-800 dark:text-white text-sm font-semibold rounded-full border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all shadow-sm flex items-center gap-2 group">
@@ -159,7 +169,7 @@
                             
                             <div class="aspect-[4/3] w-full bg-slate-200 dark:bg-slate-800 relative overflow-hidden shrink-0 cursor-pointer" onclick="openImageModal('{{ $thumbnailUrl }}', '{{ addslashes($template->name) }}')">
                                 @if($thumbnailUrl)
-                                    <img src="{{ $thumbnailUrl }}" alt="{{ $template->name }}" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700">
+                                    <img src="{{ $thumbnailUrl }}" alt="{{ $template->name }}" loading="lazy" width="800" height="600" decoding="async" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700">
                                     
                                     <div class="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                                         <span class="bg-white/90 text-slate-900 px-4 py-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-2">
@@ -168,7 +178,7 @@
                                         </span>
                                     </div>
                                 @else
-                                    <div class="w-full h-full flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-400">
+                                    <div class="w-full h-full flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
                                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                     </div>
                                 @endif
@@ -179,8 +189,8 @@
                             </div>
                             
                             <div class="p-6 flex flex-col grow">
-                                <h4 class="font-bold text-xl text-slate-900 dark:text-white mb-1">{{ $template->name }}</h4>
-                                <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-2 grow">{{ $template->description }}</p>
+                                <h3 class="font-bold text-xl text-slate-900 dark:text-white mb-1">{{ $template->name }}</h3>
+                                <p class="text-sm text-slate-600 dark:text-slate-400 mb-6 line-clamp-2 grow">{{ $template->description }}</p>
                                 <div class="flex gap-3 mt-auto">
                                     <a href="{{ URL::signedRoute('template.preview', $template->id) }}" target="_blank" class="flex-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 py-3 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
                                         Lihat
@@ -196,7 +206,7 @@
                         </div>
                     @empty
                         <div class="w-full text-center py-10">
-                            <p class="text-slate-500 dark:text-slate-400 font-medium">Belum ada template yang tersedia di platform.</p>
+                            <p class="text-slate-600 dark:text-slate-400 font-medium">Belum ada template yang tersedia di platform.</p>
                         </div>
                     @endforelse
                 </div>
@@ -206,10 +216,10 @@
         <div id="image-modal" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
             <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm transition-opacity" onclick="closeImageModal()"></div>
             <div class="relative z-10 max-w-5xl w-[calc(100%-2rem)] flex flex-col items-center transform scale-95 transition-transform duration-300" id="image-modal-content">
-                <button onclick="closeImageModal()" class="absolute -top-12 right-0 text-slate-400 hover:text-white transition-colors p-2 focus:outline-none">
+                <button onclick="closeImageModal()" aria-label="Tutup modal" class="absolute -top-12 right-0 text-slate-400 hover:text-white transition-colors p-2 focus:outline-none">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
-                <img id="modal-image-src" src="" alt="Full screen preview" class="w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl">
+                <img id="modal-image-src" src="" alt="Full screen preview" loading="lazy" decoding="async" class="w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl">
                 <p id="modal-image-title" class="text-white mt-4 font-semibold text-lg tracking-wide text-center"></p>
             </div>
         </div>
@@ -349,7 +359,7 @@
                 </svg>
             </div>
             <h3 class="text-base font-semibold text-slate-900 dark:text-white text-center mb-1">Hapus Project?</h3>
-            <p id="delete-modal-text" class="text-sm text-slate-500 dark:text-slate-400 text-center mb-6">Semua file yang sudah kamu edit akan terhapus permanen dan tidak bisa dipulihkan.</p>
+            <p id="delete-modal-text" class="text-sm text-slate-600 dark:text-slate-400 text-center mb-6">Semua file yang sudah kamu edit akan terhapus permanen dan tidak bisa dipulihkan.</p>
             <div class="flex gap-3">
                 <button onclick="closeDeleteModal()" class="flex-1 px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-xl transition-colors">
                     Batal

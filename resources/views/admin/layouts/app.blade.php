@@ -6,20 +6,7 @@
     <title>@yield('title', 'Dasbor Admin') | BikinWebsite</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/img/logo/BikinWebsiteAdminLogo.png') }}">
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-        tailwind.config = {
-            darkMode: 'media',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

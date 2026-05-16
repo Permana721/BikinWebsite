@@ -149,6 +149,7 @@
             .btn, .btn-deploy, .btn-icon, .device-btn { padding: 8px !important; font-size: 0 !important; gap: 0 !important; min-width: 32px; justify-content: center; flex-shrink: 0; }
             .topbar-left, .topbar-right { gap: 6px; flex-shrink: 0; }
             .project-logo-wrap { width: 30px; height: 30px; flex-shrink: 0; }
+            .logo-menu { position: fixed; top: 60px; left: 10px; z-index: 10000; }
         }
     </style>
 </head>

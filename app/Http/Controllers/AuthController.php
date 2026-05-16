@@ -23,6 +23,16 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            if ($user->status === 'banned') {
+                $status = $user->status;
+                $reason = $user->status_reason;
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => "Akun Anda telah di-{$status}." . ($reason ? " Alasan: $reason" : "")
+                ])->onlyInput('email');
+            }
+
             $request->session()->regenerate();
 
             return redirect()->intended(route('user.dashboard'));

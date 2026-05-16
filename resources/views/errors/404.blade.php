@@ -28,13 +28,13 @@
                     <div class="relative rounded-2xl overflow-hidden ">
                         <img src="{{ asset('assets/img/404.png') }}" alt="404 Not Found" class="w-full h-auto">
                     </div>
-                    <div class="hidden md:flex absolute -left-12 bottom-12 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 items-center gap-4 animate-bounce" style="animation-duration: 3s;">
-                        <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <div class="flex absolute bottom-4 left-4 md:-left-12 md:bottom-12 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md p-2.5 md:p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 items-center gap-2.5 md:gap-4 animate-bounce max-w-[calc(100%-2rem)] md:max-w-none" style="animation-duration: 3s;">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400 shrink-0">
+                            <svg class="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                         </div>
                         <div>
-                            <p class="text-sm font-bold text-slate-900 dark:text-white">Tidak dapat menemukan halaman yang anda cari</p>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">Status: 404 Not Found</p>
+                            <p class="text-xs md:text-sm font-bold text-slate-900 dark:text-white">Tidak menemukan halaman <br class="block md:hidden">yang anda cari</p>
+                            <p class="text-[10px] md:text-xs text-slate-600 dark:text-slate-400 mt-0.5 md:mt-0">Status: 404 Not Found</p>
                         </div>
                     </div>
                 </div>

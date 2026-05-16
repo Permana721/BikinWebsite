@@ -7,27 +7,32 @@
         
         <nav class="hidden md:flex space-x-6 items-center">
             <a href="{{ route('admin.dashboard') }}" 
-            class="text-sm transition-colors {{ request()->routeIs('admin.dashboard') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
+            class="text-sm transition-colors {{ request()->routeIs('admin.dashboard') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
                 Home
             </a>
 
             <a href="{{ route('admin.templates.index') }}" 
-            class="text-sm transition-colors {{ request()->routeIs('admin.templates.*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
+            class="text-sm transition-colors {{ request()->routeIs('admin.templates*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
                 Template
             </a>
 
             <a href="{{ route('admin.categories.index') }}" 
-            class="text-sm transition-colors {{ request()->routeIs('admin.categories.*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
+            class="text-sm transition-colors {{ request()->routeIs('admin.categories*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
                 Kategori
             </a>
 
             <a href="{{ route('admin.user') }}" 
-            class="text-sm transition-colors {{ request()->routeIs('admin.user') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
+            class="text-sm transition-colors {{ request()->routeIs('admin.user*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
                 User
             </a>
 
+            <a href="{{ route('admin.hosted-websites') }}" 
+            class="text-sm transition-colors {{ request()->routeIs('admin.hosted-websites*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
+                Hosting
+            </a>
+
             <a href="{{ route('user.dashboard') }}" 
-            class="text-sm transition-colors {{ request()->routeIs('user.dashboard.*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
+            class="text-sm transition-colors {{ request()->routeIs('user.dashboard*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
                 Dashboard User
             </a>
         </nav>
@@ -45,7 +50,7 @@
                     </button>
                 </form>
                 
-                <button id="admin-mobile-menu-btn" class="md:hidden p-1.5 ml-1 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none transition-colors">
+                <button id="admin-mobile-menu-btn" aria-label="Toggle menu" class="md:hidden p-1.5 ml-1 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                 </button>
             </div>
@@ -60,19 +65,23 @@
                 Home
             </a>
             <a href="{{ route('admin.templates.index') }}" 
-            class="text-sm transition-colors {{ request()->routeIs('admin.templates.*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600' }}">
+            class="text-sm transition-colors {{ request()->routeIs('admin.templates*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600' }}">
                 Template
             </a>
             <a href="{{ route('admin.categories.index') }}" 
-            class="text-sm transition-colors {{ request()->routeIs('admin.categories.*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600' }}">
+            class="text-sm transition-colors {{ request()->routeIs('admin.categories*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600' }}">
                 Kategori
             </a>
             <a href="{{ route('admin.user') }}" 
-            class="text-sm transition-colors {{ request()->routeIs('admin.user') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600' }}">
+            class="text-sm transition-colors {{ request()->routeIs('admin.user*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600' }}">
                 User
             </a>
+            <a href="{{ route('admin.hosted-websites') }}" 
+            class="text-sm transition-colors {{ request()->routeIs('admin.hosted-websites*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600' }}">
+                Hosting
+            </a>
             <a href="{{ route('user.dashboard') }}" 
-            class="text-sm transition-colors {{ request()->routeIs('user.dashboard.*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600' }}">
+            class="text-sm transition-colors {{ request()->routeIs('user.dashboard*') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600' }}">
                 Dashboard User
             </a>
         </nav>

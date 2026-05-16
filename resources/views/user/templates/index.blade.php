@@ -28,7 +28,7 @@
                         <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
                             <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </div>
-                        <input type="text" id="searchInput" placeholder="Cari template (mis: Toko, Portofolio...)" class="w-full pl-14 pr-4 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-lg shadow-sm hover:shadow-md">
+                        <input type="text" id="searchInput" placeholder="Cari template (mis: Toko, Portofolio...)" aria-label="Cari template" class="w-full pl-14 pr-4 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-lg shadow-sm hover:shadow-md">
                     </div>
                     <div class="relative w-full md:w-72">
                         <button id="categoryDropdownBtn" class="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white font-medium text-lg shadow-sm hover:shadow-md focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all">
@@ -61,7 +61,7 @@
                     <div data-category="{{ $categoryName }}" data-name="{{ $templateNameLower }}" class="template-card group relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 overflow-hidden hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 flex flex-col">
                         <div class="aspect-[4/3] w-full bg-slate-100 dark:bg-slate-900 relative overflow-hidden shrink-0">
                             @if($thumbnailUrl)
-                                <img src="{{ $thumbnailUrl }}" alt="{{ $template->name }}" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+                                <img src="{{ $thumbnailUrl }}" alt="{{ $template->name }}" loading="lazy" width="800" height="600" decoding="async" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
                                 
                                 <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px] z-10 gap-3">
                                     <button onclick="openImageModal('{{ $thumbnailUrl }}', '{{ addslashes($template->name) }}')" class="bg-white text-slate-900 px-5 py-2.5 rounded-full text-sm font-bold shadow-xl flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all hover:bg-slate-100">
@@ -81,8 +81,8 @@
                         </div>
                         
                         <div class="p-6 flex flex-col grow">
-                            <h4 class="font-bold text-xl text-slate-900 dark:text-white mb-2">{{ $template->name }}</h4>
-                            <p class="text-sm text-slate-500 dark:text-slate-400 mb-6 line-clamp-2 grow">{{ $template->description }}</p>
+                            <h2 class="font-bold text-xl text-slate-900 dark:text-white mb-2">{{ $template->name }}</h2>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 mb-6 line-clamp-2 grow">{{ $template->description }}</p>
                             
                             <div class="flex gap-3 mt-auto">
                                 <a href="{{ URL::signedRoute('template.preview', $template->id) }}" target="_blank" class="flex-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 py-3 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
@@ -100,7 +100,7 @@
                 @empty
                     <div class="col-span-full text-center py-20 bg-slate-50 dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-slate-700">
                         <svg class="w-16 h-16 mx-auto text-slate-300 dark:text-slate-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <p class="text-slate-500 dark:text-slate-400 font-medium text-lg">Belum ada template yang tersedia.</p>
+                        <p class="text-slate-600 dark:text-slate-400 font-medium text-lg">Belum ada template yang tersedia.</p>
                     </div>
                 @endforelse
             </div>
@@ -109,7 +109,7 @@
                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
                 <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Template Tidak Ditemukan</h3>
-                <p class="text-slate-500 dark:text-slate-400 text-lg max-w-md mx-auto">Coba gunakan kata kunci pencarian yang lain atau pilih kategori "Semua Template".</p>
+                <p class="text-slate-600 dark:text-slate-400 text-lg max-w-md mx-auto">Coba gunakan kata kunci pencarian yang lain atau pilih kategori "Semua Template".</p>
             </div>
         </div>
     </div>
@@ -122,7 +122,7 @@
                 </svg>
             </div>
             <h3 class="text-2xl font-bold text-center text-slate-900 dark:text-white mb-3 tracking-tight">Akses Terbatas</h3>
-            <p class="text-center text-slate-500 dark:text-slate-400 mb-8 leading-relaxed">
+            <p class="text-center text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
                 Silakan masuk atau daftar terlebih dahulu untuk menggunakan dan mendesain template ini.
             </p>
             <div class="flex flex-col gap-3">
@@ -138,10 +138,10 @@
     <div id="image-modal" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="absolute inset-0 bg-slate-900/95 backdrop-blur-md transition-opacity" onclick="closeImageModal()"></div>
         <div class="relative z-10 max-w-6xl w-[calc(100%-2rem)] flex flex-col items-center transform scale-95 transition-transform duration-300" id="image-modal-content">
-            <button onclick="closeImageModal()" class="absolute -top-12 md:-top-14 right-0 text-white/50 hover:text-white transition-colors p-2 focus:outline-none bg-white/10 rounded-full hover:bg-white/20">
+            <button onclick="closeImageModal()" aria-label="Tutup modal" class="absolute -top-12 md:-top-14 right-0 text-white/50 hover:text-white transition-colors p-2 focus:outline-none bg-white/10 rounded-full hover:bg-white/20">
                 <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-            <img id="modal-image-src" src="" alt="Full screen preview" class="w-full max-h-[85vh] object-contain rounded-xl shadow-2xl">
+            <img id="modal-image-src" src="" alt="Full screen preview" loading="lazy" decoding="async" class="w-full max-h-[85vh] object-contain rounded-xl shadow-2xl">
             <p id="modal-image-title" class="text-white mt-4 md:mt-6 font-bold text-lg md:text-xl tracking-wide text-center"></p>
         </div>
     </div>

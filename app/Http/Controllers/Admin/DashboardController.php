@@ -64,6 +64,11 @@ class DashboardController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
+    public function createUser()
+    {
+        return view('admin.users.create');
+    }
+
     public function storeUser(Request $request)
     {
         $request->validate([
@@ -82,7 +87,13 @@ class DashboardController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->back()->with('success', 'User berhasil ditambahkan');
+        return redirect()->route('admin.user')->with('success', 'User berhasil ditambahkan');
+    }
+
+    public function editUser($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.users.edit', compact('user'));
     }
 
     public function updateUser(Request $request, $id)
@@ -92,13 +103,13 @@ class DashboardController extends Controller
         }
 
         $user = User::findOrFail($id);
-        $user->update($request->only(['name', 'email', 'role', 'tier']));
+        $user->update($request->only(['name', 'email', 'role', 'tier', 'status', 'status_reason']));
 
         if ($request->filled('password')) {
             $user->update(['password' => Hash::make($request->password)]);
         }
 
-        return redirect()->back()->with('success', 'User berhasil diperbarui');
+        return redirect()->route('admin.user')->with('success', 'User berhasil diperbarui');
     }
 
     public function deleteUser($id)
@@ -111,4 +122,25 @@ class DashboardController extends Controller
         return redirect()->back()->with('success', 'User berhasil dihapus');
     }
 
+    public function hostedWebsites(Request $request)
+    {
+        $query = Project::with(['user', 'template'])->where('is_published', true)->whereNotNull('subdomain');
+
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('subdomain', 'like', '%' . $request->search . '%')
+                  ->orWhereHas('user', function ($uq) use ($request) {
+                      $uq->where('name', 'like', '%' . $request->search . '%');
+                  })
+                  ->orWhereHas('template', function ($tq) use ($request) {
+                      $tq->where('name', 'like', '%' . $request->search . '%');
+                  });
+            });
+        }
+
+        $websites = $query->latest('updated_at')->paginate(10)->withQueryString();
+
+        return view('admin.hosted-websites.index', compact('websites'));
+    }
 }

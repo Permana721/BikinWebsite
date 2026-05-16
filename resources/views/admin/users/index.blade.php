@@ -8,10 +8,10 @@
             <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-2 tracking-tight">Manajemen User</h1>
             <p class="text-slate-500 dark:text-slate-400 text-sm">Kelola data pengguna dan Admin di platform ini.</p>
         </div>
-        <button onclick="openModal('modal-form')" class="flex items-center gap-2 px-5 py-3 rounded-2xl font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/30 text-sm">
+        <a href="{{ route('admin.user.create') }}" class="flex items-center gap-2 px-5 py-3 rounded-2xl font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/30 text-sm">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
             Tambah User
-        </button>
+        </a>
     </div>
 
     <div class="bg-white dark:bg-slate-800/80 backdrop-blur-md rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
@@ -58,6 +58,7 @@
                         <th class="pb-4 pt-2 px-6">User Info</th>
                         <th class="pb-4 pt-2 px-4">Role</th>
                         <th class="pb-4 pt-2 px-4">Tier</th>
+                        <th class="pb-4 pt-2 px-4">Status</th>
                         <th class="pb-4 pt-2 px-4 text-right">Aksi</th>
                     </tr>
                 </thead>
@@ -87,12 +88,19 @@
                                 {{ $user->tier }}
                             </span>
                         </td>
+                        <td class="py-4 px-4">
+                            <span class="px-3 py-1 
+                                {{ $user->status == 'active' ? 'bg-green-100 text-green-500' : ($user->status == 'warned' ? 'bg-yellow-100 text-yellow-600' : 'bg-red-100 text-red-600') }} 
+                                dark:bg-opacity-20 text-xs font-bold rounded-lg uppercase">
+                                {{ $user->status }}
+                            </span>
+                        </td>
                         <td class="py-4 px-4 text-right">
                             <div class="flex justify-end gap-2">
                                 @if(Auth::id() != $user->id)
-                                    <button onclick="openModal('modal-edit-{{ $user->id }}')" class="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-colors">
+                                    <a href="{{ route('admin.user.edit', $user->id) }}" class="p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-colors inline-block">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                    </button>
+                                    </a>
                                     <button onclick="openModal('modal-delete-{{ $user->id }}')" class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-xl transition-colors">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                     </button>
@@ -103,42 +111,7 @@
                         </td>
                     </tr>
 
-                    <div id="modal-edit-{{ $user->id }}" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
-                        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeModal('modal-edit-{{ $user->id }}')"></div>
-                        <div class="relative bg-white dark:bg-slate-800 p-8 rounded-[2rem] w-full max-w-md mx-4 modal-box border border-slate-100 dark:border-slate-700">
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Edit Data User</h3>
-                            <form action="{{ route('admin.user.update', $user->id) }}" method="POST" class="space-y-4">
-                                @csrf @method('PUT')
-                                <div>
-                                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Lengkap</label>
-                                    <input type="text" name="name" value="{{ $user->name }}" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Email</label>
-                                    <input type="email" name="email" value="{{ $user->email }}" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Role</label>
-                                    <select name="role" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 outline-none">
-                                        <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
-                                        <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Tier</label>
-                                    <select name="tier" class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 outline-none">
-                                        <option value="lite" {{ $user->tier == 'lite' ? 'selected' : '' }}>Lite</option>
-                                        <option value="pro" {{ $user->tier == 'pro' ? 'selected' : '' }}>Pro</option>
-                                        <option value="elite" {{ $user->tier == 'elite' ? 'selected' : '' }}>Elite</option>
-                                    </select>
-                                </div>
-                                <div class="flex gap-3 pt-4">
-                                    <button type="button" onclick="closeModal('modal-edit-{{ $user->id }}')" class="flex-1 px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-700 text-sm font-semibold">Batal</button>
-                                    <button type="submit" class="flex-1 px-4 py-3 rounded-2xl bg-blue-600 text-white text-sm font-semibold shadow-lg shadow-blue-600/30">Update Data</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+
 
                     <div id="modal-delete-{{ $user->id }}" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
                         <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeModal('modal-delete-{{ $user->id }}')"></div>
@@ -186,56 +159,7 @@
     </div>
 </div>
 
-<div id="modal-form" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
-    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onclick="closeModal('modal-form')"></div>
-    <div class="relative bg-white dark:bg-slate-800 p-8 rounded-[2rem] shadow-2xl shadow-blue-900/10 dark:shadow-black/40 w-full max-w-md mx-4 transform scale-95 transition-all duration-300 border border-slate-100 dark:border-slate-700 modal-box">
-        <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Data User Baru</h3>
-        <form action="{{ route('admin.user.store') }}" method="POST" class="space-y-4">
-            @csrf   
-            <div>
-                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Nama Lengkap</label>
-                <input type="text" name="name" placeholder="Masukkan nama..." 
-                    class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm text-slate-800 dark:text-slate-200 outline-none transition-all">
-            </div>
-            <div>
-                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Alamat Email</label>
-                <input type="email" name="email" placeholder="email@contoh.com" 
-                    class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm text-slate-800 dark:text-slate-200 outline-none transition-all">
-            </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Peran (Role)</label>
-                    <select name="role" 
-                        class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm text-slate-800 dark:text-slate-200 outline-none transition-all">
-                        <option value="" disabled selected>Pilih Role</option>
-                        <option value="user">User</option>   
-                        <option value="admin">Admin</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Tier</label>
-                    <select name="tier" 
-                        class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm text-slate-800 dark:text-slate-200 outline-none transition-all">
-                        <option value="lite" selected>Lite</option>   
-                        <option value="pro">Pro</option>
-                        <option value="elite">Elite</option>
-                    </select>
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
-                <input type="password" name="password" placeholder="••••••••" 
-                    class="w-full px-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm text-slate-800 dark:text-slate-200 outline-none transition-all">
-            </div>
-            
-            <div class="flex gap-3 pt-4">
-                <button type="button" onclick="closeModal('modal-form')" class="flex-1 px-4 py-3 rounded-2xl font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors text-sm">Batal</button>
-                <button type="submit" class="flex-1 px-4 py-3 rounded-2xl font-semibold text-white bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/30 transition-colors text-sm">Simpan Data</button>
-            </div>
-        </form></div>
-</div>
 
 <div id="modal-delete" class="fixed inset-0 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
     <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onclick="closeModal('modal-delete')"></div>

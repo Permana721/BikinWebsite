@@ -2,23 +2,23 @@
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         
         <a href="/user/dashboard" class="text-xl md:text-2xl font-extrabold tracking-tighter text-blue-600 dark:text-blue-500 flex items-center gap-1.5 md:gap-2 shrink-0">
-            <img src="{{ asset('assets/img/logo/BikinWebsiteLogo.png') }}" alt="Logo BikinWebsite" class="h-7 w-7 md:h-9 md:w-9 object-contain">
+            <img src="{{ asset('assets/img/logo/BikinWebsiteLogo.png') }}" width="36" height="36" fetchpriority="high" alt="Logo BikinWebsite" class="h-7 w-7 md:h-9 md:w-9 object-contain">
             <span class="hidden sm:inline">Bikin<span class="font-light">Website</span></span>
         </a>
         
         <nav class="hidden md:flex space-x-8 items-center">
             <a href="{{ Auth::check() ? route('user.dashboard') : route('user.home') }}" 
-            class="text-sm transition-colors {{ request()->routeIs('user.home', 'user.dashboard') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
+            class="text-sm transition-colors {{ request()->routeIs('user.home', 'user.dashboard') ? 'font-bold text-blue-600 dark:text-blue-400' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
                 {{ Auth::check() ? 'Dashboard' : 'Home' }}
             </a>
 
             <a href="{{ route('user.templates') }}" 
-            class="text-sm font-medium transition-colors {{ request()->routeIs('user.templates') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
+            class="text-sm font-medium transition-colors {{ request()->routeIs('user.templates') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
                 Templates
             </a>
 
             <a href="{{ route('user.help') }}" 
-            class="text-sm font-medium transition-colors {{ request()->routeIs('user.help') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
+            class="text-sm font-medium transition-colors {{ request()->routeIs('user.help') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400' }}">
                 Help Center
             </a>
         </nav>
@@ -49,7 +49,7 @@
                 <a href="{{ route('register') }}" class="text-sm font-semibold bg-blue-600 text-white px-4 md:px-5 py-2 md:py-2.5 rounded-full hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all transform hover:-translate-y-0.5">Daftar</a>
             @endauth
 
-            <button id="mobile-menu-btn" class="md:hidden p-1.5 ml-1 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none transition-colors">
+            <button id="mobile-menu-btn" aria-label="Toggle menu" class="md:hidden p-1.5 ml-1 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none transition-colors">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </div>

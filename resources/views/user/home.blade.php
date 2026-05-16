@@ -18,7 +18,7 @@
                         Buat Website Impian <br>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600">Tanpa Menulis Kode.</span>
                     </h1>
-                    <p class="text-slate-500 dark:text-slate-400 text-lg md:text-xl mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                    <p class="text-slate-600 dark:text-slate-400 text-lg md:text-xl mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                         Platform pembuatan website paling intuitif. Pilih template, sesuaikan desain dengan <i>drag-and-drop</i>, dan publikasikan usahamu secara profesional dalam hitungan menit.
                     </p>
                     <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
@@ -30,7 +30,7 @@
                             Pelajari Lebih Lanjut
                         </a>
                     </div>
-                    <div class="mt-8 flex items-center justify-center lg:justify-start gap-4 text-sm text-slate-500 dark:text-slate-400 font-medium">
+                    <div class="mt-8 flex items-center justify-center lg:justify-start gap-4 text-sm text-slate-600 dark:text-slate-400 font-medium">
                         <div class="flex -space-x-2 overflow-hidden">
                            <div class="flex -space-x-2 overflow-hidden">
                                 <img 
@@ -66,7 +66,7 @@
                 <!-- Hero Image/Mockup -->
                 <div class="lg:w-1/2 relative w-full max-w-2xl lg:max-w-none">
                     <div class="relative rounded-2xl overflow-hidden ">
-                        <img src="{{ asset('assets/img/hero-mockup.png') }}" alt="Happy user holding laptop" class="w-full h-auto">
+                        <img src="{{ asset('assets/img/hero-mockup.png') }}" width="612" height="408" fetchpriority="high" alt="Happy user holding laptop" class="w-full h-auto object-cover md:object-contain drop-shadow-2xl translate-y-4 md:translate-y-8 group-hover:translate-y-2 md:group-hover:translate-y-4 transition-transform duration-700">
                     </div>
                     
                     <!-- Floating Cards to simulate UI -->
@@ -76,7 +76,7 @@
                         </div>
                         <div>
                             <p class="text-xs md:text-sm font-bold text-slate-900 dark:text-white whitespace-nowrap">Website Published!</p>
-                            <p class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400">Baru saja</p>
+                            <p class="text-[10px] md:text-xs text-slate-600 dark:text-slate-400">Baru saja</p>
                         </div>
                     </div>
                 </div>
@@ -87,7 +87,7 @@
     <!-- SPONSORS / LOGOS -->
     <section class="py-10 border-y border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 relative z-10">
         <div class="max-w-7xl mx-auto px-6 overflow-hidden">
-            <p class="text-center text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-6">Cocok untuk berbagai industri</p>
+            <p class="text-center text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest mb-6">Cocok untuk berbagai industri</p>
             <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
                 <span class="text-xl font-black text-slate-800 dark:text-slate-300">Toko Online</span>
                 <span class="text-xl font-black text-slate-800 dark:text-slate-300">Portofolio</span>
@@ -103,7 +103,7 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-3xl mx-auto mb-16">
                 <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">Fitur Lengkap untuk Kesuksesanmu</h2>
-                <p class="text-slate-500 dark:text-slate-400 text-lg">Semua yang kamu butuhkan untuk membuat website profesional, performa tinggi, dan mudah dikelola tanpa perlu memahami bahasa pemrograman.</p>
+                <p class="text-slate-600 dark:text-slate-400 text-lg">Semua yang kamu butuhkan untuk membuat website profesional, performa tinggi, dan mudah dikelola tanpa perlu memahami bahasa pemrograman.</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -113,7 +113,7 @@
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Drag & Drop Editor</h3>
-                    <p class="text-slate-500 dark:text-slate-400">Atur tata letak dengan mudah. Pindahkan elemen, ubah warna, dan sesuaikan teks secara langsung.</p>
+                    <p class="text-slate-600 dark:text-slate-400">Atur tata letak dengan mudah. Pindahkan elemen, ubah warna, dan sesuaikan teks secara langsung.</p>
                 </div>
                 
                 <!-- Feature 2 -->
@@ -122,7 +122,7 @@
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">Desain Responsif</h3>
-                    <p class="text-slate-500 dark:text-slate-400">Website Anda akan secara otomatis menyesuaikan tampilan agar sempurna di desktop, tablet, maupun mobile.</p>
+                    <p class="text-slate-600 dark:text-slate-400">Website Anda akan secara otomatis menyesuaikan tampilan agar sempurna di desktop, tablet, maupun mobile.</p>
                 </div>
                 
                 <!-- Feature 3 -->
@@ -131,7 +131,7 @@
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3">SEO Optimized & Cepat</h3>
-                    <p class="text-slate-500 dark:text-slate-400">Dibuat dengan kode yang bersih agar website Anda memuat lebih cepat dan mudah ditemukan di Google.</p>
+                    <p class="text-slate-600 dark:text-slate-400">Dibuat dengan kode yang bersih agar website Anda memuat lebih cepat dan mudah ditemukan di Google.</p>
                 </div>
             </div>
         </div>
@@ -154,7 +154,7 @@
                         1
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Pilih Template</h3>
-                    <p class="text-slate-500 dark:text-slate-400 max-w-xs mx-auto text-sm">Pilih desain dari puluhan template siap pakai yang disesuaikan dengan kategorimu.</p>
+                    <p class="text-slate-600 dark:text-slate-400 max-w-xs mx-auto text-sm">Pilih desain dari puluhan template siap pakai yang disesuaikan dengan kategorimu.</p>
                 </div>
                 
                 <!-- Step 2 -->
@@ -163,7 +163,7 @@
                         2
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Sesuaikan Desain</h3>
-                    <p class="text-slate-500 dark:text-slate-400 max-w-xs mx-auto text-sm">Ganti teks, gambar, dan warna sesuai dengan identitas <i>brand</i> kamu.</p>
+                    <p class="text-slate-600 dark:text-slate-400 max-w-xs mx-auto text-sm">Ganti teks, gambar, dan warna sesuai dengan identitas <i>brand</i> kamu.</p>
                 </div>
                 
                 <!-- Step 3 -->
@@ -172,7 +172,7 @@
                         <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Publikasi</h3>
-                    <p class="text-slate-500 dark:text-slate-400 max-w-xs mx-auto text-sm">Selesai! Website kamu siap diakses oleh pengunjung dari seluruh dunia.</p>
+                    <p class="text-slate-600 dark:text-slate-400 max-w-xs mx-auto text-sm">Selesai! Website kamu siap diakses oleh pengunjung dari seluruh dunia.</p>
                 </div>
             </div>
         </div>
@@ -184,7 +184,7 @@
             <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                 <div>
                     <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2">Katalog Template</h2>
-                    <p class="text-slate-500 dark:text-slate-400 text-lg">Desain profesional yang siap digunakan.</p>
+                    <p class="text-slate-600 dark:text-slate-400 text-lg">Desain profesional yang siap digunakan.</p>
                 </div>
             </div>
             
@@ -197,7 +197,7 @@
                     <div data-category="{{ strtolower($categoryName) }}" class="template-card shrink-0 w-[85vw] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)] snap-center sm:snap-start group relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 overflow-hidden hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 flex flex-col">
                         <div class="aspect-[4/3] w-full bg-slate-100 dark:bg-slate-900 relative overflow-hidden shrink-0 cursor-pointer" onclick="openImageModal('{{ $thumbnailUrl }}', '{{ addslashes($template->name) }}')">
                             @if($thumbnailUrl)
-                                <img src="{{ $thumbnailUrl }}" alt="{{ $template->name }}" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
+                                <img src="{{ $thumbnailUrl }}" alt="{{ $template->name }}" loading="lazy" width="800" height="600" decoding="async" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500">
                                 
                                 <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                                     <span class="bg-white text-slate-900 px-5 py-2.5 rounded-full text-sm font-bold shadow-xl flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all">
@@ -206,7 +206,7 @@
                                     </span>
                                 </div>
                             @else
-                                <div class="w-full h-full flex items-center justify-center text-slate-400">
+                                <div class="w-full h-full flex items-center justify-center text-slate-500 dark:text-slate-400">
                                     <svg class="w-12 h-12 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                 </div>
                             @endif
@@ -216,8 +216,8 @@
                         </div>
 
                         <div class="p-8 flex flex-col grow">
-                            <h4 class="font-bold text-2xl text-slate-900 dark:text-white mb-2">{{ $template->name }}</h4>
-                            <p class="text-slate-500 dark:text-slate-400 mb-8 line-clamp-2 grow">{{ $template->description }}</p>
+                            <h3 class="font-bold text-2xl text-slate-900 dark:text-white mb-2">{{ $template->name }}</h3>
+                            <p class="text-slate-600 dark:text-slate-400 mb-8 line-clamp-2 grow">{{ $template->description }}</p>
                             <div class="flex gap-3 mt-auto">
                                 <a href="{{ URL::signedRoute('template.preview', $template->id) }}" target="_blank" class="flex-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 py-3.5 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
                                     Lihat
@@ -234,7 +234,7 @@
                 @empty
                     <div class="w-full text-center py-20 bg-slate-50 dark:bg-slate-800/50 rounded-3xl border border-slate-100 dark:border-slate-700">
                         <svg class="w-16 h-16 mx-auto text-slate-300 dark:text-slate-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <p class="text-slate-500 dark:text-slate-400 font-medium text-lg">Belum ada template yang tersedia.</p>
+                        <p class="text-slate-600 dark:text-slate-400 font-medium text-lg">Belum ada template yang tersedia.</p>
                     </div>
                 @endforelse
             </div>
@@ -253,7 +253,7 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center max-w-3xl mx-auto mb-16">
                 <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">Investasi Terjangkau untuk Bisnismu</h2>
-                <p class="text-slate-500 dark:text-slate-400 text-lg">Pilih paket yang sesuai dengan kebutuhanmu. Bayar sekali, berlaku selamanya selama masa promo.</p>
+                <p class="text-slate-600 dark:text-slate-400 text-lg">Pilih paket yang sesuai dengan kebutuhanmu. Bayar sekali, berlaku selamanya selama masa promo.</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -266,7 +266,7 @@
                         </div>
                     @endif
                     <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Lite</h3>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Cocok untuk pemula yang ingin mencoba.</p>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-6">Cocok untuk pemula yang ingin mencoba.</p>
                     <div class="mb-8">
                         <span class="text-4xl font-extrabold text-slate-900 dark:text-white">Gratis</span>
                     </div>
@@ -283,8 +283,8 @@
                             <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             <span>Akses Semua Template</span>
                         </li>
-                        <li class="flex items-start gap-3 text-slate-400 dark:text-slate-500">
-                            <svg class="w-5 h-5 text-slate-300 dark:text-slate-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        <li class="flex items-start gap-3 text-slate-500 dark:text-slate-400">
+                            <svg class="w-5 h-5 text-slate-400 dark:text-slate-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                             <span>Custom Domain (.com, .id)</span>
                         </li>
                     </ul>
@@ -293,7 +293,7 @@
                             Mulai Gratis
                         </a>
                     @else
-                        <div class="w-full py-4 px-6 text-center rounded-xl font-bold bg-slate-100 dark:bg-slate-700/50 text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-700 cursor-default flex items-center justify-center gap-2">
+                        <div class="w-full py-4 px-6 text-center rounded-xl font-bold bg-slate-100 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 cursor-default flex items-center justify-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             Sudah Terdaftar
                         </div>
@@ -301,7 +301,7 @@
                 </div>
 
                 <!-- Pro Tier -->
-                <div class="bg-blue-600 rounded-3xl p-8 border border-blue-600 shadow-2xl shadow-blue-600/30 transform md:-translate-y-4 flex flex-col relative">
+                <div class="bg-blue-700 rounded-3xl p-8 border border-blue-700 shadow-2xl shadow-blue-700/30 transform md:-translate-y-4 flex flex-col relative">
                     <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-orange-400 to-pink-500 text-white text-xs font-bold uppercase tracking-wider py-1.5 px-4 rounded-full shadow-lg">
                         Paling Populer
                     </div>
@@ -312,10 +312,10 @@
                         </div>
                     @endif
                     <h3 class="text-2xl font-bold text-white mb-2">Pro</h3>
-                    <p class="text-blue-200 text-sm mb-6">Cocok untuk UMKM dan pekerja profesional.</p>
+                    <p class="text-white text-sm mb-6">Cocok untuk UMKM dan pekerja profesional.</p>
                     <div class="mb-8 flex items-baseline gap-2">
                         <span class="text-4xl font-extrabold text-white">Rp 50rb</span>
-                        <span class="text-blue-200 text-sm">/sekali bayar</span>
+                        <span class="text-white text-sm">/sekali bayar</span>
                     </div>
                     <ul class="space-y-4 mb-8 flex-1">
                         <li class="flex items-start gap-3 text-white">
@@ -331,8 +331,8 @@
                             <svg class="w-5 h-5 text-green-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             <span>Prioritas Support & Update</span>
                         </li>
-                        <li class="flex items-start gap-3 text-blue-300">
-                            <svg class="w-5 h-5 text-blue-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        <li class="flex items-start gap-3 text-white">
+                            <svg class="w-5 h-5 text-white opacity-50 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                             <span>Custom Domain (.com, .id)</span>
                         </li>
                     </ul>
@@ -342,7 +342,7 @@
                             Paket Aktif
                         </div>
                     @elseif(auth()->check() && auth()->user()->tier === 'elite')
-                        <div class="block w-full py-4 px-6 text-center rounded-xl font-bold bg-black/10 text-blue-200 border border-white/10 cursor-default flex items-center justify-center gap-2">
+                        <div class="block w-full py-4 px-6 text-center rounded-xl font-bold bg-black/10 text-white border border-white/10 cursor-default flex items-center justify-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                             Tier Tinggi Aktif
                         </div>
@@ -362,10 +362,10 @@
                         </div>
                     @endif
                     <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Elite</h3>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Solusi lengkap untuk skala korporat.</p>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mb-6">Solusi lengkap untuk skala korporat.</p>
                     <div class="mb-8 flex items-baseline gap-2">
                         <span class="text-4xl font-extrabold text-slate-900 dark:text-white">Rp 75rb</span>
-                        <span class="text-slate-500 dark:text-slate-400 text-sm">/sekali bayar</span>
+                        <span class="text-slate-600 dark:text-slate-400 text-sm">/sekali bayar</span>
                     </div>
                     <ul class="space-y-4 mb-8 flex-1">
                         <li class="flex items-start gap-3 text-slate-600 dark:text-slate-300">
@@ -419,7 +419,7 @@
                 <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-white rounded-full mix-blend-overlay opacity-10 blur-2xl"></div>
                 
                 <div class="relative z-10 md:w-2/3 mb-8 md:mb-0">
-                    <h3 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">Siap Membangun Kehadiran Digitalmu?</h3>
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">Siap Membangun Kehadiran Digitalmu?</h2>
                     <p class="text-blue-100 text-lg md:text-xl max-w-xl leading-relaxed">Mulai buat website dengan gratis hari ini. Tidak perlu kartu kredit, tidak butuh koding.</p>
                 </div>
                 
@@ -445,7 +445,7 @@
             </div>
             
             <h3 class="text-2xl font-bold text-center text-slate-900 dark:text-white mb-3 tracking-tight">Akses Terbatas</h3>
-            <p class="text-center text-slate-500 dark:text-slate-400 mb-8 leading-relaxed">
+            <p class="text-center text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
                 Silakan masuk atau daftar terlebih dahulu untuk menggunakan dan mendesain template ini.
             </p>
             
@@ -464,10 +464,10 @@
     <div id="image-modal" class="fixed inset-0 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="absolute inset-0 bg-slate-900/95 backdrop-blur-md transition-opacity" onclick="closeImageModal()"></div>
         <div class="relative z-10 max-w-6xl w-[calc(100%-2rem)] flex flex-col items-center transform scale-95 transition-transform duration-300" id="image-modal-content">
-            <button onclick="closeImageModal()" class="absolute -top-12 md:-top-14 right-0 text-white/50 hover:text-white transition-colors p-2 focus:outline-none bg-white/10 rounded-full hover:bg-white/20">
+            <button onclick="closeImageModal()" aria-label="Tutup modal" class="absolute -top-12 md:-top-14 right-0 text-white/50 hover:text-white transition-colors p-2 focus:outline-none bg-white/10 rounded-full hover:bg-white/20">
                 <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-            <img id="modal-image-src" src="" alt="Full screen preview" class="w-full max-h-[85vh] object-contain rounded-xl shadow-2xl">
+            <img id="modal-image-src" src="" alt="Full screen preview" loading="lazy" decoding="async" class="w-full max-h-[85vh] object-contain rounded-xl shadow-2xl">
             <p id="modal-image-title" class="text-white mt-4 md:mt-6 font-bold text-lg md:text-xl tracking-wide text-center"></p>
         </div>
     </div>
@@ -490,12 +490,12 @@
 
             <!-- Title & desc -->
             <h3 class="text-xl font-extrabold text-center text-slate-900 dark:text-white mb-3 tracking-tight mt-3">Upgrade Tier via WhatsApp</h3>
-            <p class="text-center text-slate-500 dark:text-slate-400 mb-2 leading-relaxed text-sm">
+            <p class="text-center text-slate-600 dark:text-slate-400 mb-2 leading-relaxed text-sm">
                 BikinWebsite masih dalam tahap pengembangan. Untuk upgrade ke paket 
                 <span id="upgrade-tier-name" class="font-bold text-slate-700 dark:text-slate-200">Pro</span>,
                 silakan hubungi admin kami langsung melalui WhatsApp.
             </p>
-            <p class="text-center text-xs text-slate-400 dark:text-slate-500 mb-6">Proses cepat &amp; aman. Tim kami siap membantu! 🚀</p>
+            <p class="text-center text-xs text-slate-500 dark:text-slate-400 mb-6">Proses cepat &amp; aman. Tim kami siap membantu! 🚀</p>
 
             <!-- Buttons -->
             <div class="flex flex-col gap-3">
