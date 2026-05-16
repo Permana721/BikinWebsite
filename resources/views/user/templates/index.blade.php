@@ -209,6 +209,7 @@
         
         let currentFilter = 'semua';
         let searchQuery = '';
+        let noResultsTimeout;
 
         useTemplateBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -244,8 +245,9 @@
                 }
             });
 
+            clearTimeout(noResultsTimeout);
             if (visibleCount === 0 && cards.length > 0) {
-                setTimeout(() => noResultsMsg.classList.remove('hidden'), 300);
+                noResultsTimeout = setTimeout(() => noResultsMsg.classList.remove('hidden'), 300);
             } else {
                 noResultsMsg.classList.add('hidden');
             }
